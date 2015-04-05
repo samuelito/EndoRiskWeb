@@ -1,0 +1,39 @@
+﻿@model IEnumerable<EndoRiskWeb.Models.endochoice>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Choices</h2>
+
+<p>
+    @Html.ActionLink("Add New Set of Choices", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.choiceSet)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.choiceOption)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.choiceSet)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.choiceOption)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.idChoice }) |
+            @Html.ActionLink("Details", "Details", new { id=item.idChoice }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.idChoice })
+        </td>
+    </tr>
+}
+
+</table>

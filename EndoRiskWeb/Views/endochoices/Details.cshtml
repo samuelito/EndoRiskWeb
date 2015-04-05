@@ -1,0 +1,34 @@
+﻿@model EndoRiskWeb.Models.endochoice
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>endochoice</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.choiceSet)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.choiceSet)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.choiceOption)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.choiceOption)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.idChoice }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

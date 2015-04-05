@@ -1,0 +1,33 @@
+﻿@model EndoRiskWeb.Models.symptom
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>symptom</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.symptom1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.symptom1)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.abbr)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.abbr)
+        </dd>
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new {  id = Model.idSymptom  }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

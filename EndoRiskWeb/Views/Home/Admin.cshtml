@@ -1,0 +1,45 @@
+﻿
+
+@{
+    ViewBag.Title = "Administrators Features";
+}
+
+
+@if (Session["LoggedUserName"] != null)
+{
+    <text>
+        Welcome @Session["LoggedUserName"].ToString()
+    </text>
+}
+
+
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h1>@ViewBag.Title.</h1>
+            </hgroup>
+            <ol class="round">
+                <li class="one">
+                    <h2>@Html.ActionLink("Manage Administrators", "", "administrators")</h2>
+                </li>
+
+                <li class="two">
+                    <h2>@Html.ActionLink("View Comments", "", "comments")</h2>
+                </li>
+
+                <li class="three">
+                    <h2>@Html.ActionLink("Manage Symptoms", "", "symptoms")</h2>
+                </li>
+
+                <li class="four">
+                    <h2>@Html.ActionLink("Manage Endometriosis Questions", "", "endoquestions")</h2>
+                </li>
+
+                <li class="five">
+                    <h2>@Html.ActionLink("Manage Endometriosis Question Choices", "", "endochoices")</h2>
+                </li>
+            </ol>
+        </div>
+    </section>
+}

@@ -1,0 +1,51 @@
+﻿@model IEnumerable<EndoRiskWeb.Models.comment>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Feedback</h2>
+
+<p>
+    @Html.ActionLink("Provide Feedback", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.content)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.time)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.content)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.time)
+        </td>
+        <td>
+          <!--  @Html.ActionLink("Edit", "Edit", new { id=item.idComment }) | -->
+            @Html.ActionLink("Details", "Details", new { id=item.idComment }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.idComment })
+        </td>
+    </tr>
+}
+
+</table>
