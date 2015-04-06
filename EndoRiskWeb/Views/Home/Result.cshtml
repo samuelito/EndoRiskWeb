@@ -1,24 +1,22 @@
-﻿
+﻿@model EndoRiskWeb.Models.patient
 
 @{
     ViewBag.Title = "Result Page";
 }
 
-        <div class="content-wrapper">
-            <hgroup class="title">
-                <h1>@ViewBag.Title.</h1>
-            </hgroup>
-            <ol class="round">
-                <li class="one">
-                    <h2>
-                       SAM
-                    </h2>
-                </li>
+<div class="content-wrapper">
+    <hgroup class="title">
+        <h1>@ViewBag.Title.</h1>
+    </hgroup>
 
-               
-            </ol>
-        </div>
-}
+        <p> The quiz number is: @Model.idQuiz</p>
+        <p> Your patient ID is: @Model.idPatient </p>
+        <p> Your lifetime risk is: @Model.risk</p>
+        <p> Time of the quiz is: @Model.time</p>
+        <p> Quiz verified?: @Model.verified</p>
+    
+</div>
+
 
 <div>
     @Html.ActionLink("Return Home", "Index")
