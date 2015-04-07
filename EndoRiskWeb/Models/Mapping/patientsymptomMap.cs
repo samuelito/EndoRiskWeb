@@ -18,10 +18,14 @@ namespace EndoRiskWeb.Models.Mapping
                 .IsRequired()
                 .HasMaxLength(50);
 
+            this.Property(t => t.hasSymptom)
+                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
+
             // Table & Column Mappings
             this.ToTable("patientsymptom", "endorisk");
             this.Property(t => t.idPatient).HasColumnName("idPatient");
             this.Property(t => t.symptom).HasColumnName("symptom");
+            this.Property(t => t.hasSymptom).HasColumnName("hasSymptom");
         }
     }
 }

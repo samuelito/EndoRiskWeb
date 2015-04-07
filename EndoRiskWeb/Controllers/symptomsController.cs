@@ -20,21 +20,6 @@ namespace EndoRiskWeb.Controllers
             return View(db.symptoms.ToList());
         }
 
-        // GET: symptoms/Details/5
-        /*public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            symptom symptom = db.symptoms.Find(id);
-            if (symptom == null)
-            {
-                return HttpNotFound();
-            }
-            return View(symptom);
-        }
-        */
         // GET: symptoms/Create
         public ActionResult Create()
         {

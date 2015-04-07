@@ -1,56 +1,81 @@
-﻿@model IEnumerable<EndoRiskWeb.Models.endoquestion> 
-
+﻿@model IEnumerable<EndoRiskWeb.Models.questions>
+<!--
+    Documentation: Samuel Feliciano
+    First Try: using endoquestion Model:
+        No way to access the choices for the questions
+    Second Try: try creating multiple models in the view
+        Dificult to access data required
+    Third Try: create new Model : Questions
+        Containts Questions and Choices
+    Fourth Try: Add Symptoms to the Model
+        Contains Questions, Choices and Symptoms:
+-->
 @{
     ViewBag.Title = "Endometriosis Risk Calculator";
 }
 @section featured {
     <section class="featured">
-    <div class="content-wrapper">
-        <hgroup class="title">
-            <h1>@ViewBag.Title.</h1>
-        </hgroup>
-        <ol class="round">
-            <li class="one">
-                <h2>@Html.ActionLink("Risk Calculator", "", "Home")</h2>
-            </li>
-        </ol>
-    </div>
-</section>
-}
-
- @using (Html.BeginForm("Result", "Home", FormMethod.Post))
-       {
-        @Html.AntiForgeryToken()
-
-        <div class="form-horizontal">
-         <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-
-       
-        <div class="form-group">
-        @foreach (var item in Model)
-        {
-                <p>@Html.DisplayFor(model => item.endoQuestion1)</p>
-    
-                <div class="col-md-10">
-                    <input type="text" name="@item.abbr" placeholder="@item.choiceSet" />
-                    <!--@Html.EditorFor(model => item.idQuestion, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => item.idQuestion, "", new { @class = "text-danger" })-->
-                </div>
-        }
-            </div>
-
-         <div class="form-group">
-               <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Result" class="btn btn-default" />
-                </div>
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h1>@ViewBag.Title.</h1>
+            </hgroup>
         </div>
-       </div>
+    </section>
 }
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
+
+<!-- Start the form (POST) to use in the Risk Method-->
+@using (Html.BeginForm("Risk", "Home", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            <!--
+                Goes through every item in the Model : questions
+                question includes: ID, Question, Abbreviation, Choices Set Name, and the List of Choices
+            -->
+
+            <p>Enter Patient ID: </p><input type="text" name="PID"  value=""/>
+
+            @foreach (var item in Model)
+            {
+                <!--Displays the question -->
+                <p>@Html.DisplayFor(model => item.question)</p> <!--Displays the question -->
+
+                <div class="col-md-10">
+                    <!--Check if the set is empty-->
+                    @if (item.set.Equals(""))
+                    {
+                        <input type="text" name="@item.abbr" /> 
+                    }
+                    else {
+                                              <!--Display the choices for the question in a select-->
+                                               <!-- Value will be the selected choice = element(i)-->
+                        <select>
+                            @for (var i = 0; i < item.choices.Count; i++)
+                            {
+                                <option name="@item.abbr" value="@item.choices.ElementAt(i)">@item.choices.ElementAt(i)</option>
+                            }
+                        </select>
+                    }
+            </div>
+            }
+                </div>
+
+        <!-- Submit button for the form -> Value : Risk (calls ActionResult Risk() in Home Controller)-->
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Risk" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
 }
-       
+
+            @section Scripts {
+                @Scripts.Render("~/bundles/jqueryval")
+            }
+
 
 

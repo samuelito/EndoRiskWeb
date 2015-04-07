@@ -8,21 +8,21 @@ using System.Web;
 using System.Web.Mvc;
 using EndoRiskWeb.Models;
 
-
-
 namespace EndoRiskWeb.Controllers
 {
     public class endoquestionsController : Controller
     {
         private endoriskContext db = new endoriskContext();
-
+        /*
+         * Documentation: Samuel Feliciano
+         * Index
+         * Create
+         */
         // GET: endoquestions
         public ActionResult Index()
-        {
-          
-
+        {   
+            //Returns in the index view, the list of questions for endometriosis
             return View(db.endoquestions.ToList());
-         
         }
 
         // GET: endoquestions/Details/5
@@ -55,9 +55,19 @@ namespace EndoRiskWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.endoquestions.Add(endoquestion);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                /*
+                 * Documentation: Samuel
+                 * Try1: Null Pointer Exception (choiceSet may be null) -> no choice set available
+                 * Fix-> By setting to empty choiceSet = "" -> for text
+                 * 
+                 * Try2: Verify that choiceSet is not null -> Set to empty choice set (for input text)
+                 */ 
+                if(endoquestion.choiceSet == null){
+                    endoquestion.choiceSet = "";
+                }
+                db.endoquestions.Add(endoquestion);     //add the question to the database
+                db.SaveChanges();                        
+                return RedirectToAction("Index");       //redirect page to Index of Questions
             }
 
             return View(endoquestion);
@@ -127,13 +137,6 @@ namespace EndoRiskWeb.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
-        }
-
-        public List<endochoice> lookchoices(string s)
-        {
-            var x = db.endochoices.Where(model => model.choiceSet.Equals(s)).ToList();
-
-            return x;
         }
     }
 }

@@ -1,20 +1,22 @@
 ﻿@model EndoRiskWeb.Models.patient
-
+<!--Documentation: Samuel
+    Temporary Testing View for the Risk View();
+    Try1: Using Patient Model : Shows Results
+    -->
 @{
-    ViewBag.Title = "Result Page";
+    ViewBag.Title = "Lifetime Risk";
 }
 
 <div class="content-wrapper">
     <hgroup class="title">
         <h1>@ViewBag.Title.</h1>
     </hgroup>
-
+        <!--View patients result: Quiz, ID, Risk, Time and Verified-->
         <p> The quiz number is: @Model.idQuiz</p>
-        <p> Your patient ID is: @Model.idPatient </p>
+        <p> Your patient ID is: @Model.idPatient</p>
         <p> Your lifetime risk is: @Model.risk</p>
         <p> Time of the quiz is: @Model.time</p>
         <p> Quiz verified?: @Model.verified</p>
-    
 </div>
 
 
