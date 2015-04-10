@@ -10,44 +10,49 @@ using EndoRiskWeb.Models;
 
 namespace EndoRiskWeb.Controllers
 {
+    /*
+     * Documentation: Samuel Feliciano
+     * Controller for Endometriosis Choices
+     */
     public class endochoicesController : Controller
     {
+        //variable for the database context
         private endoriskContext db = new endoriskContext();
 
-        // GET: endochoices
+        /*
+         * Index shows the view for the Endometriosis Choices
+         * returns the view a list of the choices from the database
+         */
         public ActionResult Index()
         {
             return View(db.endochoices.ToList());
         }
-
-        // GET: endochoices/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            endochoice endochoice = db.endochoices.Find(id);
-            if (endochoice == null)
-            {
-                return HttpNotFound();
-            }
-            return View(endochoice);
-        }
-
-        // GET: endochoices/Create
+  
+        /*
+         * This method show the view to create a new endometriosis choice
+         * The view present fields to create a new choice
+         */
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: endochoices/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /*
+         * POST Method for creating and adding the new endometriosos choice to database
+         * Validates AntiForgeryToken to avoid attacks on the user end.
+         * Parameter: 
+         *  Use the bind method to bind the inputs to the variable endochoice 
+         * Return:
+         *  Redirects to the Index view of the Choices.
+         */
+       
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "idChoice,choiceSet,choiceOption")] endochoice endochoice)
         {
+            //Verifies the state of the model and the binding with the model
+            //If the binding of the object model is valid, Adds the choices to the database
+            //Redirect to index
             if (ModelState.IsValid)
             {
                 db.endochoices.Add(endochoice);
@@ -55,10 +60,19 @@ namespace EndoRiskWeb.Controllers
                 return RedirectToAction("Index");
             }
 
-            return View(endochoice);
+            return View(endochoice);            //If the model State is not valid
+                                                //Return same view to add model. 
         }
 
-        // GET: endochoices/Edit/5
+        /*
+         * Edit an endometriosis choice
+         * Check if the id is null returns a Bad Request
+         * 
+         * If id is not null, Find the id for the choice in the database
+         * return a request not found if the choice is not in database
+         * 
+         * return: View of the choice to edit
+         */
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -73,9 +87,13 @@ namespace EndoRiskWeb.Controllers
             return View(endochoice);
         }
 
-        // POST: endochoices/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /*
+         * POST for Edit
+         * Binds the elements from the input with the new variable of endochoice
+         * If the binding of the inputs with the object model is valid
+         *    use db.Entry to change the state of the current model
+         *    then save changes to the database
+         */
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "idChoice,choiceSet,choiceOption")] endochoice endochoice)
@@ -89,7 +107,11 @@ namespace EndoRiskWeb.Controllers
             return View(endochoice);
         }
 
-        // GET: endochoices/Delete/5
+        
+        /*
+         * Delete view for the choice to remove
+         * returns a view with the choice if found on the database
+         */
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -104,7 +126,12 @@ namespace EndoRiskWeb.Controllers
             return View(endochoice);
         }
 
-        // POST: endochoices/Delete/5
+        /*
+         * Delete the selected choice
+         * Parameter: id for the choice
+         * Use Remove to delete the choice
+         * Return: Redirect to the Index of the Choices List
+         */
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)

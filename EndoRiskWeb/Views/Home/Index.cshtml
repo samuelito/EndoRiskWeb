@@ -7,8 +7,8 @@
         Dificult to access data required
     Third Try: create new Model : Questions
         Containts Questions and Choices
-    Fourth Try: Add Symptoms to the Model
-        Contains Questions, Choices and Symptoms:
+    Fourth Try: Edit select 
+        (wasn't returning the proper values)
 -->
 @{
     ViewBag.Title = "Endometriosis Risk Calculator";
@@ -48,21 +48,22 @@
                     <!--Check if the set is empty-->
                     @if (item.set.Equals(""))
                     {
-                        <input type="text" name="@item.abbr" /> 
+                        <input type="text" name="@item.abbr" value=" "  /> 
                     }
                     else {
-                                              <!--Display the choices for the question in a select-->
-                                               <!-- Value will be the selected choice = element(i)-->
-                        <select>
+                        <!--Display the choices for the question in a select-->
+                        <!-- Value will be the selected choice = element(i)-->
+                        <select name="@item.abbr" >
+                            <option selected></option>
                             @for (var i = 0; i < item.choices.Count; i++)
                             {
-                                <option name="@item.abbr" value="@item.choices.ElementAt(i)">@item.choices.ElementAt(i)</option>
+                            <option>@item.choices.ElementAt(i)</option>
                             }
                         </select>
                     }
-            </div>
-            }
                 </div>
+                }
+              </div>
 
         <!-- Submit button for the form -> Value : Risk (calls ActionResult Risk() in Home Controller)-->
                 <div class="form-group">

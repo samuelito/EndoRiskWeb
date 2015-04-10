@@ -10,17 +10,27 @@ using EndoRiskWeb.Models;
 
 namespace EndoRiskWeb.Controllers
 {
+    /*
+    * Documentation: Samuel Feliciano
+    * Controller for the comments
+    */
     public class commentsController : Controller
     {
         private endoriskContext db = new endoriskContext();
 
-        // GET: comments
+        /*
+         * Index shows the view for the comments
+         * returns the view a list of the comments from the database
+         */
         public ActionResult Index()
         {
             return View(db.comments.ToList());
         }
 
-        // GET: comments/Details/5
+        /*
+         * Details for the comment with id in parameter
+         * If the comment is found, returns the view with the comment details
+         */
         public ActionResult Details(long? id)
         {
             if (id == null)
@@ -35,22 +45,30 @@ namespace EndoRiskWeb.Controllers
             return View(comment);
         }
 
-        // GET: comments/Create
+        /*
+          * This method show the view to create a new comment
+          * The view present fields to create a new comment
+          */
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: comments/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /*
+          * POST Method for creating and adding the new comment to database
+          * Validates AntiForgeryToken to avoid attacks on the user end.
+          * Parameter: 
+          *  Use the bind method to bind the inputs to the variable comment
+          * Return:
+          *  Redirects to the Index view of the comments
+          */
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "idComment,title,content,email")] comment comment)
         {
             //comments includes id, title, content and email
             //time is missing - use datetime.now
-            //use new endorisk context for the database entry
+            //use new endorisk context for the database entry - testing options
             using (endoriskContext c = new endoriskContext())
             {
                 comment.time = DateTime.Now;    //Set the time for comment to actual day and time
@@ -66,38 +84,12 @@ namespace EndoRiskWeb.Controllers
             }
         }
 
-        // GET: comments/Edit/5
-       /* public ActionResult Edit(long? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            comment comment = db.comments.Find(id);
-            if (comment == null)
-            {
-                return HttpNotFound();
-            }
-            return View(comment);
-        }
 
-        // POST: comments/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "idComment,title,content,email,time")] comment comment)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(comment).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(comment);
-        }*/
 
-        // GET: comments/Delete/5
+        /*
+        * Delete view for the comment to remove
+        * returns a view with the comment if found on the database
+        */
         public ActionResult Delete(long? id)
         {
             if (id == null)
@@ -112,7 +104,12 @@ namespace EndoRiskWeb.Controllers
             return View(comment);
         }
 
-        // POST: comments/Delete/5
+        /*
+         * Delete the selected comment
+         * Parameter: id for the comment
+         * Use Remove to delete the comment
+         * Return: Redirect to the Index of the comment List
+         */
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(long id)

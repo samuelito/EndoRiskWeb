@@ -18,14 +18,16 @@ namespace EndoRiskWeb.Controllers
          * Index
          * Create
          */
-        // GET: endoquestions
         public ActionResult Index()
         {   
             //Returns in the index view, the list of questions for endometriosis
             return View(db.endoquestions.ToList());
         }
 
-        // GET: endoquestions/Details/5
+        /*
+        * Details for the question with id in parameter
+        * If the question is found, returns the view with the question details
+        */
         public ActionResult Details(long? id)
         {
             if (id == null)
@@ -40,15 +42,23 @@ namespace EndoRiskWeb.Controllers
             return View(endoquestion);
         }
 
-        // GET: endoquestions/Create
+        /*
+          * This method show the view to create a new question
+          * The view present fields to create a new question
+          */
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: endoquestions/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /*
+          * POST Method for creating and adding the new question to database
+          * Validates AntiForgeryToken to avoid attacks on the user end.
+          * Parameter: 
+          *  Use the bind method to bind the inputs to the variable endoquestion
+          * Return:
+          *  Redirects to the Index view of the questions
+          */
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "idQuestion,endoQuestion1,abbr,choiceSet")] endoquestion endoquestion)
@@ -73,7 +83,15 @@ namespace EndoRiskWeb.Controllers
             return View(endoquestion);
         }
 
-        // GET: endoquestions/Edit/5
+        /*
+         * Edit an question
+         * Check if the id is null returns a Bad Request
+         * 
+         * If id is not null, Find the id for the question in the database
+         * return a request not found if the question is not in database
+         * 
+         * return: View of the question to edit
+         */
         public ActionResult Edit(long? id)
         {
             if (id == null)
@@ -88,9 +106,15 @@ namespace EndoRiskWeb.Controllers
             return View(endoquestion);
         }
 
-        // POST: endoquestions/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        
+
+        /*
+        * POST for Edit
+        * Binds the elements from the input with the new variable of question
+        * If the binding of the inputs with the object model is valid
+        *    use db.Entry to change the state of the current model
+        *    then save changes to the database
+        */
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "idQuestion,endoQuestion1,abbr,choiceSet")] endoquestion endoquestion)
@@ -104,7 +128,10 @@ namespace EndoRiskWeb.Controllers
             return View(endoquestion);
         }
 
-        // GET: endoquestions/Delete/5
+        /*
+        * Delete view for the question to remove
+        * returns a view with the question if found on the database
+        */
         public ActionResult Delete(long? id)
         {
             if (id == null)
@@ -119,7 +146,12 @@ namespace EndoRiskWeb.Controllers
             return View(endoquestion);
         }
 
-        // POST: endoquestions/Delete/5
+        /*
+         * Delete the selected question
+         * Parameter: id for the question
+         * Use Remove to delete the question
+         * Return: Redirect to the Index of the question List
+         */
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(long id)

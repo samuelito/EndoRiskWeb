@@ -16,7 +16,7 @@ namespace EndoRiskWeb.Models.Mapping
 
             this.Property(t => t.symptom)
                 .IsRequired()
-                .HasMaxLength(50);
+                .HasMaxLength(255);
 
             this.Property(t => t.hasSymptom)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);

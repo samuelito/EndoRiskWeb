@@ -39,9 +39,9 @@ namespace EndoRiskWeb.Controllers
 
         List<questions> result = new List<questions>();  //List of type "questions" to store the result
 
-        questions q = null;        //q is a new variable of type : questions
+        questions q = null;                     //q is a new variable of type : questions
       
-        foreach (var item in p){               //iterates over every item in p (each question)
+        foreach (var item in p){                //iterates over every item in p (each question)
             q = new questions();
             q.question = item.endoQuestion1;            //add the questions to q
             q.questionid = (int) item.idQuestion;       //adds the id of question to q
@@ -66,7 +66,7 @@ namespace EndoRiskWeb.Controllers
         /*
          * Documentation: Samuel
          * 
-         * Function to generate patients ID
+         * Function to generate patients ID using max ID in the database
          * updates: the value of pid by 1
          * returns: new value of pid (pid++)
          * 
@@ -74,6 +74,7 @@ namespace EndoRiskWeb.Controllers
         public int generatePatient()
         {
             pid = db.patients.Max(m=> m.idPatient);
+            pid++;
             return pid;
         }
 
@@ -86,24 +87,14 @@ namespace EndoRiskWeb.Controllers
          */
         public ActionResult Risk(FormCollection c)
         {
-                //Models to store de data in Database
-                patient paciente = new patient();                   //contains patient
+                //Model to store patients data in Database
+                patient paciente = new patient();                   
              
                 //Calculate Lifetime Risk: Using R prediction models
                 //verify convertions of parameters of the required data
                 //Testing example using linear prediction
                 var riesgo = (float) 56.78;
-                var severity = "0";
-                //Calculate Severity:
-                if (riesgo > 50)
-                {
-                    severity = "75"; //Calculate Severity
-                }
-     
-                //Store the results on the database
-
-                /*---Patiente---*/
-                
+                                 
                 //Verifiy if patient ID exist
                 if (c.GetValue("PID").AttemptedValue.Equals("") || c.GetValue("PID").AttemptedValue == null )
                 {
@@ -118,58 +109,92 @@ namespace EndoRiskWeb.Controllers
                 paciente.time = DateTime.Now;       //time of the quiz
 
                 //Verify if logged in
+                //Testing purpose => "Yes"
                 paciente.verified = "Yes";          
 
-                //Store Values into Patients Database
-                
+                                                
                 db.patients.Add(paciente);  //adds patients result to database
                 db.SaveChanges();
                 
-                //Obtaine the Id Quiz from the patient already added 
-                //To cpntinue adding the data
-                //Query To Do -> Select idQuiz From Patients Where idPatient == idpaciente
-                var idquiz = db.patients.Where(m => m.idPatient == paciente.idPatient).LastOrDefault().idQuiz;
+                //Obtain the idquiz from the patient added to Database
+                var idquiz = from p in db.patients
+                             where p.idPatient == paciente.idPatient
+                             orderby p.idQuiz descending
+                             select p.idQuiz;
 
-                //int idquiz = 12;
-                severity severidad = new severity();
-                severidad.idQuiz = idquiz;
-                severidad.severity1 = severity;
-                db.severities.Add(severidad);
-                db.SaveChanges();
+                //Add the severity of the patient
+                //if riesgo -> medium or high
+                //Calculate Severity:
+                if (riesgo > 50)
+                {
+                    var severity = "76";                               //Calculate Severity
+                    severity severidad = new severity();            //new severity object
+                    severidad.idQuiz = idquiz.First();              //set the idQuiz to match severity IdQuiz Variable
+                    severidad.severity1 = severity;                 //Value for the severity
+                    db.severities.Add(severidad);                   //Add the severity to the Database
+                    db.SaveChanges(); 
+                }
+                                              
 
-                storeAnswers(idquiz, c);
+                //Store the Patients Answers to the database
+                //Arguments: 
+                //quizId -> identify the quiz of the answers
+                //c -> Form with the answers
+                storeAnswers(idquiz.First(), c);
+                
                 //Return a patient type to the Risk view: 
                 //Includes-> idquiz, paciente id, resultado, verified
-                
                 return View(paciente);
    
         }
 
+        /*
+         * Documentation: Samuel
+         * Function to store the answers of the quiz in the database
+         * Parameters: 
+         *  idq = id of the quiz
+         *  c = form collection containing the answers
+         */
         public void storeAnswers(int idq, FormCollection c)
         {
                 endoanswer respuestas = new endoanswer();
-                
                 var data = db.endoquestions;
-  
-                for (int x = 0; x < c.Count; x++) { 
                 
-                int idpreg = Convert.ToInt32(data.Where(m => m.abbr.Equals(c.GetKey(x))).Select(m=>m.idQuestion).ToString());
-                //Add the answers to the questions 
-                respuestas.answer = c.Get(c.GetKey(x));
-                respuestas.idQuestion =  idpreg;            //quiestion id of the answer
-                respuestas.idQuiz = idq;                    //quiz of the answered question
+                //Go through every element in the form
+                //Starts at 2 since first elements are not part of the questions
+                for (int x = 2; x < c.Count; x++) {             
+ 
+                    string ans = c.GetKey(x);                   //get the answer from the form
+                    
+                    var ques = from q in data                   //Select the question id by checking
+                               where q.abbr.Equals(ans)         //the abbreviation from the form in the 
+                               select q.idQuestion;             //question table -> returns the ID of the question
 
-                db.endoanswers.Add(respuestas);           //adds patient answers to database
-                db.SaveChanges(); 
+                    int idpreg = (int) ques.FirstOrDefault();     //get the first value in 
+               
+                    //Add the answers to the questions 
+                    respuestas.answer = c.Get(x);               //the answer to the question
+                    respuestas.idQuestion = idpreg;             //quiestion id of the answer
+                    respuestas.idQuiz = idq;                    //quiz of the answered question
+
+                    db.endoanswers.Add(respuestas);           //adds patient answers to database
+                    db.SaveChanges();                           //save changes in the database
                 }
+                
         }
 
+        /*
+         * View for the About Section in the Home Page
+         */
         public ActionResult About()
         {
             ViewBag.Message = "Your app description page.";
 
             return View();
         }
+        /*
+         * View for the Contact Section in the Home Page
+         */
 
         public ActionResult Contact()
         {
@@ -178,40 +203,57 @@ namespace EndoRiskWeb.Controllers
             return View();
         }
 
-
+        /*
+         * Partial view for the login
+         * Returns Login Page
+         */
         public ActionResult Login()
-        {
-            return View(); //Returns the view for the login page
+        {   
+            
+            return View(); 
         }
 
+        //Documentation: Samuel
+        //Login for the adminsitrators
+        //Paramater: Administrator model
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Login(administrator admin)
         {
             if (ModelState.IsValid)
-            {
+            {   
+                //Additional Implementation of using db context
                 using (endoriskContext c = new endoriskContext())
                 {
+                    //Query to search for the first instance of email and password in database
                     var v = c.administrators.Where(model => model.email.Equals(admin.email) && model.password.Equals(admin.password)).FirstOrDefault();
 
                     if (v != null)
                     {
+                        //Current Session Logged in: 
+                        //Store email, first name and type (admin logged in)
                         Session["LoggedUserEmail"] = v.email.ToString();
                         Session["LoggedUserName"] = v.firstname.ToString();
-                        return RedirectToAction("Admin");
+                        Session["LoggedUserType"] = v.subadmin.ToString();
+                        return RedirectToAction("Admin");                   //redirect to the Admin View()
                     }
                     else
-                    {
+                    {   //TODO: Invalid inputs if user is not in the system
                         //Mensaje: No es usuario valido
                     }
                 }
             }
+            
             return View(admin);
         }
 
+        /*
+         * Documentation: Samuel
+         * Returns the view for the administrator 
+         */
         public ActionResult Admin()
-        {
-            return View(); //Returns the view for the administrator
+        {                      
+            return View(); 
         }
 
     }

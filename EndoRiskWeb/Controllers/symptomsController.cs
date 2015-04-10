@@ -10,25 +10,41 @@ using EndoRiskWeb.Models;
 
 namespace EndoRiskWeb.Controllers
 {
+    /*
+   * Documentation: Samuel Feliciano
+   * Controller for the symptoms
+   */
     public class symptomsController : Controller
     {
         private endoriskContext db = new endoriskContext();
 
-        // GET: symptoms
+        /*
+         * Index shows the view for the symptoms
+         * returns the view a list of the symptoms from the database
+         */
         public ActionResult Index()
         {
             return View(db.symptoms.ToList());
         }
 
-        // GET: symptoms/Create
+        /*
+           * This method show the view to create a new symptom
+           * The view present fields to create a new symptom
+           */
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: symptoms/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /*
+          * POST Method for creating and adding the new symptom to database
+          * Validates AntiForgeryToken to avoid attacks on the user end.
+          * Parameter: 
+          *  Use the bind method to bind the inputs to the variable symptom
+          * Return:
+          *  Redirects to the Index view of the symptoms
+          */
+       
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "idSymptom,symptom1,abbr")] symptom symptom)
@@ -43,7 +59,15 @@ namespace EndoRiskWeb.Controllers
             return View(symptom);
         }
 
-        // GET: symptoms/Edit/5
+        /*
+         * Edit a symptom
+         * Check if the id is null returns a Bad Request
+         * 
+         * If id is not null, Find the id for the symptom in the database
+         * return a request not found if the symptom is not in database
+         * 
+         * return: View of the symptom to edit
+         */
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -58,9 +82,13 @@ namespace EndoRiskWeb.Controllers
             return View(symptom);
         }
 
-        // POST: symptoms/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /*
+         * POST for Edit
+         * Binds the elements from the input with the new variable of symptom
+         * If the binding of the inputs with the object model is valid
+         *    use db.Entry to change the state of the current model
+         *    then save changes to the database
+         */
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "idSymptom,symptom1,abbr")] symptom symptom)
@@ -74,7 +102,10 @@ namespace EndoRiskWeb.Controllers
             return View(symptom);
         }
 
-        // GET: symptoms/Delete/5
+        /*
+         * Delete view for the symptom to remove
+         * returns a view with the symptom if found on the database
+         */
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -89,7 +120,12 @@ namespace EndoRiskWeb.Controllers
             return View(symptom);
         }
 
-        // POST: symptoms/Delete/5
+        /*
+         * Delete the selected symptom  
+         * Parameter: id for the symptom
+         * Use Remove to delete the symptom
+         * Return: Redirect to the Index of the symptom List
+         */
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)

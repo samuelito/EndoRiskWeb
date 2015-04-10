@@ -8,8 +8,9 @@ namespace EndoRiskWeb.Models.Mapping
         public endoanswerMap()
         {
             // Primary Key
-            this.HasKey(t => new { t.idQuiz, t.idQuestion });
+            this.HasKey(t => new { t.idAnswer });
 
+            
             // Properties
             this.Property(t => t.idQuiz)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
@@ -22,6 +23,7 @@ namespace EndoRiskWeb.Models.Mapping
 
             // Table & Column Mappings
             this.ToTable("endoanswers", "endorisk");
+            this.Property(t => t.idAnswer).HasColumnName("idAnswer");
             this.Property(t => t.idQuiz).HasColumnName("idQuiz");
             this.Property(t => t.idQuestion).HasColumnName("idQuestion");
             this.Property(t => t.answer).HasColumnName("answer");
