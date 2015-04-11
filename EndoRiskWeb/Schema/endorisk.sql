@@ -30,7 +30,7 @@ CREATE TABLE `administrator` (
   `lastname` varchar(50) DEFAULT NULL,
   `subadmin` int(10) unsigned NOT NULL,
   PRIMARY KEY (`idAdmin`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -39,7 +39,7 @@ CREATE TABLE `administrator` (
 
 LOCK TABLES `administrator` WRITE;
 /*!40000 ALTER TABLE `administrator` DISABLE KEYS */;
-INSERT INTO `administrator` VALUES (1,'samuel.feliciano@upr.edu','samuel','Samuel','Feliciano',0),(2,'samuel.feliciano@outlook.com','samuel','Samuel','Feliciano',0),(3,'samuel.feliciano@gmail.com','samuel','Samuelito','Feliciano',1),(4,'luz.gonzalez@upr.edu','luz','Luz','Gonzalez',1),(5,'eddie.perez@upr.edu','eddie','Eddie','Perez',1);
+INSERT INTO `administrator` VALUES (1,'samuel.feliciano@upr.edu','samuel','Samuel','Feliciano',0),(4,'luz.gonzalez@upr.edu','luz','Luz','Gonzalez',1),(5,'eddie.perez@upr.edu','eddie','Eddie','Perez',1),(6,'saylisse.davila@upr.edu','saylisse','Saylisse','Davila',1),(7,'samuel@upr.edu','samuel','Sammy','Feliciano',1);
 /*!40000 ALTER TABLE `administrator` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -57,7 +57,7 @@ CREATE TABLE `comment` (
   `email` varchar(100) DEFAULT NULL,
   `time` datetime DEFAULT NULL,
   PRIMARY KEY (`idComment`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -66,7 +66,7 @@ CREATE TABLE `comment` (
 
 LOCK TABLES `comment` WRITE;
 /*!40000 ALTER TABLE `comment` DISABLE KEYS */;
-INSERT INTO `comment` VALUES (1,'Test','Testing Feedback','samuel.feliciano@upr.edu','2015-03-31 06:08:00'),(2,'Test 2','Testing Comment 2','testing@gmail.com','2015-03-31 06:52:00'),(3,'Test 3','Testing DateTime function','samuel.feliciano@upr.edu','2015-04-02 02:49:22');
+INSERT INTO `comment` VALUES (1,'Test','Testing Feedback','samuel.feliciano@upr.edu','2015-03-31 06:08:00'),(2,'Test 2','Testing Comment 2','testing@gmail.com','2015-03-31 06:52:00'),(3,'Test 3','Testing DateTime function','samuel.feliciano@upr.edu','2015-04-02 02:49:22'),(5,'Test 5','Test','samuel.feliciano@upr.edu','2015-04-10 11:17:57');
 /*!40000 ALTER TABLE `comment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -104,11 +104,13 @@ DROP TABLE IF EXISTS `endoanswers`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `endoanswers` (
+  `idAnswer` int(11) NOT NULL AUTO_INCREMENT,
   `idQuiz` int(11) NOT NULL,
   `idQuestion` int(11) NOT NULL,
   `answer` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`idQuiz`,`idQuestion`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`idAnswer`),
+  KEY `idQuiz_idx` (`idQuiz`)
+) ENGINE=InnoDB AUTO_INCREMENT=75 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -117,6 +119,7 @@ CREATE TABLE `endoanswers` (
 
 LOCK TABLES `endoanswers` WRITE;
 /*!40000 ALTER TABLE `endoanswers` DISABLE KEYS */;
+INSERT INTO `endoanswers` VALUES (1,13,0,'23'),(2,36,1,'Caucasico'),(3,37,1,'Hispano'),(4,37,2,'23'),(5,37,3,'11'),(6,37,4,'27'),(7,37,5,'12'),(8,37,6,'Si'),(9,37,7,'3'),(10,37,8,'2'),(11,37,9,'Si'),(12,37,10,'No'),(13,37,11,'1'),(14,37,12,'1'),(15,37,13,'No'),(16,37,14,'0'),(17,37,15,'Si'),(18,37,16,'No'),(19,37,17,'13'),(20,37,18,'No'),(21,37,19,' '),(22,37,20,'No'),(23,37,21,'No'),(24,37,22,'No'),(25,37,23,'n/a'),(26,37,24,'n/a'),(27,38,1,'Asiatico'),(28,38,2,'34'),(29,38,3,'13'),(30,38,4,'11'),(31,38,5,'7'),(32,38,6,'Si'),(33,38,7,'3'),(34,38,8,'4'),(35,38,9,'Si'),(36,38,10,'Si'),(37,38,11,'1'),(38,38,12,'1'),(39,38,13,'Si'),(40,38,14,'1'),(41,38,15,'No'),(42,38,16,'No'),(43,38,17,'13'),(44,38,18,'Si'),(45,38,19,'Madre'),(46,38,20,'No'),(47,38,21,'No'),(48,38,22,'n/a'),(49,38,23,'n/a'),(50,38,24,'n/a'),(51,39,1,'Multirracial'),(52,39,2,' 55'),(53,39,3,'13'),(54,39,4,' 13'),(55,39,5,' 13'),(56,39,6,'Si'),(57,39,7,' 4'),(58,39,8,' 10'),(59,39,9,''),(60,39,10,''),(61,39,11,' '),(62,39,12,' '),(63,39,13,''),(64,39,14,' '),(65,39,15,''),(66,39,16,''),(67,39,17,' '),(68,39,18,''),(69,39,19,' '),(70,39,20,''),(71,39,21,''),(72,39,22,' '),(73,39,23,' '),(74,39,24,' ');
 /*!40000 ALTER TABLE `endoanswers` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -158,7 +161,7 @@ CREATE TABLE `endoquestion` (
   `abbr` varchar(5) DEFAULT NULL,
   `choiceSet` varchar(5) DEFAULT NULL,
   PRIMARY KEY (`idQuestion`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -167,7 +170,7 @@ CREATE TABLE `endoquestion` (
 
 LOCK TABLES `endoquestion` WRITE;
 /*!40000 ALTER TABLE `endoquestion` DISABLE KEYS */;
-INSERT INTO `endoquestion` VALUES (1,'Origen étnico','EBA','A'),(2,'¿Cuál es su edad? (años)','AGE',''),(3,'¿A qué edad tuvo su primer período?','AAM',''),(4,'¿Cuál es el tiempo promedio entre períodos? (días)','DBP',''),(5,'¿Cuál es la duración promedio de su período? (días)','PL',''),(6,'¿Actualmente fuma o ha fumado?','SM','B'),(7,'Si contestó que fuma o ha fumado, indique el tiempo que lleva fumando (años fumando)','YS',''),(8,'¿Cuántos cigarrillos fuma al día?','CI',''),(9,'¿Ha tenido problemas para quedar embarazada?','PGP','C'),(10,'Si contestó que ha tenido problemas para quedar embarazada, indique si ha estado o se encuentra recibiendo tratamiento m édico para infertilidad','IT','C'),(11,'¿Cuántas veces ha quedado embarazada?','TP',''),(12,'¿Cuántos partos ha tenido?','PA',''),(13,'¿Ha tenido abortos espontáneos?','SA','B'),(14,'Indique la cantidad de abortos espontáneos','NA',''),(15,'¿Ha utilizado pastillas anticonceptivas en el pasado?','OCP','B'),(16,'¿Está utilizando pastillas anticonceptivas actualmente?','CC','C'),(17,'¿A qué edad comenzaron los síntomas?','AWSS',''),(18,'¿Posee historial familiar de mujeres con endometriosis?','SI','B'),(19,'Si contestó que tiene familiar con endometriosis, indique la persona o personas ','SIA',''),(20,'¿A recibido algún diagnóstico de endometriosis?','ED','B'),(21,'De haber recibido un diagnóstico de endometriosis, ¿fue diagnosticada a través de una cirugía? ','SU','C'),(22,'De haber recibido un diagnóstico de endometriosis, ¿fue diagnosticada a través de una cirugía? ','SE',''),(23,'¿Que tipo de tratamiento le recomendó su médico?','ETR',''),(24,'Si contentó otro en la pregunta anterior, por favor indique el tratamiento','OETR','');
+INSERT INTO `endoquestion` VALUES (1,'Origen étnico','EBA','A'),(2,'¿Cuál es su edad? (años)','AGE',''),(3,'¿A qué edad tuvo su primer período?','AAM',''),(4,'¿Cuál es el tiempo promedio entre períodos? (días)','DBP',''),(5,'¿Cuál es la duración promedio de su período? (días)','PL',''),(6,'¿Actualmente fuma o ha fumado?','SM','B'),(7,'Si contestó que fuma o ha fumado, indique el tiempo que lleva fumando (años fumando)','YS',''),(8,'¿Cuántos cigarrillos fuma al día?','CI',''),(9,'¿Ha tenido problemas para quedar embarazada?','PGP','C'),(10,'Si contestó que ha tenido problemas para quedar embarazada, indique si ha estado o se encuentra recibiendo tratamiento m édico para infertilidad','IT','C'),(11,'¿Cuántas veces ha quedado embarazada?','TP',''),(12,'¿Cuántos partos ha tenido?','PA',''),(13,'¿Ha tenido abortos espontáneos?','SA','B'),(14,'Indique la cantidad de abortos espontáneos','NA',''),(15,'¿Ha utilizado pastillas anticonceptivas en el pasado?','OCP','B'),(16,'¿Está utilizando pastillas anticonceptivas actualmente?','CC','C'),(17,'¿A qué edad comenzaron los síntomas?','AWSS',''),(18,'¿Posee historial familiar de mujeres con endometriosis?','SI','B'),(19,'Si contestó que tiene familiar con endometriosis, indique la persona o personas ','SIA',''),(20,'¿A recibido algún diagnóstico de endometriosis?','ED','B'),(21,'De haber recibido un diagnóstico de endometriosis, ¿fue diagnosticada a través de una cirugía? ','SU','C'),(22,'De haber recibido un diagnóstico de endometriosis, indique el nivel de severidad ','SE',''),(23,'¿Que tipo de tratamiento le recomendó su médico?','ETR',''),(24,'Si contentó otro en la pregunta anterior, por favor indique el tratamiento','OETR','');
 /*!40000 ALTER TABLE `endoquestion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -185,7 +188,7 @@ CREATE TABLE `patients` (
   `verified` varchar(45) DEFAULT NULL,
   `time` datetime DEFAULT NULL,
   PRIMARY KEY (`idQuiz`,`idPatient`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -194,7 +197,7 @@ CREATE TABLE `patients` (
 
 LOCK TABLES `patients` WRITE;
 /*!40000 ALTER TABLE `patients` DISABLE KEYS */;
-INSERT INTO `patients` VALUES (1,5,56.78,'Yes','2015-04-07 18:26:04'),(2,5,56.78,'Yes','2015-04-07 18:30:52');
+INSERT INTO `patients` VALUES (1,5,56.78,'Yes','2015-04-07 18:26:04'),(2,5,56.78,'Yes','2015-04-07 18:30:52'),(3,5,56.78,'Yes','2015-04-07 19:50:38'),(4,2,56.78,'Yes','2015-04-07 20:02:37'),(5,3,56.78,'Yes','2015-04-07 20:05:07'),(6,2,56.78,'Yes','2015-04-07 20:19:29'),(7,1,56.78,'Yes','2015-04-07 20:21:19'),(8,0,56.78,'Yes','2015-04-07 20:48:32'),(9,0,56.78,'Yes','2015-04-07 20:53:26'),(10,2,56.78,'Yes','2015-04-07 21:01:42'),(11,4,56.78,'Yes','2015-04-07 21:05:21'),(12,3,56.78,'Yes','2015-04-07 21:11:56'),(13,23,56.78,'Yes','2015-04-07 21:15:04'),(14,1,56.78,'Yes','2015-04-07 21:32:19'),(15,3,56.78,'Yes','2015-04-07 21:34:48'),(16,12,56.78,'Yes','2015-04-07 21:37:51'),(17,4,56.78,'Yes','2015-04-07 21:42:19'),(18,4,56.78,'Yes','2015-04-07 21:51:43'),(19,2,56.78,'Yes','2015-04-07 21:59:59'),(20,3,56.78,'Yes','2015-04-07 22:02:58'),(21,3,56.78,'Yes','2015-04-07 22:04:32'),(22,3,56.78,'Yes','2015-04-07 22:04:54'),(23,3,56.78,'Yes','2015-04-07 22:07:59'),(24,3,56.78,'Yes','2015-04-08 01:28:06'),(25,1,56.78,'Yes','2015-04-08 01:34:38'),(26,2,56.78,'Yes','2015-04-08 01:41:58'),(27,2,56.78,'Yes','2015-04-08 01:43:04'),(28,2,56.78,'Yes','2015-04-08 01:46:06'),(29,2,56.78,'Yes','2015-04-08 01:52:16'),(30,2,56.78,'Yes','2015-04-08 01:55:42'),(31,1,56.78,'Yes','2015-04-08 01:58:14'),(32,1,56.78,'Yes','2015-04-08 02:03:09'),(33,23,56.78,'Yes','2015-04-08 02:11:24'),(34,23,56.78,'Yes','2015-04-08 02:13:18'),(35,23,56.78,'Yes','2015-04-08 02:23:46'),(36,4,56.78,'Yes','2015-04-08 02:31:11'),(37,23,56.78,'Yes','2015-04-08 02:42:32'),(38,8,56.78,'Yes','2015-04-10 00:27:15'),(39,20,56.78,'Yes','2015-04-10 11:11:47');
 /*!40000 ALTER TABLE `patients` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -378,8 +381,10 @@ CREATE TABLE `severity` (
   `idSeverity` int(11) NOT NULL AUTO_INCREMENT,
   `idQuiz` int(11) DEFAULT NULL,
   `severity` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`idSeverity`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`idSeverity`),
+  KEY `idQuiz_idx` (`idQuiz`),
+  CONSTRAINT `idQuiz` FOREIGN KEY (`idQuiz`) REFERENCES `patients` (`idQuiz`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -388,6 +393,7 @@ CREATE TABLE `severity` (
 
 LOCK TABLES `severity` WRITE;
 /*!40000 ALTER TABLE `severity` DISABLE KEYS */;
+INSERT INTO `severity` VALUES (1,7,'75'),(2,8,'75'),(3,9,'75'),(4,10,'75'),(5,11,'75'),(6,12,'75'),(7,13,'75'),(8,38,'76'),(9,39,'76');
 /*!40000 ALTER TABLE `severity` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -425,4 +431,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-04-07 19:36:29
+-- Dump completed on 2015-04-11 12:15:38
