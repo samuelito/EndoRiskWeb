@@ -13,9 +13,9 @@ using VBIDE = Microsoft.Vbe.Interop;
 using Microsoft.Office.Core;
 using Microsoft.VisualBasic;
 using Microsoft.Internal;
-using STATCONNECTORCLNTLib;
-using StatConnectorCommonLib;
-using STATCONNECTORSRVLib;
+//using STATCONNECTORCLNTLib;
+//using StatConnectorCommonLib;
+//using STATCONNECTORSRVLib;
 using EndoRiskWeb.Models;
 using System.IO;
 
