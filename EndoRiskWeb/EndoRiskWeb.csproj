@@ -218,6 +218,7 @@
     <Compile Include="Controllers\endochoicesController.cs" />
     <Compile Include="Controllers\endoquestionsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\SearchResultsController.cs" />
     <Compile Include="Controllers\symptomsController.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
     <Compile Include="Global.asax.cs">
@@ -255,6 +256,7 @@
     <Compile Include="Models\romediagnosi.cs" />
     <Compile Include="Models\romequestion.cs" />
     <Compile Include="Models\romequestionnaire.cs" />
+    <Compile Include="Models\SearchResult.cs" />
     <Compile Include="Models\severity.cs" />
     <Compile Include="Models\symptom.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -389,9 +391,11 @@
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Home\Admin.cshtml" />
     <Content Include="Views\Home\Risk.cshtml" />
+    <Content Include="Views\SearchResults\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Search\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
