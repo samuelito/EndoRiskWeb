@@ -1,4 +1,4 @@
-﻿@model IEnumerable<EndoRiskWeb.Models.questions>
+﻿@model IEnumerable<EndoRiskWeb.Models.IndexViewModel>
 <!--
     Documentation: Samuel Feliciano
     First Try: using endoquestion Model:
@@ -24,11 +24,11 @@
 }
 
 <!-- Start the form (POST) to use in the Risk Method-->
-@using (Html.BeginForm("Risk", "Home", FormMethod.Post))
+@using (Html.BeginForm("Risk", "Home", FormMethod.Post, new { @name = "userAnswersForm" }))
 {
     @Html.AntiForgeryToken()
-
-    <div class="form-horizontal">
+    
+   <div class="form-horizontal">
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
@@ -36,39 +36,53 @@
                 Goes through every item in the Model : questions
                 question includes: ID, Question, Abbreviation, Choices Set Name, and the List of Choices
             -->
-
-            <p>Enter Patient ID: </p><input type="text" name="PID"  value=""/>
-
-            @foreach (var item in Model)
+            
+            <p>Enter Patient ID: </p><input type="text" name="PID" value=""/>
+            
+            @foreach (var questionItem in Model.FirstOrDefault().quest)
             {
                 <!--Displays the question -->
-                <p>@Html.DisplayFor(model => item.question)</p> <!--Displays the question -->
+                <p>"@questionItem.question"</p>
+                @*<input type="text" name="@questionItem.question" value=" " required />*@ <!--Displays the question -->
 
                 <div class="col-md-10">
                     <!--Check if the set is empty-->
-                    @if (item.set.Equals(""))
+                    @if (questionItem.set.Equals(""))
                     {
-                        <input type="text" name="@item.abbr" value=" "  /> 
+                        <input type="text" name="@questionItem.abbr" value="" class="required"/>
+                        <p><strong>@*Note:*@</strong> @*Filling this field is required.*@</p>
                     }
-                    else {
+                    else
+                    {
                         <!--Display the choices for the question in a select-->
                         <!-- Value will be the selected choice = element(i)-->
-                        <select name="@item.abbr" >
+                        <select name="@questionItem.abbr" class="required">
                             <option selected></option>
-                            @for (var i = 0; i < item.choices.Count; i++)
+
+                            @foreach (var choiceIndex in questionItem.choices)
                             {
-                            <option>@item.choices.ElementAt(i)</option>
+                                <option value="@choiceIndex">@choiceIndex</option>
                             }
+
                         </select>
                     }
                 </div>
-                }
-              </div>
+            }
+
+            @*<p>Mark the symptoms you have been feeling: </p><input type="text" name="PID" value="" />*@
+            @foreach (var symptomItem in Model.FirstOrDefault().symp)
+            {
+                <!--Displays the question -->
+                <p><input type= "checkbox" name = "symp" value = "@symptomItem.abbr"/>@symptomItem.symptom1</p> <!--Displays the question -->
+                //symptomIndex++;
+            }
+         </div>
 
         <!-- Submit button for the form -> Value : Risk (calls ActionResult Risk() in Home Controller)-->
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Risk" class="btn btn-default" />
+                        <input type="submit" value="Risk" class="btn btn-default" disabled="disabled"/>
+                            @*{ new background:green; }*@
                     </div>
                 </div>
             </div>
@@ -76,6 +90,23 @@
 
             @section Scripts {
                 @Scripts.Render("~/bundles/jqueryval")
+
+                <script type="text/javascript">
+                    $(document).ready(function () {
+                        var $submit = $("input[type=submit]");
+                        var $inputs = $("input[class=required]");
+
+                        function checkEmpty() {
+                            return $inputs.filter(function() {
+                                return !$.trim(this.value);
+                            }).length === 0;
+                        }
+
+                        $inputs.on('blur', function() {
+                            $submit.prop("disabled", !checkEmpty());
+                        }).blur();
+                    });
+               </script>
             }
 
 

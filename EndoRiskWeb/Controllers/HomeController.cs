@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Security;
 using System.Web.Mvc;
 
 namespace EndoRiskWeb.Controllers
@@ -20,10 +21,12 @@ namespace EndoRiskWeb.Controllers
          * type: int
          * name: pid ==> id of the patient (set to the first patient)
          */
-        
+
         private endoriskContext db = new endoriskContext();
-        private int pid = 0; 
-        
+        private int pid = 0;
+        int questionIndex = 0;
+        int symptomIndex = 0;
+
         /*
          * Documentation: Samuel
          * 
@@ -33,34 +36,63 @@ namespace EndoRiskWeb.Controllers
          */
         public ActionResult Index()
         {
-        
-        var p = db.endoquestions.ToList();      //variable contains all questions for Endometriosis
-        var c = db.endochoices.ToList();        //variable contains choices for endometriosis questions
 
-        List<questions> result = new List<questions>();  //List of type "questions" to store the result
+            IndexViewModel allQuestions = new IndexViewModel();
+            List<IndexViewModel> allQuestionsList = new List<IndexViewModel>();
+            allQuestions.quest = new List<questions>();
+            allQuestions.symp = new List<symptom>();
+            allQuestions.quest.ToList();
+            allQuestions.symp.ToList();
+            allQuestionsList.Add(allQuestions);
 
-        questions q = null;                     //q is a new variable of type : questions
-      
-        foreach (var item in p){                //iterates over every item in p (each question)
-            q = new questions();
-            q.question = item.endoQuestion1;            //add the questions to q
-            q.questionid = (int) item.idQuestion;       //adds the id of question to q
-            q.abbr = item.abbr;                         //adds the abbreviation to q
-            q.set = item.choiceSet;                     //adds set of choices to q
-            q.choices = new List<string>();             //create a new List to store choices for the question
 
-            foreach (var item2 in c)                    //for each value in c (choice table)
-            {
-                if (q.set.Equals(item2.choiceSet))                  //if set of choices for the question EQUALS
-                {                                                   //the set of choices in table c then:
-                    q.choices.Add(item2.choiceOption.ToString());   //add the option to the choices. 
+            var endoQuestionList = db.endoquestions.ToList();      //variable contains all questions for Endometriosis
+            var endoChoiceList = db.endochoices.ToList();        //variable contains choices for endometriosis questions
+            var symptomList = db.symptoms.ToList();
+
+            questions q = new questions();//q is a new variable of type : questions
+            symptom s = new symptom();
+
+
+            foreach (var questionItem in endoQuestionList)
+            {                //iterates over every item in p (each question)
+                q = new questions();
+                // List<endochoice> endoChoiceList = new List<endochoice>();
+                q.question = questionItem.endoQuestion1;            //add the questions to q
+                q.questionid = (int)questionItem.idQuestion;       //adds the id of question to q
+                q.abbr = questionItem.abbr;                         //adds the abbreviation to q
+                q.set = questionItem.choiceSet;                     //adds set of choices to q
+                q.choices = new List<string>();             //create a new List to store choices for the question
+
+                foreach (var item2 in endoChoiceList)                    //for each value in c (choice table)
+                {
+                    if (q.set.Equals(item2.choiceSet))                  //if set of choices for the question EQUALS
+                    {                                                   //the set of choices in table c then:
+                        q.choices.Add(item2.choiceOption.ToString());   //add the option to the choices. 
+                    }
+
                 }
+
+                allQuestions.quest.Add(q);
+
+                //finally add the question object to the resulting list
+
             }
 
-            result.Add(q);              //finally add the question object to the resulting list
-            
-        }
-            return View(result);        // return a view with the result list 
+            foreach (var symptomItem in symptomList)
+            {                //iterates over every item in p (each question)
+                s = new symptom();
+                symptomList = new List<symptom>();
+                s.symptom1 = symptomItem.symptom1;            //add the questions to q
+                s.idSymptom = symptomItem.idSymptom;         //adds the id of question to q
+                s.abbr = symptomItem.abbr;                         //adds the abbreviation to q
+                //adds set of choices to q
+
+                allQuestions.symp.Add(s);
+                // return a view with the result list 
+            }
+            allQuestionsList[0] = allQuestions;
+            return View(allQuestionsList);
         }
 
         /*
@@ -73,7 +105,7 @@ namespace EndoRiskWeb.Controllers
          */
         public int generatePatient()
         {
-            pid = db.patients.Max(m=> m.idPatient);
+            pid = db.patients.Max(m => m.idPatient);
             pid++;
             return pid;
         }
@@ -85,67 +117,70 @@ namespace EndoRiskWeb.Controllers
          * Argument: Form Collection (representns answers from questions of endometriosis)
          * 
          */
-        public ActionResult Risk(FormCollection c)
+        public ActionResult Risk(FormCollection endoForm)
         {
-                //Model to store patients data in Database
-                patient paciente = new patient();                   
-             
-                //Calculate Lifetime Risk: Using R prediction models
-                //verify convertions of parameters of the required data
-                //Testing example using linear prediction
-                var riesgo = (float) 56.78;
-                                 
-                //Verifiy if patient ID exist
-                if (c.GetValue("PID").AttemptedValue.Equals("") || c.GetValue("PID").AttemptedValue == null )
-                {
-                    paciente.idPatient = generatePatient();                    //Generate new patient ID
-                }
-                else
-                {
-                   paciente.idPatient = Convert.ToInt32(c.GetValue("PID").AttemptedValue);  //Get Patient ID from the Form  
-                }
-                    
-                paciente.risk = riesgo;             //Lifetime risk result 
-                paciente.time = DateTime.Now;       //time of the quiz
+            //Model to store patients data in Database
+            patient paciente = new patient();
 
-                //Verify if logged in
-                //Testing purpose => "Yes"
-                paciente.verified = "Yes";          
+            //Calculate Lifetime Risk: Using R prediction models
+            //verify convertions of parameters of the required data
+            //Testing example using linear prediction
+            object[,] answerList = endoAnswerlist(endoForm);
+            C_Sharp_RExcel pred = new C_Sharp_RExcel();
 
-                                                
-                db.patients.Add(paciente);  //adds patients result to database
+            var riesgo = (float)pred.Macro(answerList);
+
+            //Verifiy if patient ID exist
+            if (endoForm.GetValue("PID").AttemptedValue.Equals("") || endoForm.GetValue("PID").AttemptedValue == null)
+            {
+                paciente.idPatient = generatePatient();                    //Generate new patient ID
+            }
+            else
+            {
+                paciente.idPatient = Convert.ToInt32(endoForm.GetValue("PID").AttemptedValue);  //Get Patient ID from the Form  
+            }
+
+            paciente.risk = riesgo;             //Lifetime risk result 
+            paciente.time = DateTime.Now;       //time of the quiz
+
+            //Verify if logged in
+            //Testing purpose => "Yes"
+            paciente.verified = "Yes";
+
+
+            db.patients.Add(paciente);  //adds patients result to database
+            db.SaveChanges();
+
+            //Obtain the idquiz from the patient added to Database
+            var idquiz = from p in db.patients
+                         where p.idPatient == paciente.idPatient
+                         orderby p.idQuiz descending
+                         select p.idQuiz;
+
+            //Add the severity of the patient
+            //if riesgo -> medium or high
+            //Calculate Severity:
+            if (riesgo > 50)
+            {
+                var severity = "76";                               //Calculate Severity
+                severity severidad = new severity();            //new severity object
+                severidad.idQuiz = idquiz.First();              //set the idQuiz to match severity IdQuiz Variable
+                severidad.severity1 = severity;                 //Value for the severity
+                db.severities.Add(severidad);                   //Add the severity to the Database
                 db.SaveChanges();
-                
-                //Obtain the idquiz from the patient added to Database
-                var idquiz = from p in db.patients
-                             where p.idPatient == paciente.idPatient
-                             orderby p.idQuiz descending
-                             select p.idQuiz;
+            }
 
-                //Add the severity of the patient
-                //if riesgo -> medium or high
-                //Calculate Severity:
-                if (riesgo > 50)
-                {
-                    var severity = "76";                               //Calculate Severity
-                    severity severidad = new severity();            //new severity object
-                    severidad.idQuiz = idquiz.First();              //set the idQuiz to match severity IdQuiz Variable
-                    severidad.severity1 = severity;                 //Value for the severity
-                    db.severities.Add(severidad);                   //Add the severity to the Database
-                    db.SaveChanges(); 
-                }
-                                              
 
-                //Store the Patients Answers to the database
-                //Arguments: 
-                //quizId -> identify the quiz of the answers
-                //c -> Form with the answers
-                storeAnswers(idquiz.First(), c);
-                
-                //Return a patient type to the Risk view: 
-                //Includes-> idquiz, paciente id, resultado, verified
-                return View(paciente);
-   
+            //Store the Patients Answers to the database
+            //Arguments: 
+            //quizId -> identify the quiz of the answers
+            //c -> Form with the answers
+            storeAnswers(idquiz.First(), endoForm);
+
+            //Return a patient type to the Risk view: 
+            //Includes-> idquiz, paciente id, resultado, verified
+            return View(paciente);
+
         }
 
         /*
@@ -157,30 +192,95 @@ namespace EndoRiskWeb.Controllers
          */
         public void storeAnswers(int idq, FormCollection c)
         {
-                endoanswer respuestas = new endoanswer();
-                var data = db.endoquestions;
-                
-                //Go through every element in the form
-                //Starts at 2 since first elements are not part of the questions
-                for (int x = 2; x < c.Count; x++) {             
- 
-                    string ans = c.GetKey(x);                   //get the answer from the form
-                    
-                    var ques = from q in data                   //Select the question id by checking
-                               where q.abbr.Equals(ans)         //the abbreviation from the form in the 
-                               select q.idQuestion;             //question table -> returns the ID of the question
+            endoanswer respuestas = new endoanswer();
+            var data = db.endoquestions;
 
-                    int idpreg = (int) ques.FirstOrDefault();     //get the first value in 
-               
-                    //Add the answers to the questions 
-                    respuestas.answer = c.Get(x);               //the answer to the question
-                    respuestas.idQuestion = idpreg;             //quiestion id of the answer
-                    respuestas.idQuiz = idq;                    //quiz of the answered question
+            //Go through every element in the form
+            //Starts at 2 since first elements are not part of the questions
+            for (int x = 2; x < c.Count; x++)
+            {
 
-                    db.endoanswers.Add(respuestas);           //adds patient answers to database
-                    db.SaveChanges();                           //save changes in the database
+                string ans = c.GetKey(x);                   //get the answer from the form
+
+                var ques = from q in data                   //Select the question id by checking
+                           where q.abbr.Equals(ans)         //the abbreviation from the form in the 
+                           select q.idQuestion;             //question table -> returns the ID of the question
+
+                int idpreg = (int)ques.FirstOrDefault();     //get the first value in 
+
+                //Add the answers to the questions 
+                respuestas.answer = c.Get(x);               //the answer to the question
+                respuestas.idQuestion = idpreg;             //quiestion id of the answer
+                respuestas.idQuiz = idq;                    //quiz of the answered question
+
+                //Store all the answers in an array for risk calculation
+
+                db.endoanswers.Add(respuestas);           //adds patient answers to database
+                db.SaveChanges();                           //save changes in the database
+            }
+
+        }
+
+        public object[,] endoAnswerlist(FormCollection endoAnswersCollection)
+        {
+            object[,] endoAnswerList = new object[endoAnswersCollection.Count - 2, 2];
+
+            // endoanswer answer = new endoanswer();
+
+            //Add all user answers coming from the screen to an array
+            for (int x = 2; x < endoAnswersCollection.Count; x++)
+            {
+                endoAnswerList[x - 2, 0] = endoAnswersCollection.Get(x);
+                endoAnswerList[x - 2, 1] = endoAnswersCollection.GetKey(x);
+            }
+
+            // Symptoms Array
+            string[] userSymptomsList = endoAnswersCollection.Get(endoAnswersCollection.Count - 1).Split(',');
+
+            //Big array to store all user answers and symptoms
+            var allSymptomsLength = db.symptoms.Count();
+            object[,] allUserAnswers = new object[(endoAnswersCollection.Count + allSymptomsLength) - 3, 2];
+
+            //Add all user answers coming from the array of answers to the big array allUserAnswers[]
+            for (int y = 0; y < endoAnswerList.GetLength(0) - 1; y++)
+            {
+                allUserAnswers[y, 0] = endoAnswerList.GetValue(y, 0);
+                allUserAnswers[y, 1] = endoAnswerList.GetValue(y, 1);
+            }
+
+            int allUserAnswersCounter = 0;
+            //Add all user symptoms coming from the symptoms array of to the big array allUserAnswers[]
+            foreach (var symptomItem in db.symptoms.ToList())
+            {
+                for (int z = 0; z <= userSymptomsList.Count() - 1; z++)
+                {
+                    if (allUserAnswersCounter <= userSymptomsList.Count() - 1)
+                    {
+                        allUserAnswersCounter = z;
+                    }
+
+                    //else
+                    if (symptomItem.abbr.Equals(userSymptomsList.ElementAt(z)))
+                    {
+                        allUserAnswers[(allUserAnswers.GetLength(0) - 1) - ((allSymptomsLength - 1) - allUserAnswersCounter), 0] = 1;
+                        allUserAnswers[(allUserAnswers.GetLength(0) - 1) - ((allSymptomsLength - 1) - allUserAnswersCounter), 1] = userSymptomsList.ElementAt(z);
+                    }
+
+                    else
+                    {
+                        allUserAnswers[(allUserAnswers.GetLength(0) - 1) - ((allSymptomsLength - 1) - allUserAnswersCounter), 0] = 0;
+                        allUserAnswers[(allUserAnswers.GetLength(0) - 1) - ((allSymptomsLength - 1) - allUserAnswersCounter), 1] = symptomItem.abbr;
+                    }
+                                        
+                    allUserAnswersCounter = allUserAnswersCounter + 1;
+
+                    if (allUserAnswersCounter == userSymptomsList.Count() - 1)
+                    {
+                        allUserAnswersCounter = allUserAnswersCounter + 1;
+                    }
                 }
-                
+            }
+            return allUserAnswers;
         }
 
         /*
@@ -208,9 +308,9 @@ namespace EndoRiskWeb.Controllers
          * Returns Login Page
          */
         public ActionResult Login()
-        {   
-            
-            return View(); 
+        {
+
+            return View();
         }
 
         //Documentation: Samuel
@@ -218,10 +318,11 @@ namespace EndoRiskWeb.Controllers
         //Paramater: Administrator model
         [HttpPost]
         [ValidateAntiForgeryToken]
+        // [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = false, ErrorMessage = "Username and Password are Required")]
         public ActionResult Login(administrator admin)
         {
             if (ModelState.IsValid)
-            {   
+            {
                 //Additional Implementation of using db context
                 using (endoriskContext c = new endoriskContext())
                 {
@@ -243,7 +344,7 @@ namespace EndoRiskWeb.Controllers
                     }
                 }
             }
-            
+
             return View(admin);
         }
 
@@ -252,8 +353,8 @@ namespace EndoRiskWeb.Controllers
          * Returns the view for the administrator 
          */
         public ActionResult Admin()
-        {                      
-            return View(); 
+        {
+            return View();
         }
 
     }

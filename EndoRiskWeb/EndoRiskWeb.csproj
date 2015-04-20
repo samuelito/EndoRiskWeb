@@ -215,6 +215,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\administratorsController.cs" />
     <Compile Include="Controllers\commentsController.cs" />
+    <Compile Include="Controllers\C_Sharp_RExcel.cs" />
     <Compile Include="Controllers\endochoicesController.cs" />
     <Compile Include="Controllers\endoquestionsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -231,6 +232,7 @@
     <Compile Include="Models\endochoice.cs" />
     <Compile Include="Models\endoquestion.cs" />
     <Compile Include="Models\endoriskContext.cs" />
+    <Compile Include="Models\IndexViewModel.cs" />
     <Compile Include="Models\Mapping\administratorMap.cs" />
     <Compile Include="Models\Mapping\commentMap.cs" />
     <Compile Include="Models\Mapping\diseaseMap.cs" />
@@ -356,7 +358,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
@@ -392,6 +393,7 @@
     <Content Include="Views\Home\Admin.cshtml" />
     <Content Include="Views\Home\Risk.cshtml" />
     <Content Include="Views\SearchResults\Index.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -399,6 +401,35 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="Microsoft.Office.Core">
+      <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>7</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="Microsoft.Office.Interop.Excel">
+      <Guid>{00020813-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>8</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="VBIDE">
+      <Guid>{0002E157-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>5</VersionMajor>
+      <VersionMinor>3</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
