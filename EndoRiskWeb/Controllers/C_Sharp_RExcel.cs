@@ -43,13 +43,6 @@ namespace EndoRiskWeb.Controllers
                 excelApp = new Excel.Application();
                 excelApp.Visible = true;
                 excelApp.DisplayAlerts = false;
-               
-                excelWorkbook = excelApp.ActiveWorkbook;
-                excelWorksheet = excelApp.ActiveSheet as Excel._Worksheet;
-                excelWorksheet = excelApp.ActiveSheet as Excel._Worksheet;
-                excelRange = excelWorksheet.Cells;
-                 
-                 //excelWorkbook.SaveCopyAs("C:\\Users\\owner\\Desktop\\Prediction.xlsm");
                                 
                 //Open an existing Excel Workbook
                 excelWorkbook = (Excel._Workbook)excelApp.Workbooks.Open("C:\\Users\\owner\\Desktop\\VS_2013\\Proyecto_EndoRisk\\Prediction.xlsm", Missing.Value, ReadOnly: false);
@@ -58,27 +51,31 @@ namespace EndoRiskWeb.Controllers
                 Excel.AddIn ad = (Excel.AddIn)excelApp.AddIns.get_Item(1);
                 ad.Installed = true;
 
-                string newSymptom = "VOM";
-                 //Check if a new symptom column for the dataframe will be added
-                if (newSymptom != null)
-                {
-                    //excelLine = excelWorksheet.Cells;
-                    excelLine = excelWorksheet.Rows[1];
-                    excelLine.Activate();
-                   // 
-                    for (int i = 1; i <= excelLine.Count; i++)
-                    {
-                        if (excelLine[1,i].ToString() == "Y")
-                        {
-                            excelColumn = excelWorksheet.Cells;
-                            excelColumn = excelWorksheet.Columns[i];
-                            excelColumn.Activate();
-                            excelLine.Insert();
-                            excelLine[1, i - 1] = newSymptom;
-                            break;
-                        }
-                    }
-                 }
+                excelWorkbook = excelApp.ActiveWorkbook;
+                excelWorksheet = excelApp.ActiveSheet as Excel._Worksheet;
+                excelRange = excelWorksheet.Cells;
+
+                //string newSymptom = "VOM";
+                // //Check if a new symptom column for the dataframe will be added
+                //if (newSymptom != null)
+                //{
+                //    //excelLine = excelWorksheet.Cells;
+                //    excelLine = excelWorksheet.Rows[1];
+                //    excelLine.Activate();
+                //   // 
+                //    for (int i = 1; i <= excelLine.Count; i++)
+                //    {
+                //        if (excelLine[1,i].ToString() == "Y")
+                //        {
+                //            excelColumn = excelWorksheet.Cells;
+                //            excelColumn = excelWorksheet.Columns[i];
+                //            excelColumn.Activate();
+                //            excelLine.Insert();
+                //            excelLine[1, i - 1] = newSymptom;
+                //            break;
+                //        }
+                //    }
+                // }
 
                 //Fill each cell with user answer
                 excelWorksheet = (Excel.Worksheet)excelWorkbook.Worksheets.get_Item(2);
@@ -87,29 +84,42 @@ namespace EndoRiskWeb.Controllers
                 excelLine = excelWorksheet.Rows[2];
                 excelLine.Insert();
                 excelRange = excelWorksheet.Cells;
-
-                for (int i = 0; i <= answerList.GetLength(0) - 1; i++)
-                {
-                    if (answerList[i,0].ToString() == "Si")
+             
+                for (int i = 0; i <= excelWorksheet.Columns.Count- 1; i++)
                     {
-                        answerList[i,0] = 1;
-                    }
+                        if (excelWorksheet.Cells[1, i + 1].Value() == null )
+                        {
+                            break;
+                        }
 
-                    else if (answerList[i,0].ToString() == "No" || answerList[i,0].ToString() == "No Aplica")
-                    {
-                        answerList[i,0] = 0;
-                    }
+                        else if(excelWorksheet.Cells[1, i + 1].Value() == "Y")
+                        {
+                            excelWorksheet.Cells[2, i + 1] = 0;
+                            break;
+                        }
 
-                    excelRange.Cells[2, i + 1] = answerList[i,0];
-                }
-               
+                        for (int j = 0; j <= answerList.GetLength(0);j++ )
+                        {                           
+                            if (excelWorksheet.Cells[1, i + 1].Value().ToString() == answerList[j, 1].ToString())
+                            {
+                                excelWorksheet.Cells[2, i + 1] = answerList[j, 0];
+                                break;
+                            }
+                        }
+                    }
+                 
+                              
                 //Run the macro in Excel that run scripts in R workbench
-                
-                RunMacro(excelApp, new Object[] {"Prediction"});
+
+                RunMacro(excelApp, new Object[] { "Prediction.xlsm!Prediction.Prediction" });
                 //RunMacro(excelApp, new Object[] { "Prediction.xlsm!Prediction.Prediction" });
                  
-                //Get the prediction value from excel sheet            
-                object prediction_Value = excelWorksheet.Cells[2,1].Value;
+                //Get the prediction value from excel sheet       
+                excelWorksheet = (Excel.Worksheet)excelWorkbook.Worksheets.get_Item(1);
+                excelWorksheet.Activate();
+
+                object prediction_Value = excelWorksheet.Cells[2, 1].Value;// *100;
+                string prediction_Value_percent = prediction_Value.ToString() + "%";
                 
                 //Save and close current Excel Workbook
                 excelWorkbook.Close(true);
@@ -117,7 +127,7 @@ namespace EndoRiskWeb.Controllers
                 //Quit the Excel Application and releaese all Excel application objects used in the program from memory
                 if (excelApp != null)
                 {
-                    KillExcelFileProcess("Prediction");
+                    KillExcelFileProcess("Prediction", "R Console 32-bit");
                     releaseObject(excelRange);
                     releaseObject(excelWorksheet);
                     releaseObject(VBAmodule);
@@ -125,7 +135,7 @@ namespace EndoRiskWeb.Controllers
                     releaseObject(excelApp);
                 }
 
-                return (double) prediction_Value; 
+                return (double)prediction_Value; 
             }
             
             //Method to relase all Excel application objects used
@@ -182,34 +192,34 @@ namespace EndoRiskWeb.Controllers
             //    return excelWorkbook;
             //}
 
-            private static string WriteMacro()
-            {
+            //private static string WriteMacro()
+            //{
 
-                System.Text.StringBuilder macroCode = new System.Text.StringBuilder();
+            //    System.Text.StringBuilder macroCode = new System.Text.StringBuilder();
 
-                macroCode.Append("Sub Prediction()" + "\n");
-                macroCode.Append("  RInterface.StartRServer" + "\n");
-                macroCode.Append("  Sheets('Datos_Modelo_Regresion').Select" + "\n"); 
-                macroCode.Append("  Range('A3').Select" + "\n");
-                macroCode.Append("  Selection.Copy" + "\n");
-                macroCode.Append("  Range('A2').Select" + "\n");
-                macroCode.Append("  Range(Selection, Selection.End(xlToRight)).Select" + "\n");
-                macroCode.Append("  Selection.PasteSpecial Paste:=xlPasteFormats, Operation:=xlNone, SkipBlanks:=False, Transpose:=False" + "\n");
-                macroCode.Append("  ActiveWorkbook.Save" + "\n");
-                macroCode.Append("  Sheets('Codigo_Prediccion_R').Select" + "\n");
-                macroCode.Append("  RInterface.RRun ('x<-source('C:/Users/owner/Desktop/VS_2013/Proyecto_EndoRisk/R_Scripts/script_to_read_profe.R')')" + "\n");
-                macroCode.Append("  Range('A2') = RInterface.GetRExpressionValueToVBA('x')" + "\n");
-                macroCode.Append("  Range('A2').Select" + "\n");
-                macroCode.Append("  Selection.NumberFormat = '0.00%'" + "\n");
-                macroCode.Append("  Sheets('Datos_Modelo_Regresion').Select" + "\n");
-                macroCode.Append("  Rows('2:2').Select" + "\n");
-                macroCode.Append("  Selection.Delete Shift:=xlUp" + "\n");
-                macroCode.Append("  Sheets('Codigo_Prediccion_R').Select" + "\n");
-                macroCode.Append("   RInterface.StopRServer" + "\n");
-                macroCode.Append("End Sub");
+            //    macroCode.Append("Sub Prediction()" + "\n");
+            //    macroCode.Append("  RInterface.StartRServer" + "\n");
+            //    macroCode.Append("  Sheets('Datos_Modelo_Regresion').Select" + "\n"); 
+            //    macroCode.Append("  Range('A3').Select" + "\n");
+            //    macroCode.Append("  Selection.Copy" + "\n");
+            //    macroCode.Append("  Range('A2').Select" + "\n");
+            //    macroCode.Append("  Range(Selection, Selection.End(xlToRight)).Select" + "\n");
+            //    macroCode.Append("  Selection.PasteSpecial Paste:=xlPasteFormats, Operation:=xlNone, SkipBlanks:=False, Transpose:=False" + "\n");
+            //    macroCode.Append("  ActiveWorkbook.Save" + "\n");
+            //    macroCode.Append("  Sheets('Codigo_Prediccion_R').Select" + "\n");
+            //    macroCode.Append("  RInterface.RRun ('x<-source('C:/Users/owner/Desktop/VS_2013/Proyecto_EndoRisk/R_Scripts/script_to_read_profe.R')')" + "\n");
+            //    macroCode.Append("  Range('A2') = RInterface.GetRExpressionValueToVBA('x')" + "\n");
+            //    macroCode.Append("  Range('A2').Select" + "\n");
+            //    macroCode.Append("  Selection.NumberFormat = '0.00%'" + "\n");
+            //    macroCode.Append("  Sheets('Datos_Modelo_Regresion').Select" + "\n");
+            //    macroCode.Append("  Rows('2:2').Select" + "\n");
+            //    macroCode.Append("  Selection.Delete Shift:=xlUp" + "\n");
+            //    macroCode.Append("  Sheets('Codigo_Prediccion_R').Select" + "\n");
+            //    macroCode.Append("   RInterface.StopRServer" + "\n");
+            //    macroCode.Append("End Sub");
             
-                return macroCode.ToString();
-            }
+            //    return macroCode.ToString();
+            //}
 
             //Method to run Excel macro
             private void RunMacro(object oApp, object[] oRunArgs)
@@ -219,13 +229,21 @@ namespace EndoRiskWeb.Controllers
             }
 
             //Method to end the process executing Excel
-            private void KillExcelFileProcess(string excelFileName)
+            private void KillExcelFileProcess(string excelFileName, string R_Program)
             {
-                var processes = from proc in System.Diagnostics.Process.GetProcessesByName("EXCEL") select proc;
+                var excelProcess = from proc in System.Diagnostics.Process.GetProcessesByName("EXCEL") select proc;
 
-                foreach (var process in processes)
+                foreach (var process in excelProcess)
                 {
                     if (process.MainWindowTitle == "Excel")
+                        process.Kill();
+                }
+
+                var R_process = from proc in System.Diagnostics.Process.GetProcessesByName("Rgui") select proc;
+
+                foreach (var process in R_process)
+                {
+                    if (process.MainWindowTitle == "R Console (32-bit)")
                         process.Kill();
                 }
             }

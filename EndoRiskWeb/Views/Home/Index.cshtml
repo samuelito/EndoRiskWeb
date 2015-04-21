@@ -37,12 +37,12 @@
                 question includes: ID, Question, Abbreviation, Choices Set Name, and the List of Choices
             -->
             
-            <p>Enter Patient ID: </p><input type="text" name="PID" value=""/>
+            <p>Si posee algún número de paciente, escribálo en este campo. De lo contrario deje este campo vacío. </p><input type="text" name="PID" value=""/>
             
             @foreach (var questionItem in Model.FirstOrDefault().quest)
             {
                 <!--Displays the question -->
-                <p>"@questionItem.question"</p>
+                <p>@questionItem.question</p>
                 @*<input type="text" name="@questionItem.question" value=" " required />*@ <!--Displays the question -->
 
                 <div class="col-md-10">
@@ -81,7 +81,7 @@
         <!-- Submit button for the form -> Value : Risk (calls ActionResult Risk() in Home Controller)-->
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Risk" class="btn btn-default" disabled="disabled"/>
+                        <input type="submit" value="Someter" class="btn btn-default" disabled="disabled"/>
                             @*{ new background:green; }*@
                     </div>
                 </div>

@@ -179,6 +179,9 @@ namespace EndoRiskWeb.Controllers
 
             //Return a patient type to the Risk view: 
             //Includes-> idquiz, paciente id, resultado, verified
+            //float? thePercent = paciente.risk == null ? -1 : paciente.risk * 100;
+            float thePercent = (float)(paciente.risk * 100);
+            ViewBag.RiskPercent = thePercent;
             return View(paciente);
 
         }
@@ -230,8 +233,19 @@ namespace EndoRiskWeb.Controllers
             //Add all user answers coming from the screen to an array
             for (int x = 2; x < endoAnswersCollection.Count; x++)
             {
-                endoAnswerList[x - 2, 0] = endoAnswersCollection.Get(x);
-                endoAnswerList[x - 2, 1] = endoAnswersCollection.GetKey(x);
+                if (endoAnswersCollection.Get(x) == "Si")
+                {
+                    endoAnswerList[x - 2, 0] = 1;
+                }
+
+                else if (endoAnswersCollection.Get(x) == "No" || endoAnswersCollection.Get(x) == "No Aplica")
+                {
+                    endoAnswerList[x - 2, 0] = 0;
+                }
+
+                else
+                    endoAnswerList[x - 2, 0] = endoAnswersCollection.Get(x);
+                    endoAnswerList[x - 2, 1] = endoAnswersCollection.GetKey(x);
             }
 
             // Symptoms Array
@@ -254,30 +268,31 @@ namespace EndoRiskWeb.Controllers
             {
                 for (int z = 0; z <= userSymptomsList.Count() - 1; z++)
                 {
-                    if (allUserAnswersCounter <= userSymptomsList.Count() - 1)
-                    {
-                        allUserAnswersCounter = z;
-                    }
+                    //if (allUserAnswersCounter <= userSymptomsList.Count() - 1)
+                    //{
+                    //    allUserAnswersCounter = z;
+                    //}
 
                     //else
                     if (symptomItem.abbr.Equals(userSymptomsList.ElementAt(z)))
                     {
                         allUserAnswers[(allUserAnswers.GetLength(0) - 1) - ((allSymptomsLength - 1) - allUserAnswersCounter), 0] = 1;
                         allUserAnswers[(allUserAnswers.GetLength(0) - 1) - ((allSymptomsLength - 1) - allUserAnswersCounter), 1] = userSymptomsList.ElementAt(z);
+                        allUserAnswersCounter = allUserAnswersCounter + 1;
+                        break;
                     }
 
-                    else
+                    else if (z == userSymptomsList.Count() - 1)
                     {
                         allUserAnswers[(allUserAnswers.GetLength(0) - 1) - ((allSymptomsLength - 1) - allUserAnswersCounter), 0] = 0;
                         allUserAnswers[(allUserAnswers.GetLength(0) - 1) - ((allSymptomsLength - 1) - allUserAnswersCounter), 1] = symptomItem.abbr;
-                    }
-                                        
-                    allUserAnswersCounter = allUserAnswersCounter + 1;
-
-                    if (allUserAnswersCounter == userSymptomsList.Count() - 1)
-                    {
                         allUserAnswersCounter = allUserAnswersCounter + 1;
                     }
+
+                    //else
+                    //{
+                    //    allUserAnswersCounter = allUserAnswersCounter + 1;
+                    //}
                 }
             }
             return allUserAnswers;
