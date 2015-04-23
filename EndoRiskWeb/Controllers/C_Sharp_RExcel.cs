@@ -23,7 +23,7 @@ namespace EndoRiskWeb.Controllers
 {
     public class C_Sharp_RExcel
     {
-             public double Macro(object[,] answerList)
+             public double[] Macro(object[,] answerList)
              {
                 //Make sure excel version is an US version
                 System.Globalization.CultureInfo oldCI;
@@ -44,7 +44,7 @@ namespace EndoRiskWeb.Controllers
                 excelApp.Visible = true;
                 excelApp.DisplayAlerts = false;
                                 
-                //Open an existing Excel Workbook
+                //Open Prediction Excel Workbook
                 excelWorkbook = (Excel._Workbook)excelApp.Workbooks.Open("C:\\Users\\owner\\Desktop\\VS_2013\\Proyecto_EndoRisk\\Prediction.xlsm", Missing.Value, ReadOnly: false);
                 
                 //Enable RExcel Add-In
@@ -107,20 +107,60 @@ namespace EndoRiskWeb.Controllers
                             }
                         }
                     }
-                 
-                              
+
+                //Open Severity Excel Workbook
+                excelWorkbook = (Excel._Workbook)excelApp.Workbooks.Open("C:\\Users\\owner\\Desktop\\VS_2013\\Proyecto_EndoRisk\\Severity_Data.csv", Missing.Value, ReadOnly: false);
+                excelWorkbook = excelApp.ActiveWorkbook;
+                excelWorksheet = excelApp.ActiveSheet as Excel._Worksheet;
+                excelRange = excelWorksheet.Cells;
+
+                excelWorksheet = (Excel.Worksheet)excelWorkbook.Worksheets.get_Item(1);
+                excelWorksheet.Activate();
+                excelLine = excelWorksheet.Cells;
+                excelLine = excelWorksheet.Rows[2];
+                excelLine.Insert();
+                excelRange = excelWorksheet.Cells;
+
+                for (int i = 0; i <= excelWorksheet.Columns.Count - 1; i++)
+                {
+                    if (excelWorksheet.Cells[1, i + 1].Value() == null)
+                    {
+                        break;
+                    }
+
+                    else if (excelWorksheet.Cells[1, i + 1].Value() == "Severity")
+                    {
+                        excelWorksheet.Cells[2, i + 1] = "I-II";
+                        break;
+                    }
+
+                    for (int j = 0; j <= answerList.GetLength(0); j++)
+                    {
+                        if (excelWorksheet.Cells[1, i + 1].Value().ToString() == answerList[j, 1].ToString())
+                        {
+                            excelWorksheet.Cells[2, i + 1] = answerList[j, 0];
+                            break;
+                        }
+                    }
+                }
+
                 //Run the macro in Excel that run scripts in R workbench
 
                 RunMacro(excelApp, new Object[] { "Prediction.xlsm!Prediction.Prediction" });
                 //RunMacro(excelApp, new Object[] { "Prediction.xlsm!Prediction.Prediction" });
                  
-                //Get the prediction value from excel sheet       
+                //Get the prediction value from excel sheet     
+                excelWorkbook = excelApp.Workbooks[1];
+                excelWorkbook = excelApp.ActiveWorkbook;
                 excelWorksheet = (Excel.Worksheet)excelWorkbook.Worksheets.get_Item(1);
                 excelWorksheet.Activate();
 
-                object prediction_Value = excelWorksheet.Cells[2, 1].Value;// *100;
-                string prediction_Value_percent = prediction_Value.ToString() + "%";
-                
+                object lifetime_risk_value = excelWorksheet.Cells[2, 1].Value;// *100;
+                object severity_value = excelWorksheet.Cells[2, 2].Value;
+                double [] test_results = new double[2];
+                test_results[0] = (double)lifetime_risk_value;
+                test_results[1] = (double)severity_value;
+
                 //Save and close current Excel Workbook
                 excelWorkbook.Close(true);
 
@@ -135,7 +175,7 @@ namespace EndoRiskWeb.Controllers
                     releaseObject(excelApp);
                 }
 
-                return (double)prediction_Value; 
+                return test_results; 
             }
             
             //Method to relase all Excel application objects used

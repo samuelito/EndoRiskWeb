@@ -4,7 +4,7 @@
     Try1: Using Patient Model : Shows Results
     -->
 @{
-    ViewBag.Title = "Lifetime Risk";
+    ViewBag.Title = "Resultados";
 }
 
 <div class="content-wrapper">
@@ -12,16 +12,17 @@
         <h1>@ViewBag.Title.</h1>
     </hgroup>
         <!--View patients result: Quiz, ID, Risk, Time and Verified-->
-        <p> The quiz number is: @Model.idQuiz</p>
-        <p> Your patient ID is: @Model.idPatient</p>
-        <p> Your lifetime risk is: @ViewBag.RiskPercent%</p>
-        <p> Time of the quiz is: @Model.time</p>
-        <p> Quiz verified?: @Model.verified</p>
+        <p> Número de Examen: @Model.idQuiz</p>
+        <p> ID de paciente: @Model.idPatient</p>
+        <p> Riesgo: @ViewBag.RiskPercent%</p>
+        <p> Nivel de Severidad : @ViewBag.severityPercent%</p>
+        <p> Hora al tomar el examen: @Model.time</p>
+        <p> Examen Verificado?: @Model.verified</p>
 </div>
 
 
 <div>
-    @Html.ActionLink("Return Home", "Index")
+    @Html.ActionLink("Regresar a página de inicio", "Index")
 </div>
 
 @section Scripts {

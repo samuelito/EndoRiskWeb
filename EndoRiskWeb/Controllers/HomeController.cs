@@ -128,7 +128,7 @@ namespace EndoRiskWeb.Controllers
             object[,] answerList = endoAnswerlist(endoForm);
             C_Sharp_RExcel pred = new C_Sharp_RExcel();
 
-            var riesgo = (float)pred.Macro(answerList);
+            double [] riesgo = pred.Macro(answerList);
 
             //Verifiy if patient ID exist
             if (endoForm.GetValue("PID").AttemptedValue.Equals("") || endoForm.GetValue("PID").AttemptedValue == null)
@@ -140,12 +140,20 @@ namespace EndoRiskWeb.Controllers
                 paciente.idPatient = Convert.ToInt32(endoForm.GetValue("PID").AttemptedValue);  //Get Patient ID from the Form  
             }
 
-            paciente.risk = riesgo;             //Lifetime risk result 
+            paciente.risk = (float)riesgo[0];             //Lifetime risk result 
             paciente.time = DateTime.Now;       //time of the quiz
 
             //Verify if logged in
             //Testing purpose => "Yes"
-            paciente.verified = "Yes";
+            if (User.Identity.IsAuthenticated == true)
+            {
+                paciente.verified = "Yes";
+            }
+
+            else
+            {
+                paciente.verified = "No";
+            }
 
 
             db.patients.Add(paciente);  //adds patients result to database
@@ -160,9 +168,9 @@ namespace EndoRiskWeb.Controllers
             //Add the severity of the patient
             //if riesgo -> medium or high
             //Calculate Severity:
-            if (riesgo > 50)
+            if (riesgo[0] > 50)
             {
-                var severity = "76";                               //Calculate Severity
+                var severity = riesgo[1].ToString();                               //Calculate Severity
                 severity severidad = new severity();            //new severity object
                 severidad.idQuiz = idquiz.First();              //set the idQuiz to match severity IdQuiz Variable
                 severidad.severity1 = severity;                 //Value for the severity
@@ -180,8 +188,10 @@ namespace EndoRiskWeb.Controllers
             //Return a patient type to the Risk view: 
             //Includes-> idquiz, paciente id, resultado, verified
             //float? thePercent = paciente.risk == null ? -1 : paciente.risk * 100;
-            float thePercent = (float)(paciente.risk * 100);
-            ViewBag.RiskPercent = thePercent;
+            float lifetimeRiskPercent = (float)(paciente.risk * 100);
+            float severityPercent = (float)(riesgo[1]* 100);
+            ViewBag.RiskPercent = lifetimeRiskPercent;
+            ViewBag.SeverityPercent = severityPercent;
             return View(paciente);
 
         }
@@ -228,22 +238,29 @@ namespace EndoRiskWeb.Controllers
         {
             object[,] endoAnswerList = new object[endoAnswersCollection.Count - 2, 2];
 
-            // endoanswer answer = new endoanswer();
-
+            string b = "";
+            Type d = b.GetType();
+          
             //Add all user answers coming from the screen to an array
             for (int x = 2; x < endoAnswersCollection.Count; x++)
-            {
+            {                 
                 if (endoAnswersCollection.Get(x) == "Si")
                 {
                     endoAnswerList[x - 2, 0] = 1;
                 }
 
-                else if (endoAnswersCollection.Get(x) == "No" || endoAnswersCollection.Get(x) == "No Aplica")
+                else if (endoAnswersCollection.Get(x) == "No" || endoAnswersCollection.Get(x) == "No Aplica" || endoAnswersCollection.Get(x) == null || endoAnswersCollection.Get(x) == "")
                 {
                     endoAnswerList[x - 2, 0] = 0;
                 }
+                    
+                else if (endoAnswersCollection.Get(x).GetType().Equals(d))
+                {
+                    endoAnswerList[x - 2, 0] = 1;
+                }
 
                 else
+                   
                     endoAnswerList[x - 2, 0] = endoAnswersCollection.Get(x);
                     endoAnswerList[x - 2, 1] = endoAnswersCollection.GetKey(x);
             }
@@ -268,12 +285,6 @@ namespace EndoRiskWeb.Controllers
             {
                 for (int z = 0; z <= userSymptomsList.Count() - 1; z++)
                 {
-                    //if (allUserAnswersCounter <= userSymptomsList.Count() - 1)
-                    //{
-                    //    allUserAnswersCounter = z;
-                    //}
-
-                    //else
                     if (symptomItem.abbr.Equals(userSymptomsList.ElementAt(z)))
                     {
                         allUserAnswers[(allUserAnswers.GetLength(0) - 1) - ((allSymptomsLength - 1) - allUserAnswersCounter), 0] = 1;
@@ -287,12 +298,7 @@ namespace EndoRiskWeb.Controllers
                         allUserAnswers[(allUserAnswers.GetLength(0) - 1) - ((allSymptomsLength - 1) - allUserAnswersCounter), 0] = 0;
                         allUserAnswers[(allUserAnswers.GetLength(0) - 1) - ((allSymptomsLength - 1) - allUserAnswersCounter), 1] = symptomItem.abbr;
                         allUserAnswersCounter = allUserAnswersCounter + 1;
-                    }
-
-                    //else
-                    //{
-                    //    allUserAnswersCounter = allUserAnswersCounter + 1;
-                    //}
+                    }                   
                 }
             }
             return allUserAnswers;

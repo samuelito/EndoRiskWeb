@@ -7,30 +7,21 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using EndoRiskWeb.Models;
+using System.Web.Security;
 
 namespace EndoRiskWeb.Controllers
 {
-    /*
-    * Documentation: Samuel Feliciano
-    * Controller for the Administrators
-    */
     public class administratorsController : Controller
     {
         private endoriskContext db = new endoriskContext();
 
-        /*
-         * Index shows the view for the Adminsitrators
-         * returns the view a list of the administrators from the database
-         */
+        // GET: administrators
         public ActionResult Index()
         {
             return View(db.administrators.ToList());
         }
 
-        /*
-         * Details for the administrator with id in parameter
-         * If the administrator is found, returns the view with the administrators details
-         */
+        // GET: administrators/Details/5
         public ActionResult Details(long? id)
         {
             if (id == null)
@@ -45,53 +36,33 @@ namespace EndoRiskWeb.Controllers
             return View(administrator);
         }
 
-        /*
-          * This method show the view to create a new administrator
-          * The view present fields to create a new admin
-          */
+        // GET: administrators/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        /*
-          * POST Method for creating and adding the new administrator to database
-          * Validates AntiForgeryToken to avoid attacks on the user end.
-          * Parameter: 
-          *  Use the bind method to bind the inputs to the variable administrator
-          * Return:
-          *  Redirects to the Index view of the adminsitrators
-          */
-       
+        // POST: administrators/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "idAdmin,email,password,firstname,lastname,subadmin")] administrator administrator)
         {
             using (endoriskContext a = new endoriskContext())
             {
-                //Verifies the state of the model and the binding with the model
-                //If the binding of the object model is valid, Adds the administrator to the database
-                //Redirect to index
                 if (ModelState.IsValid)
                 {
-                    a.administrators.Add(administrator);        //Add to database
+                    a.administrators.Add(administrator);
                     a.SaveChanges();
-                    return RedirectToAction("Index");          
+                    return RedirectToAction("Index");
                 }
 
-                return View(administrator);                 //View wirh the administrator
+                return View(administrator);
             }
         }
 
-        /*
-         * Edit an administrator
-         * Check if the id is null returns a Bad Request
-         * 
-         * If id is not null, Find the id for the administrator in the database
-         * return a request not found if the admin is not in database
-         * 
-         * return: View of the admin to edit
-         */
+        // GET: administrators/Edit/5
         public ActionResult Edit(long? id)
         {
             if (id == null)
@@ -106,13 +77,9 @@ namespace EndoRiskWeb.Controllers
             return View(administrator);
         }
 
-        /*
-         * POST for Edit
-         * Binds the elements from the input with the new variable of administrator
-         * If the binding of the inputs with the object model is valid
-         *    use db.Entry to change the state of the current model
-         *    then save changes to the database
-         */
+        // POST: administrators/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "idAdmin,email,password,firstname,lastname,subadmin")] administrator administrator)
@@ -126,11 +93,7 @@ namespace EndoRiskWeb.Controllers
             return View(administrator);
         }
 
-
-        /*
-         * Delete view for the administrator to remove
-         * returns a view with the admin if found on the database
-         */
+        // GET: administrators/Delete/5
         public ActionResult Delete(long? id)
         {
             if (id == null)
@@ -145,12 +108,7 @@ namespace EndoRiskWeb.Controllers
             return View(administrator);
         }
 
-        /*
-         * Delete the selected admin
-         * Parameter: id for the admin
-         * Use Remove to delete the admin
-         * Return: Redirect to the Index of the admin List
-         */
+        // POST: administrators/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(long id)
@@ -168,6 +126,99 @@ namespace EndoRiskWeb.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        [HttpGet]
+        public ActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Login(Models.administrator admin)
+        {
+            if(ModelState.IsValid)
+            {
+                if (IsValid(admin.email, admin.password))
+                {
+                    FormsAuthentication.SetAuthCookie(admin.email, false);//ver bien q hace este metodo, ver si cambio el false a true trabaja lo de cookies
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Login data is incorrect.");
+                }
+            }
+            return View(admin);
+        }
+
+        [HttpGet]
+        public ActionResult Registration()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Registration(Models.administrator admin)
+        {
+            if (ModelState.IsValid)
+            {
+                using (endoriskContext db = new endoriskContext())
+                {
+                    //var crypto = new SimpleCrypto.PBKDF2();
+                    //var encrPass = crypto.Compute(admin.password);
+                    var sysAdmin = db.administrators.Create();
+                    sysAdmin.firstname = admin.firstname;
+                    sysAdmin.lastname = admin.lastname;
+                    sysAdmin.email = admin.email;
+                    sysAdmin.password = admin.password; //borrar linea, dejar las otras para encryption
+                    //sysAdmin.password = encrPass;
+                    //sysAdmin.passwordSalt = crypto.Salt;
+                    //aqui va anadir el user id, esto depende de como lo haga samuel
+                    //si no es autoincrement puede ser asi:
+                    //sysAdmin.idAdmin = Guid.NewGuid();//hay q hacer q parsee
+                    sysAdmin.idAdmin = 6;//borrar linea, usar la de arriba, dependiendo de el DB
+                    
+                    db.administrators.Add(sysAdmin);
+                    db.SaveChanges();
+
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            return View(admin);
+        }
+
+        public ActionResult Logout()
+        {
+            FormsAuthentication.SignOut();
+            return RedirectToAction("Index","Home");
+        }
+
+        private bool IsValid(string email, string password)
+        {
+            var crypto = new SimpleCrypto.PBKDF2();
+            bool isValid = false;
+            using (endoriskContext db = new endoriskContext())
+            {
+                var admin = db.administrators.FirstOrDefault(u => u.email == email);
+                if(admin != null){
+                    //for password encryption
+                    /*if(admin.password == crypto.Compute(password, admin.passwordSalt))
+                    {
+                        isValid = true;
+                    }*/
+                    //else
+                    if (admin.password == password)
+                    {
+                        isValid = true;
+                    }
+
+                }
+            } 
+
+
+
+            return isValid;
         }
     }
 }
