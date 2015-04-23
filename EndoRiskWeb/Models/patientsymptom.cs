@@ -12,9 +12,9 @@ namespace EndoRiskWeb.Models
      */
     public partial class patientsymptom
     {
-        public int idPatient { get; set; }
+        public int idSymp { get; set; }
+        public int idQuiz { get; set; }
         public string symptom { get; set; }
-
         public int hasSymptom { get; set; }
     }
 }

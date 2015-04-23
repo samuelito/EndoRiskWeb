@@ -231,6 +231,7 @@
     <Compile Include="Models\endochoice.cs" />
     <Compile Include="Models\endoquestion.cs" />
     <Compile Include="Models\endoriskContext.cs" />
+    <Compile Include="Models\IndexViewModel.cs" />
     <Compile Include="Models\Mapping\administratorMap.cs" />
     <Compile Include="Models\Mapping\commentMap.cs" />
     <Compile Include="Models\Mapping\diseaseMap.cs" />
@@ -391,7 +392,6 @@
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Home\Admin.cshtml" />
     <Content Include="Views\Home\Risk.cshtml" />
-    <Content Include="Views\SearchResults\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
