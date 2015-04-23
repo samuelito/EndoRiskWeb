@@ -22,7 +22,7 @@
         </div>
     </section>
 }
-
+@{int counter = 0;}
 <!-- Start the form (POST) to use in the Risk Method-->
 @using (Html.BeginForm("Risk", "Home", FormMethod.Post, new { @name = "userAnswersForm" }))
 {
@@ -37,78 +37,168 @@
                 question includes: ID, Question, Abbreviation, Choices Set Name, and the List of Choices
             -->
             
-            <p>Enter Patient ID: </p><input type="text" name="PID" value=""/>
-            
+            <p>Si posee algún número de paciente, escribálo en este campo. De lo contrario deje este campo vacío. </p><input type="text" name="PID" value=""/>
+           
             @foreach (var questionItem in Model.FirstOrDefault().quest)
             {
                 <!--Displays the question -->
                 <p>@questionItem.question</p>
-                
                 @*<input type="text" name="@questionItem.question" value=" " required />*@ <!--Displays the question -->
 
-                <div class="col-md-10">
-                    <!--Check if the set is empty-->
-                    @if (questionItem.set.Equals(""))
-                    {
-                        <input type="text" name="@questionItem.abbr" value="" />
-                        <p><strong>@*Note:*@</strong> @*Filling this field is required.*@</p>
-                    }
-                    else
-                    {
-                        <!--Display the choices for the question in a select-->
-                        <!-- Value will be the selected choice = element(i)-->
-                        <select name="@questionItem.abbr" >
-                            <option selected></option>
+            <div class="col-md-10">
+                <!--Check if the set is empty-->
+                @if (questionItem.set.Equals(""))
+                {
+                    @*<input id="@counter"type="text" name="@questionItem.abbr" value="" class="required"/>*@
+                    <label><input id="question' + counter + '" type="text" name="@questionItem.abbr" value="" required/>*</label>
+                    <p><strong>@*Note:*@</strong> @*Filling this field is required.*@</p>
+                }
 
-                            @foreach (var choiceIndex in questionItem.choices)
-                            {
-                                <option value="@choiceIndex">@choiceIndex</option>
-                            }
+                else
+                {
+                                <!--Display the choices for the question in a select-->
+                                <!-- Value will be the selected choice = element(i)-->
+            <label>
+                <select name="@questionItem.abbr" required>
+                    <option selected></option>
 
-                        </select>
+                    @foreach (var choiceIndex in questionItem.choices)
+                    {
+                        <option value="@choiceIndex">@choiceIndex</option>
                     }
-                </div>
+
+                </select>
+            *</label>
+                }
+                @{counter++;}
+            </div>
             }
 
             @*<p>Mark the symptoms you have been feeling: </p><input type="text" name="PID" value="" />*@
             @foreach (var symptomItem in Model.FirstOrDefault().symp)
             {
                 <!--Displays the question -->
-                <p><input type= "checkbox" name = "symp" value = "@symptomItem.abbr"/>@symptomItem.symptom1</p> <!--Displays the question -->
-                //symptomIndex++;
+                <p><input id="showChecked" type= "checkbox" name = "symp" value = "@symptomItem.abbr"/>@symptomItem.symptom1</p> <!--Displays the question -->
+               
             }
          </div>
 
         <!-- Submit button for the form -> Value : Risk (calls ActionResult Risk() in Home Controller)-->
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Risk" class="btn btn-default" >
-                            @*{ new background:green; }*@
+                        <input id="submitted" type="submit" value="Someter" class="btn btn-default" @*disabled="disabled"*@/>
+                        @*<button type="button" onclick="myFunction()">Test Input</button>*@
+                        <p id="message"></p>
+                            @*{ new background:green; }*@  
+                        @*//<input id="demo" type="number" min="5" max="10" step="1">*@
                     </div>
                 </div>
             </div>
 }
 
-            @section Scripts {
+            @section Scripts 
+            {
                 @Scripts.Render("~/bundles/jqueryval")
 
-                <script type="text/javascript">
-                    $(document).ready(function () {
-                        var $submit = $("input[type=submit]");
-                        var $inputs = $("input[class=required]");
-
-                        function checkEmpty() {
-                            return $inputs.filter(function() {
-                                return !$.trim(this.value);
-                            }).length === 0;
-                        }
-
-                        $inputs.on('blur', function() {
-                            $submit.prop("disabled", !checkEmpty());
-                        }).blur();
+                @*<script type="text/javascript">
+                    var $submit = $("input[type=submit]");
+                    $submit.on('click',function () {
+                        var $checkboxstatus = $("input[type=checkbox]");
+                        //$checkboxstatus.change(function () {
+                            if ($checkboxstatus.prop("checked")) {
+                                alert("Bien."); //checked
+                            }
+                            else {
+                                alert("Seleccione al menos un síntoma. Si no padece de ninguno de los anteriores, por favor marque 'Otros Síntomas'."); //not checked
+                            }
+                        //});
                     });
-               </script>
-            }
+                    //$(document).ready(function () 
+                    //{
+                    //    var $submit = $("input[type=submit]");
+                    //    var $checkbox = $("input[type=checkbox]");
+                    //    var $inputs = $("input[class=required]");
+                    //    var message, x;
+                    //    message = document.getElementById("message");
 
+                    //    var valid = false;
+                    //    for (var i = 0; i < $checkbox.length; i++)
+                    //    {
+                    //        if ($checkbox[i].value())
+                    //        {
+                    //            valid = true;
+                    //        }
+                    //    }
+
+                    //    function checkEmpty()
+                    //    {
+                    //        return $inputs.filter(function() {
+                    //            return !$.trim(this.value);
+                    //        }).length === 0;
+                    //    }
+
+                    //    $inputs.on('blur', function ()
+                    //    {
+                    //        $submit.prop("disabled", !checkEmpty());
+                    //    }).blur();
+                    //});
+
+                    //function test()
+                    //{
+                    //    var $checkbox = $("input[type=checkbox]");
+                        
+                    //    var valid = false;
+                    //    for (var i = 0; i < $checkbox.length; i++)
+                    //    {
+                    //        if ($checkbox[i].value())
+                    //        {
+                    //            valid = true;
+                    //        }
+                    //    }
+
+                    //    if (!valid)
+                    //    {
+                    //        alert('* Por favor llene todos los campos requeridos');
+                    //    }
+
+                    //    else {
+                    //        alert('* Por favor llene todos los campos requeridos');
+                    //    }
+                    //}
+                    //var $submit = $("input[type=submit]");
+                    //$submit.on('click', function () {
+                    //    var $checkbox = $("input[type=checkbox]");
+                    //    var $inputtext = $("input[class = required]");
+
+                    //    var inputCount = 0;
+                    //    var valid = false;
+
+                    //    for (var i = 0; i < $checkbox.length; i++) {
+                    //        var val = $checkbox[i].checked;
+                    //        if (val == true) {
+                    //            valid = true;
+                    //        }
+                    //    }
+
+                    //    for (var i = 0; i < $inputtext.length; i++) {
+                    //        var v = $inputtext[i].value;
+                    //        if ($inputtext[i].value != '') {
+                    //            inputCount++;
+                    //        }
+
+                    //    }
+
+                    //    if (!valid || inputCount == 0) {
+                    //        alert('* Por favor llene todos los campos requeridos');
+                    //    }
+
+                    //    else {
+                    //        alert('* Por favor llene todos los campos requeridos');
+                    //    }
+                    //});
+
+               </script>*@
+            }
+                    
 
 
