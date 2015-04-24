@@ -8,11 +8,14 @@ namespace EndoRiskWeb.Models.Mapping
         public patientsymptomMap()
         {
             // Primary Key
-            this.HasKey(t => t.idSymp);
+            this.HasKey(t => new { t.idSymp });
 
             // Properties
            // this.Property(t => t.idQuiz)
            //     .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
+
+            this.Property(t => t.idSymp)
+                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
             this.Property(t => t.symptom)
                 .HasMaxLength(50);

@@ -1,0 +1,100 @@
+﻿@model EndoRiskWeb.Models.search
+<!--
+    Documentation: Samuel Feliciano
+
+-->
+@{
+    ViewBag.Title = "Search Patients";
+}
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h1>@ViewBag.Title.</h1>
+            </hgroup>
+        </div>
+    </section>
+}
+
+<!-- Start the form (POST) to use in the Risk Method-->
+@using (Html.BeginForm("Result", "Search", FormMethod.Post, new { @name = "searchForm" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+
+            <p>Seleccione la Edad</p>
+            <input type="text" name="AGE" value="" />
+
+            <p>Seleccione Etnicidad</p>
+            <div class="col-md-10">
+                <label>
+                    <select name="EBA">
+                        <option selected></option>
+                        @foreach (var choice in Model.ethnicitySearch)
+                        {
+                            <option value="@choice.choiceOption">@choice.choiceOption</option>
+                        }
+                    </select>
+                </label>
+            </div>
+
+            <p>Buscar Resultados Verificados</p>
+            <div class="col-md-10">
+                <label>
+                    <select name="VER">
+                        <option value="TODOS" selected>Todos</option>
+                        <option value="NO">NO</option>
+                        <option value="SI">SI</option>
+                    </select>
+                </label>
+            </div>
+
+            <p>Riesgo</p>
+            <div class="col-md-10">
+                <label>
+                    <select name="LTR">
+                        <option value="TODOS" selected>Todos</option>
+                        <option value="ALTO">ALTO</option>
+                        <option value="MEDIANO">MEDIANO</option>
+                        <option value="BAJO">BAJO</option>
+                    </select>
+                </label>
+            </div>
+
+            <p>Severidad</p>
+            <div class="col-md-10">
+                <label>
+                    <select name="SEV">
+                        <option value="TODOS" selected>Todos</option>
+                        <option value="ALTO">ALTOS ** FIX</option>
+                        <option value="BAJO">BAJOS ** FIX</option>     
+                    </select>
+                </label>
+            </div>
+
+            <p>Seleccione Sintomas</p>
+            @foreach (var s in Model.symptomsSearch)
+            {
+                <!--Displays the question -->
+                <p><input id="showChecked" type="checkbox" name="SYM" value="@s.abbr" />@s.symptom1</p> <!--Displays the question -->
+
+            }
+        </div>
+
+        <!-- Submit button for the form -> SEARCH:Result -->
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input id="submitted" type="submit" value="Buscar" class="btn btn-default" @*disabled="disabled"*@ />
+ 
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+}

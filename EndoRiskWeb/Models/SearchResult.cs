@@ -5,7 +5,7 @@ using System.Web;
 
 namespace EndoRiskWeb.Models
 {
-    public class SearchResult
+    public class searchresult
     {
         public int idQuiz { get; set; }
 
