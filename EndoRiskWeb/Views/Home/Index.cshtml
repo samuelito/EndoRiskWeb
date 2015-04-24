@@ -36,13 +36,22 @@
                 Goes through every item in the Model : questions
                 question includes: ID, Question, Abbreviation, Choices Set Name, and the List of Choices
             -->
-            
-            <p>Si posee algún número de paciente, escribálo en este campo. De lo contrario deje este campo vacío. </p><input type="text" name="PID" value=""/>
+            <label><strong>Nota: El resultado que obtendrá mediante este examen es un diagnóstico preliminar por lo que no es 100% preciso.
+                             Para obtener un diagnóstico completo y totalmente preciso, por favor <u>visite a su médico primario</u>.
+                             Marque la casilla de "Acepto los términos y condiciones", en la parte posterior derecha a este mensaje
+                             para asegurar que usted ha sido informado y entiende lo establecido anteriormente. De no marcar el siguiente recuadro
+                             NO PODRA RECIBIR LOS RESULTADOS DEL EXAMEN. Gracias por su cooperación y por utilizar EndoRisk.</strong></label>
+
+            <label class="accept_terms"><strong><input id="showChecked" type="checkbox" name="enable_test" value="" class="accept_terms" required/>Acepto los términos y condiciones</strong> </label>
+
+            <p class="inicio_preguntas">Por favor complete los siguientes campos: </p>
+            <p class="campo_requerido">* - Campo requerido</p>
+            <p class="PID_number" style="font-size:medium">Si posee algún número de paciente, escribálo en este campo. De lo contrario deje este campo vacío. </p><input type="text" name="PID" value=""/>
            
             @foreach (var questionItem in Model.FirstOrDefault().quest)
             {
                 <!--Displays the question -->
-                <p>@questionItem.question</p>
+            <p style="font-size:medium">@questionItem.question</p>
                 @*<input type="text" name="@questionItem.question" value=" " required />*@ <!--Displays the question -->
 
             <div class="col-md-10">
@@ -50,15 +59,15 @@
                 @if (questionItem.set.Equals(""))
                 {
                     @*<input id="@counter"type="text" name="@questionItem.abbr" value="" class="required"/>*@
-                    <label><input id="question' + counter + '" type="text" name="@questionItem.abbr" value="" required/>*</label>
-                    <p><strong>@*Note:*@</strong> @*Filling this field is required.*@</p>
+                    <label class="campo_requerido" style="font-size:medium"><input id="question' + counter + '" type="text" name="@questionItem.abbr" value="" required />*</label>
+
                 }
 
                 else
                 {
                                 <!--Display the choices for the question in a select-->
                                 <!-- Value will be the selected choice = element(i)-->
-            <label>
+            <label class="campo_requerido">
                 <select name="@questionItem.abbr" required>
                     <option selected></option>
 
@@ -78,7 +87,7 @@
             @foreach (var symptomItem in Model.FirstOrDefault().symp)
             {
                 <!--Displays the question -->
-                <p><input id="showChecked" type= "checkbox" name = "symp" value = "@symptomItem.abbr"/>@symptomItem.symptom1</p> <!--Displays the question -->
+                <p style="font-size:medium"><input id="showChecked" type="checkbox" name="symp" value="@symptomItem.abbr" />@symptomItem.symptom1</p> <!--Displays the question -->
                
             }
          </div>
@@ -198,6 +207,50 @@
                     //});
 
                </script>*@
+
+                <style type="text/css">
+                    label.accept_terms {
+                        display: block;
+                        padding-left: 15px;
+                        text-indent: -15px;
+                        float:right;
+                        bottom: -10px
+                    }
+
+                    input.accept_terms {
+                        width: 13px;
+                        height: 17px;
+                        padding: 0;
+                        margin: 0;
+                        vertical-align: bottom;
+                        position: center;
+                        top: -1px;
+                        *overflow: hidden;
+                        text-align:right; 
+                        margin-right:7px;
+                        float:none;
+                        bottom: -10px
+                    }
+
+                    p.inicio_preguntas 
+                    {   
+                        font-size: 16px;
+                        font-weight:700;                     
+                        position: relative;
+                        bottom: -10px;  
+                        /*line-height: 50px;*/                     
+                    }
+
+                     .campo_requerido
+                    {   
+                        color:red;
+                        font-weight:900;
+                        font-size: 12px;                     
+                        top: 300px;                    
+                    }
+                </style>
+
+
             }
                     
 

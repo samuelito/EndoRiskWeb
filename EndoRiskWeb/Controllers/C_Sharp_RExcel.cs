@@ -36,7 +36,8 @@ namespace EndoRiskWeb.Controllers
                 Excel._Worksheet excelWorksheet = null;
                 Excel.Range excelRange = null;
                 Excel.Range excelLine = null;
-                Excel.Range excelColumn = null;
+                //Excel.Range excelColumn = null;
+                Excel.Range lastRow = null;
                 VBIDE.VBComponent VBAmodule = null;
                
                 //Start Excel Application and open the workbook.
@@ -53,7 +54,7 @@ namespace EndoRiskWeb.Controllers
 
                 excelWorkbook = excelApp.ActiveWorkbook;
                 excelWorksheet = excelApp.ActiveSheet as Excel._Worksheet;
-                excelRange = excelWorksheet.Cells;
+                ///excelRange = excelWorksheet.Cells;
 
                 //string newSymptom = "VOM";
                 // //Check if a new symptom column for the dataframe will be added
@@ -79,12 +80,22 @@ namespace EndoRiskWeb.Controllers
 
                 //Fill each cell with user answer
                 excelWorksheet = (Excel.Worksheet)excelWorkbook.Worksheets.get_Item(2);
-                excelWorksheet.Activate();
+                excelWorksheet.Activate();            
+                lastRow = excelWorksheet.Cells.SpecialCells(Excel.XlCellType.xlCellTypeLastCell, Type.Missing);
+                //excelRange = excelWorksheet.get_Range("A1", lastRow);
+                //excelRange.Activate();
+                //int lastUsedRow = lastRow.Row;
+                //iTotalColumns = xlWorkSheet.UsedRange.Columns.Count;
+                //iTotalRows = xlWorkSheet.UsedRange.Rows.Count;
+
+                ////These two lines do the magic.
+                excelWorksheet.Columns.ClearFormats();
+                excelWorksheet.Rows.ClearFormats();
                 excelLine = excelWorksheet.Cells;
-                excelLine = excelWorksheet.Rows[2];
-                excelLine.Insert();
-                excelRange = excelWorksheet.Cells;
-             
+                excelLine = excelWorksheet.Rows[excelWorksheet.UsedRange.Rows.Count];
+                excelLine.Activate();
+              
+                int rowOffset = 0;
                 for (int i = 0; i <= excelWorksheet.Columns.Count- 1; i++)
                     {
                         if (excelWorksheet.Cells[1, i + 1].Value() == null )
@@ -94,7 +105,7 @@ namespace EndoRiskWeb.Controllers
 
                         else if(excelWorksheet.Cells[1, i + 1].Value() == "Y")
                         {
-                            excelWorksheet.Cells[2, i + 1] = 0;
+                            excelWorksheet.Cells[excelWorksheet.UsedRange.Rows.Count + 1, i + 1] = 0;
                             break;
                         }
 
@@ -102,7 +113,10 @@ namespace EndoRiskWeb.Controllers
                         {                           
                             if (excelWorksheet.Cells[1, i + 1].Value().ToString() == answerList[j, 1].ToString())
                             {
-                                excelWorksheet.Cells[2, i + 1] = answerList[j, 0];
+                                
+                                excelWorksheet.Cells[(excelWorksheet.UsedRange.Rows.Count + 1) - rowOffset, i + 1] = answerList[j, 0];
+                                if (rowOffset == 0) { rowOffset++; }
+                                
                                 break;
                             }
                         }
@@ -116,11 +130,13 @@ namespace EndoRiskWeb.Controllers
 
                 excelWorksheet = (Excel.Worksheet)excelWorkbook.Worksheets.get_Item(1);
                 excelWorksheet.Activate();
+                excelWorksheet.Columns.ClearFormats();
+                excelWorksheet.Rows.ClearFormats();
                 excelLine = excelWorksheet.Cells;
-                excelLine = excelWorksheet.Rows[2];
-                excelLine.Insert();
-                excelRange = excelWorksheet.Cells;
+                excelLine = excelWorksheet.Rows[excelWorksheet.UsedRange.Rows.Count];
+                excelLine.Activate();
 
+                rowOffset = 0;
                 for (int i = 0; i <= excelWorksheet.Columns.Count - 1; i++)
                 {
                     if (excelWorksheet.Cells[1, i + 1].Value() == null)
@@ -130,7 +146,7 @@ namespace EndoRiskWeb.Controllers
 
                     else if (excelWorksheet.Cells[1, i + 1].Value() == "Severity")
                     {
-                        excelWorksheet.Cells[2, i + 1] = "I-II";
+                        excelWorksheet.Cells[excelWorksheet.UsedRange.Rows.Count + 1, i + 1] = "I-II";
                         break;
                     }
 
@@ -138,7 +154,8 @@ namespace EndoRiskWeb.Controllers
                     {
                         if (excelWorksheet.Cells[1, i + 1].Value().ToString() == answerList[j, 1].ToString())
                         {
-                            excelWorksheet.Cells[2, i + 1] = answerList[j, 0];
+                            excelWorksheet.Cells[(excelWorksheet.UsedRange.Rows.Count + 1) - rowOffset, i + 1] = answerList[j, 0];
+                            if (rowOffset == 0) { rowOffset++; }
                             break;
                         }
                     }

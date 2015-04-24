@@ -236,33 +236,42 @@ namespace EndoRiskWeb.Controllers
 
         public object[,] endoAnswerlist(FormCollection endoAnswersCollection)
         {
-            object[,] endoAnswerList = new object[endoAnswersCollection.Count - 2, 2];
+            object[,] endoAnswerList = new object[endoAnswersCollection.Count - 3, 2];
 
             string b = "";
             Type d = b.GetType();
           
             //Add all user answers coming from the screen to an array
-            for (int x = 2; x < endoAnswersCollection.Count; x++)
-            {                 
+            for (int x = 3; x < endoAnswersCollection.Count; x++)
+            {
+                var u = endoAnswersCollection.Get(x);
+                var h = u.GetType();
                 if (endoAnswersCollection.Get(x) == "Si")
                 {
-                    endoAnswerList[x - 2, 0] = 1;
+                    endoAnswerList[x - 3, 0] = 1;
                 }
 
                 else if (endoAnswersCollection.Get(x) == "No" || endoAnswersCollection.Get(x) == "No Aplica" || endoAnswersCollection.Get(x) == null || endoAnswersCollection.Get(x) == "")
                 {
-                    endoAnswerList[x - 2, 0] = 0;
+                    endoAnswerList[x - 3, 0] = 0;
                 }
                     
                 else if (endoAnswersCollection.Get(x).GetType().Equals(d))
                 {
-                    endoAnswerList[x - 2, 0] = 1;
+                    endoAnswerList[x - 3, 0] = 1;
+                }
+
+                    // ARREGLAR ESTA PARTEEEEEEEEE
+                
+                else if (endoAnswersCollection.GetKey(x).Equals("AGE"))
+                {
+                    endoAnswerList[x - 3, 0] = endoAnswersCollection.Get(x);
                 }
 
                 else
                    
-                    endoAnswerList[x - 2, 0] = endoAnswersCollection.Get(x);
-                    endoAnswerList[x - 2, 1] = endoAnswersCollection.GetKey(x);
+                    endoAnswerList[x - 3, 0] = endoAnswersCollection.Get(x);
+                    endoAnswerList[x - 3, 1] = endoAnswersCollection.GetKey(x);
             }
 
             // Symptoms Array
@@ -270,7 +279,7 @@ namespace EndoRiskWeb.Controllers
 
             //Big array to store all user answers and symptoms
             var allSymptomsLength = db.symptoms.Count();
-            object[,] allUserAnswers = new object[(endoAnswersCollection.Count + allSymptomsLength) - 3, 2];
+            object[,] allUserAnswers = new object[(endoAnswersCollection.Count + allSymptomsLength) - 4, 2];
 
             //Add all user answers coming from the array of answers to the big array allUserAnswers[]
             for (int y = 0; y < endoAnswerList.GetLength(0) - 1; y++)
