@@ -1,0 +1,47 @@
+﻿@model IEnumerable<EndoRiskWeb.Models.romediagnosi>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2 class="center">Diagnosticos para las enfermedades de los cuestionarios de Rome</h2>
+<br />
+<div class="endoWrap">
+<h3 class="center">
+    @Html.ActionLink("Anadir un diagnostico nuevo", "Create")
+</h3>
+    <br />
+<table class="tableP">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.disease)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.diagnosis)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.rome)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.disease)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.diagnosis)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.rome)
+        </td>
+        <td>
+            @Html.ActionLink("Editar", "Edit", new { id=item.idDiagnosis }) |        
+            @Html.ActionLink("Eliminar", "Delete", new { id=item.idDiagnosis })
+        </td>
+    </tr>
+}
+
+</table>
+</div >

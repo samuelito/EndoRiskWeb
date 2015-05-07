@@ -1,0 +1,42 @@
+﻿@model EndoRiskWeb.Models.romediagnosi
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>romediagnosi</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.disease)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.disease)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.diagnosis)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.diagnosis)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.rome)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.rome)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.idDiagnosis }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

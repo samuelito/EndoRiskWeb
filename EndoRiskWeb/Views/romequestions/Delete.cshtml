@@ -1,0 +1,45 @@
+﻿@model EndoRiskWeb.Models.romequestion
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2 class="center">Eliminar Pregunta</h2>
+<br />
+<h3 class="center">Seguro que desea eliminr esta pregunta?</h3>
+<br />
+<div class="detailWrap">
+    
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.romeQuestion1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.romeQuestion1)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.romeChoice)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.romeChoice)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+    <div class="form-actions no-color">
+        <div class="center">
+            <input type="submit" value="Eliminar Pregunta" class="btn btn-default" />
+        </div>
+        </div>
+    }
+    <br />
+    <div class="center">
+        @Html.ActionLink("Volver a la lista", "Index","romequestions")
+    </div>
+</div>

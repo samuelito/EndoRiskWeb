@@ -1,0 +1,43 @@
+﻿@model IEnumerable<EndoRiskWeb.Models.romequestion>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2 class="center">Preguntas de los cuestionarios de Rome</h2>
+<br />
+
+<div class="endoWrap">
+    <h3 class="center">
+        @Html.ActionLink("A~adir una nueva pregunta", "Create")
+    </h3>
+    <br />
+    <table class="tableP">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.romeQuestion1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.romeChoice)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.romeQuestion1)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.romeChoice)
+                </td>
+                <td>
+                    @Html.ActionLink("Editar", "Edit", new { id = item.idRomeQuestion }) |
+                    @Html.ActionLink("Eliminar", "Delete", new { id = item.idRomeQuestion })
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>

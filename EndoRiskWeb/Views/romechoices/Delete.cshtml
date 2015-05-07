@@ -1,0 +1,52 @@
+﻿@model EndoRiskWeb.Models.romechoice
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2 class="center">Eliminar la opcion</h2>
+<h3 class="center">Seguro que desea eliminar esta opcion?</h3>
+
+<div class="detailWrap">
+    
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.romeChoice1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.romeChoice1)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.romeOption)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.romeOption)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.value)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.value)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <div class="center">
+                <input type="submit" value="Eliminar Opcion" class="btn btn-default" /> 
+            </div>
+        </div>          
+    }
+    <br />
+    <div class="center">
+        @Html.ActionLink("Volver a la lista", "Index", "endochoices")
+    </div>
+</div>

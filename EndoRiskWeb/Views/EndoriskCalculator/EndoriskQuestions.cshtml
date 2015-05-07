@@ -1,0 +1,227 @@
+﻿@model IEnumerable<EndoRiskWeb.Models.IndexViewModel>
+<!--
+    Documentation: Samuel Feliciano
+-->
+@{
+    ViewBag.Title = "Calculadora de Riesgo de Endometirosis";
+}
+@section featured {
+
+    <div>
+        <hgroup>
+            <h2 class="center">@ViewBag.Title.</h2>
+        </hgroup>
+    </div>
+
+}
+@{int counter = 0;}
+<div class="questionWrap">
+    <!-- Start the form (POST) to use in the Risk Method-->
+    @using (Html.BeginForm("EndoriskResult", "EndoriskCalculator", FormMethod.Post, new { @name = "userAnswersForm" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                <!--
+                    Goes through every item in the Model : questions
+                    question includes: ID, Question, Abbreviation, Choices Set Name, and the List of Choices
+                    -->
+
+                <p style="font-size:medium;font-weight:bold">
+                    Nota: El resultado que obtendrá mediante este examen es un diagnóstico preliminar por lo que no es 100% preciso.
+                    Para obtener un diagnóstico completo y totalmente preciso, por favor <u>visite a su médico primario</u>.
+                    Marque la casilla de "Acepto los términos y condiciones", en la parte posterior derecha a este mensaje
+                    para asegurar que usted ha sido informado y entiende lo establecido anteriormente. De no marcar el siguiente recuadro
+                    NO PODRA RECIBIR LOS RESULTADOS DEL EXAMEN. Gracias por su cooperación y por utilizar EndoRisk.
+
+                </p>
+
+
+                <label class="accept_terms">
+                    <strong style="color: #3e5667">
+                        <input id="showChecked" type="checkbox" name="enable_test" value="" class="accept_terms" required />
+                        Acepto los términos y condiciones
+                    </strong>
+                </label>
+
+                <p class="inicio_preguntas">Por favor complete las siguientes preguntas: </p>
+                <p class="campo_requerido">* Campo requerido</p>
+                <p class="PID_number" style="font-size:medium">Si posee algún número de paciente, escribálo en este campo. De lo contrario deje este campo vacío. </p>
+                <input type="number" name="PID" value="" placeholder="000000" min="0" max="1000000" />
+
+                @foreach (var questionItem in Model.FirstOrDefault().quest)
+                {
+                <!--Displays the question -->
+                    <p style="font-size:medium">@questionItem.question</p>
+                    @*<input type="text" name="@questionItem.question" value=" " required />*@ <!--Displays the question -->
+
+                    <div class="col-md-10">
+                        <!--Check if the set is empty-->
+                        @if (questionItem.set.Equals(""))
+                        {
+                            if (questionItem.abbr.Equals("OETR"))
+                            {
+                                <label class="campo_requerido" style="font-size:medium">
+                                    <input id="question' + counter + '" type="text" name="@questionItem.abbr" maxlength="50" required />*
+
+                                    @*data-val="true" data-val-required="Favor de llenar este campo" data-val-length="Por favor introduzca algún tratamiento" data-val-length-max="20"*@
+                                </label>
+
+                            }
+                            else
+                            {
+
+                                <label class="campo_requerido" style="font-size:medium">
+                                    <input id="question' + counter + '" type="number" name="@questionItem.abbr" min="0" required />*
+                                </label>
+                            }
+                        }
+
+                        else
+                        {
+                                <!--Display the choices for the question in a select-->
+                                <!-- Value will be the selected choice = element(i)-->
+                            <label class="campo_requerido">
+                                <select name="@questionItem.abbr" required>
+                                    <option selected></option>
+
+                                    @foreach (var choiceIndex in questionItem.choices)
+                                    {
+                                        <option value="@choiceIndex">@choiceIndex</option>
+                                    }
+
+                                </select>*
+
+                            </label>
+                        }
+                        @{counter++;}
+                    </div>
+                }
+                <p style="font-size:medium">Seleccione los sintomas que presente</p>
+                <div class="boxS">
+                    <div class="leftS">
+                        @for (int i = 0; i < (Model.FirstOrDefault().symp.Count / 2); i++)
+                        {   <div>
+                            <input id="showChecked" type="checkbox" name="symp" value="@Model.FirstOrDefault().symp.ElementAt(i).abbr" />
+                            @Model.FirstOrDefault().symp.ElementAt(i).symptom1
+                        </div>
+                        }
+                    </div>
+                    <div class="leftS">
+
+                        @for (int i = (Model.FirstOrDefault().symp.Count / 2); i < Model.FirstOrDefault().symp.Count; i++)
+                        {   <div>
+                            <input id="showChecked" type="checkbox" name="symp" value="@Model.FirstOrDefault().symp.ElementAt(i).abbr" />
+                            @Model.FirstOrDefault().symp.ElementAt(i).symptom1
+                        </div>
+                            
+                        }
+                        <div>
+                            <input id="showChecked" type="checkbox" name="symp" value="NTS" checked />
+                            No tengo sintomas
+                        </div>
+                        <br />
+
+                    </div>
+                </div>
+                <br />
+                <br />
+                <p style="font-size:medium; clear:both;">Seleccione otras condiciones pre-existentes</p>
+                <div class="boxS">
+                    <div class="leftSS">
+                        @for (int i = 0; i < (Model.FirstOrDefault().prexCond.Count / 2); i++)
+                        {   <div>
+                            <input id="showChecked" type="checkbox" name="prexCond" value="@Model.FirstOrDefault().prexCond.ElementAt(i).abbr" />
+                            @Model.FirstOrDefault().prexCond.ElementAt(i).condition
+                        </div>
+                        }
+                    </div>
+                    <div class="leftSS">
+                        @for (int i = (Model.FirstOrDefault().prexCond.Count / 2) + 1; i < Model.FirstOrDefault().prexCond.Count; i++)
+                        {   <div>
+                            <input id="showChecked" type="checkbox" name="prexCond" value="@Model.FirstOrDefault().prexCond.ElementAt(i).abbr" />
+                            @Model.FirstOrDefault().prexCond.ElementAt(i).condition
+                        </div>
+                        }
+                        <div>
+                            <input id="showChecked" type="checkbox" name="prexCond" value="NTOPC" checked />
+                            No tengo condiciones
+                        </div>
+                        <br />
+                        <br />
+                    </div>
+                </div>
+
+
+            </div>
+            <br />
+            <!-- Submit button for the form -> (calls ActionResult EndoriskResult() in EndoriskCalculatorController)-->
+
+            <div class="form-group">
+                <div class="center" style="clear:both;">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input id="submitted" type="submit" value="Calcular Riesgo" class="btn btn-default" @*disabled="disabled"*@ />
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts
+            {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    @**@
+
+    <style type="text/css">
+        label.accept_terms {
+            display: block;
+            padding-left: 15px;
+            text-indent: -15px;
+            float: right;
+            bottom: -10px;
+        }
+
+        input.accept_terms {
+            width: 13px;
+            height: 20px;
+            padding: 0;
+            margin: 0 2px 0 0;
+            vertical-align: bottom;
+            top: -1px;
+            *overflow: hidden;
+            text-align: right;
+            margin-right: 7px;
+            float: none;
+            bottom: -10px;
+        }
+
+        p.inicio_preguntas {
+            font-size: 16px;
+            font-weight: 700;
+            position: relative;
+            bottom: -10px;
+            /*line-height: 50px;*/
+        }
+
+        .campo_requerido {
+            color: #b200ff;
+            font-weight: 900;
+            font-size: 1em;
+            top: 300px;
+        }
+    </style>
+
+
+}
+
+
+
+
+
+
