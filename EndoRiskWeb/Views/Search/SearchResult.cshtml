@@ -1,0 +1,134 @@
+﻿@model EndoRiskWeb.Models.searchresult
+<!--Documentation: Samuel
+    Temporary Testing View for the Risk View();
+    Try1: Using Patient Model : Shows Results
+    -->
+@{
+    ViewBag.Title = "Resultados de la Búsqueda";
+    List<string> answerHeaders = new List<string>();
+    List<string> symptomHeaders = new List<string>();
+    int set = 0;
+}
+
+<div class="content-wrapper">
+    <hgroup class="center">
+        <h2>@ViewBag.Title.</h2>
+    </hgroup>
+    
+    <div class="center">
+        <h3>@Html.ActionLink("Regresar a la Busqueda", "SearchPage", "Search")</h3>
+    </div>
+    <!--View patients result: Quiz, ID, Risk, Time and Verified-->
+    <div class="divS">
+        <table class="tableS">
+            <thead >
+                <tr>
+                    <th class="dataHS">Quiz</th>
+                    <th class="dataHS">Paciente</th>
+                    <th class="dataHS">Riesgo</th>
+                    <th class="dataHS">Severidad</th>
+                    <th class="dataHS">Verificado</th>
+                    <th class="dataHS">Tiempo</th>
+                    @foreach (var item in Model.variablesPreguntas)
+                    {
+                        answerHeaders.Add(item.abbr);
+                        <th class="answerHS">@item.abbr</th>
+                    }
+                    @foreach (var item in Model.variablesSintomas)
+                    {
+                        symptomHeaders.Add(item.abbr);
+                        <th class="symptomHS">@item.abbr</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.resultados)
+                {
+
+                    <tr>
+                        <td class="dataS">@item.datosPaciente.idQuiz</td>
+                        <td class="dataS">@item.datosPaciente.idPatient</td>
+                        <td class="dataS">@item.datosPaciente.risk</td>
+                        <td class="dataS">@item.datosPaciente.severity</td>
+                        <td class="dataS">@item.datosPaciente.verified</td>
+                        <td class="dataS">@item.datosPaciente.time</td>
+
+                        @if (item.respuestasPaciente.Count == 0)
+                        {
+                            foreach (var r in Model.variablesPreguntas)
+                            {
+                                <td class="answerS">***</td>
+                            }
+                        }
+                        else
+                        {
+                            foreach (var h in Model.variablesPreguntas)
+                            {
+                                foreach (var r in item.respuestasPaciente)
+                                {
+                                    if (h.idQuestion == r.idQuestion)
+                                    {
+                                        <td class="answerS">@r.answer</td>
+                                        set = 1;
+                                        break;
+                                    }
+                                }
+                                if (set != 1)
+                                {
+                                    <td class="answerS"></td>
+
+                                }
+                                set = 0;
+                            }
+                        }
+
+                        @if (item.sintomasPaciente.Count == 0)
+                        {
+                            foreach (var r in Model.variablesSintomas)
+                            {
+                                <td class="symptomS">***</td>
+                            }
+                        }
+
+                        else
+                        {
+                            foreach (var h in Model.variablesSintomas)
+                            {
+                                foreach (var r in item.sintomasPaciente)
+                                {
+                                    if (h.abbr.Equals(r.symptom))
+                                    {
+                                        <td class="symptomS">@r.hasSymptom</td>
+                                        set = 1;
+                                        break;
+                                    }
+                                }
+                                if (set != 1)
+                                {
+                                    <td class="symptomS"></td>
+                                }
+                                set = 0;
+                            }
+                        }
+
+                    </tr>
+
+
+                }
+            </tbody>
+
+        </table>
+
+
+
+
+    </div>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval");
+
+   
+}
+

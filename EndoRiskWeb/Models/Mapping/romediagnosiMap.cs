@@ -12,10 +12,10 @@ namespace EndoRiskWeb.Models.Mapping
 
             // Properties
             this.Property(t => t.disease)
-                .HasMaxLength(50);
+                .HasMaxLength(255);
 
             this.Property(t => t.diagnosis)
-                .HasMaxLength(255);
+                .HasMaxLength(5000);
 
             this.Property(t => t.rome)
                 .HasMaxLength(45);

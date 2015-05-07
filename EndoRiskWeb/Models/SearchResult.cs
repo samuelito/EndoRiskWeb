@@ -7,16 +7,11 @@ namespace EndoRiskWeb.Models
 {
     public class searchresult
     {
-        public int idQuiz { get; set; }
+        public IList<searchdata> resultados { get; set; }
 
-        public int paciente { get; set; }
+        public IList<endoquestion> variablesPreguntas { get; set; }
 
-        public string verificado { get; set; }
+        public IList<symptom> variablesSintomas { get; set; }
 
-        public float riesgo { get; set; }
-
-        public string severidad { get; set; }
-
-        public IList<string> datosPaciente { get; set; }
     }
 }

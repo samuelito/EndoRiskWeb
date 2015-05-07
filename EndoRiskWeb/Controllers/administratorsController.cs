@@ -8,9 +8,16 @@ using System.Web;
 using System.Web.Mvc;
 using EndoRiskWeb.Models;
 using System.Web.Security;
+using WebMatrix.WebData;
+using WebMatrix.WebData.Resources;
+using DotNetOpenAuth.AspNet;
+using Microsoft.Web.WebPages.OAuth;
+using Newtonsoft.Json;
+using System.Net.Mail;
 
 namespace EndoRiskWeb.Controllers
 {
+    //[Authorize]
     public class administratorsController : Controller
     {
         private endoriskContext db = new endoriskContext();
@@ -21,6 +28,8 @@ namespace EndoRiskWeb.Controllers
             return View(db.administrators.ToList());
         }
 
+        [HttpGet]
+        //[ChildActionOnly]
         // GET: administrators/Details/5
         public ActionResult Details(long? id)
         {
@@ -36,32 +45,18 @@ namespace EndoRiskWeb.Controllers
             return View(administrator);
         }
 
+        [HttpGet]
+       // [ChildActionOnly]
         // GET: administrators/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: administrators/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "idAdmin,email,password,firstname,lastname,subadmin")] administrator administrator)
-        {
-            using (endoriskContext a = new endoriskContext())
-            {
-                if (ModelState.IsValid)
-                {
-                    a.administrators.Add(administrator);
-                    a.SaveChanges();
-                    return RedirectToAction("Index");
-                }
+       
 
-                return View(administrator);
-            }
-        }
-
+        [HttpGet]
+       // [ChildActionOnly]
         // GET: administrators/Edit/5
         public ActionResult Edit(long? id)
         {
@@ -81,11 +76,16 @@ namespace EndoRiskWeb.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        //[ChildActionOnly]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "idAdmin,email,password,firstname,lastname,subadmin")] administrator administrator)
         {
+                
             if (ModelState.IsValid)
             {
+               var salt = db.administrators.Where(m => m.email.Equals(administrator.email)).Select(m => m.passwordSalt).FirstOrDefault();
+                administrator.password = administrator.password;
+                administrator.passwordSalt = salt; 
                 db.Entry(administrator).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -93,6 +93,8 @@ namespace EndoRiskWeb.Controllers
             return View(administrator);
         }
 
+        [HttpGet]
+       // [ChildActionOnly]
         // GET: administrators/Delete/5
         public ActionResult Delete(long? id)
         {
@@ -110,6 +112,7 @@ namespace EndoRiskWeb.Controllers
 
         // POST: administrators/Delete/5
         [HttpPost, ActionName("Delete")]
+        //[ChildActionOnly]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(long id)
         {
@@ -135,90 +138,238 @@ namespace EndoRiskWeb.Controllers
         }
 
         [HttpPost]
-        public ActionResult Login(Models.administrator admin)
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        //[ChildActionOnly]
+        public ActionResult Login(LoginModel login, string returnUrl)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                if (IsValid(admin.email, admin.password))
+                var crypto = new SimpleCrypto.PBKDF2();
+                administrator admins = db.administrators.Where(admin => admin.email.Equals(login.email)).FirstOrDefault();
+
+                if (Url.IsLocalUrl(returnUrl))
                 {
-                    FormsAuthentication.SetAuthCookie(admin.email, false);//ver bien q hace este metodo, ver si cambio el false a true trabaja lo de cookies
-                    return RedirectToAction("Index", "Home");
+                    return Redirect(returnUrl);
                 }
+
+                if (admins != null)
+                {
+                    if (admins.password.Equals(crypto.Compute(login.Password, admins.passwordSalt.ToString())))
+                    {
+                       
+                        FormsAuthentication.SetAuthCookie(admins.email + "," + admins.subadmin + "," + admins.firstname +","+ admins.lastname, false);
+                        
+                        return RedirectToAction("Admin", "administrators");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Los datos ingresados son incorrectos.");
+                    }
+
+                }                
+
                 else
                 {
-                    ModelState.AddModelError("", "Login data is incorrect.");
-                }
-            }
-            return View(admin);
+                    ModelState.AddModelError("", "Los datos ingresados son incorrectos.");
+                }               
+           }
+
+           else
+           {
+                ModelState.AddModelError("", "Los datos entrados son incorrectos.");
+           }
+            
+            return View(login);
+        }
+
+        public ActionResult Logout()
+        {
+            
+            FormsAuthentication.SignOut();
+            return RedirectToAction("EndoriskQuestions", "EndoriskCalculator");
         }
 
         [HttpGet]
-        public ActionResult Registration()
+       // [ChildActionOnly]
+        public ActionResult CreateAdmin()
         {
             return View();
         }
 
         [HttpPost]
-        public ActionResult Registration(Models.administrator admin)
+        //[ChildActionOnly]
+        public ActionResult CreateAdmin(RegisterModel registerAdmin)
         {
             if (ModelState.IsValid)
             {
                 using (endoriskContext db = new endoriskContext())
                 {
-                    //var crypto = new SimpleCrypto.PBKDF2();
-                    //var encrPass = crypto.Compute(admin.password);
-                    var sysAdmin = db.administrators.Create();
-                    sysAdmin.firstname = admin.firstname;
-                    sysAdmin.lastname = admin.lastname;
-                    sysAdmin.email = admin.email;
-                    sysAdmin.password = admin.password; //borrar linea, dejar las otras para encryption
-                    //sysAdmin.password = encrPass;
-                    //sysAdmin.passwordSalt = crypto.Salt;
-                    //aqui va anadir el user id, esto depende de como lo haga samuel
-                    //si no es autoincrement puede ser asi:
-                    //sysAdmin.idAdmin = Guid.NewGuid();//hay q hacer q parsee
-                    sysAdmin.idAdmin = 6;//borrar linea, usar la de arriba, dependiendo de el DB
-                    
-                    db.administrators.Add(sysAdmin);
-                    db.SaveChanges();
+                    var user1 = db.administrators.Where(user => user.email.Equals(registerAdmin.email)).ToList();
 
-                    return RedirectToAction("Index", "Home");
-                }
-            }
-            return View(admin);
-        }
-
-        public ActionResult Logout()
-        {
-            FormsAuthentication.SignOut();
-            return RedirectToAction("Index","Home");
-        }
-
-        private bool IsValid(string email, string password)
-        {
-            var crypto = new SimpleCrypto.PBKDF2();
-            bool isValid = false;
-            using (endoriskContext db = new endoriskContext())
-            {
-                var admin = db.administrators.FirstOrDefault(u => u.email == email);
-                if(admin != null){
-                    //for password encryption
-                    /*if(admin.password == crypto.Compute(password, admin.passwordSalt))
+                    if (user1.Count == 0)
                     {
-                        isValid = true;
-                    }*/
-                    //else
-                    if (admin.password == password)
-                    {
-                        isValid = true;
+                        var crypto = new SimpleCrypto.PBKDF2();
+                        var encrPass = crypto.Compute(registerAdmin.Password);
+                        var sysAdmin = db.administrators.Create();
+                        sysAdmin.firstname = registerAdmin.firstname;
+                        sysAdmin.lastname = registerAdmin.lastname;
+                        sysAdmin.email = registerAdmin.email;
+                        sysAdmin.password = encrPass;
+                        sysAdmin.passwordSalt = crypto.Salt;
+                        sysAdmin.subadmin = registerAdmin.subadmin;
+                                          
+                        db.administrators.Add(sysAdmin);
+                        db.SaveChanges();
+
+                        if (sysAdmin.subadmin == 0)
+                        {
+                            string adminMessage = "Usted ha sido registrado como administrador(a) de EndoRisk. Sus credenciales son:\nCorreo electrónico: " + sysAdmin.email + "\nContraseña: " + registerAdmin.Password;
+                            adminMessage = adminMessage.Replace("\n", System.Environment.NewLine);
+
+                            SendEmailModel Email = new SendEmailModel()
+                            {
+                                From = "epm059@gmail.com",
+                                To = sysAdmin.email,
+                                Subject = "Bienvenido(a) a EndoRisk!",
+                                Body = adminMessage,
+                            };
+
+                            SendEmail(Email);
+                        }
+
+                        else if (sysAdmin.subadmin == 1)
+                        {
+                            string subadminMessage = "Usted ha sido registrado como sub-administrador(a) de EndoRisk. Sus credenciales son:\n Correo electrónico: " + sysAdmin.email + "\nContraseña: " + registerAdmin.Password;
+                            subadminMessage = subadminMessage.Replace("\n", System.Environment.NewLine);
+                            SendEmailModel Email = new SendEmailModel()
+                            {
+                                From = "epm059@gmail.com",
+                                To = sysAdmin.email,
+                                Subject = "Bienvenido(a) a EndoRisk!",
+                                Body = subadminMessage,
+                            };
+
+                            SendEmail(Email);
+                        }
+
+                        return View("~/Views/Notifications/EmailConfirmation.cshtml");
                     }
 
+                    else
+                    {
+                        ModelState.AddModelError("", "El usuario ya existe en el sistema. Por favor ingrese un usuario nuevo.");
+                        return View(registerAdmin);
+                    }
                 }
-            } 
-
-
-
-            return isValid;
+            }
+            return View(registerAdmin);
         }
+
+        public void SendEmail(EndoRiskWeb.Models.SendEmailModel emailObject)
+        {
+            if (ModelState.IsValid)
+            {
+
+                MailMessage mail = new MailMessage();
+                mail.To.Add(emailObject.To);
+                mail.From = new MailAddress(emailObject.From);
+                mail.Subject = emailObject.Subject;
+                string Body = emailObject.Body;
+                mail.Body = Body;
+                mail.IsBodyHtml = true;
+                SmtpClient smtp = new SmtpClient();
+                //string fileAttach = Server.MapPath("myEmails") + "\\Mypic.jpg";
+                //Attachment attach = new Attachment(fileAttach);
+                //mail.Attachments.Add(attach);
+                smtp.Host = "smtp.gmail.com";
+                smtp.Port = 587;
+                smtp.UseDefaultCredentials = false;
+                smtp.Credentials = new System.Net.NetworkCredential("epm059@gmail.com", "EpmJna59");// Enter sender's User name and password
+                smtp.EnableSsl = true;
+                smtp.Send(mail);
+            }
+        }
+
+
+        [HttpGet]
+        public ActionResult RecoverPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult RecoverPassword(string email)
+        {
+            //RegisterModel registerAdmin = new RegisterModel();
+            using (endoriskContext db = new endoriskContext())
+            {
+                string mail = Request["recoverPassword"].ToString();
+                var User = db.administrators.Where(user => user.email.Equals(mail)).ToList();
+
+                if (User.Count != 0)
+                {
+                    var crypto = new SimpleCrypto.PBKDF2();
+                    var userPassword = crypto.Compute(User[0].password, User[0].passwordSalt.ToString());
+
+                    string adminMessage = "Saludos " + mail + "!\n Su contraseña: " + userPassword.ToString() + ". Gracias por utilizar Endorisk!";
+                    adminMessage = adminMessage.Replace("\n", System.Environment.NewLine);
+
+                    SendEmailModel Email = new SendEmailModel()
+                    {
+                        From = "epm059@gmail.com",
+                        To = mail,
+                        Subject = "Bienvenido(a) a EndoRisk!",
+                        Body = adminMessage,
+                    };
+
+                    SendEmail(Email);
+
+                    RedirectToAction("PasswordSent", "administrators");
+                }
+
+                else
+                {
+                    ViewBag.Error = "El usuario no existe en el sistema. Por favor ingrese su correo electrónico correctamente.";
+                    // ModelState.AddModelError("", );
+                    //Redirect("RecoverPassword","Notifications");
+
+                }
+            }
+
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult PasswordSent()
+        {
+            return View();
+        }
+
+        [HttpGet]
+       // [ChildActionOnly]
+        public ActionResult Admin()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 0)
+                {
+                    return View();
+                }
+            }
+            return RedirectToAction("EndoriskQuestions","EndoriskCalculator");
+        }
+
+        private ActionResult RedirectToLocal(string returnUrl)
+        {
+            if (Url.IsLocalUrl(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
+            else
+            {
+                return RedirectToAction("EndoriskQuestions", "EndoriskCalculator");
+            }
+        }      
     }
 }

@@ -7,13 +7,13 @@ namespace EndoRiskWeb.Models
     public partial class symptom
     {
         public int idSymptom { get; set; }
-        [Display(Name="Symptom")]
+        [Display(Name="Sintoma")]
         [Required]
-        [StringLength(255, ErrorMessage = "Title can't be longer than 255 characters.")]
+        [StringLength(255, ErrorMessage = "Sintoma no debe contener mas de 255 caracters.")]
         public string symptom1 { get; set; }
-        [Display(Name="Abbreviation")]
+        [Display(Name="Abbreviatura")]
         [Required]
-        [StringLength(5, ErrorMessage = "Title can't be longer than 5 characters.")]
+        [StringLength(10, ErrorMessage = "Abreviatura debe contener menos de 10 characters.")]
         public string abbr { get; set; }
     }
 }

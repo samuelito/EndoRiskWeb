@@ -244,7 +244,18 @@
     <Compile Include="Controllers\C_Sharp_RExcel.cs" />
     <Compile Include="Controllers\endochoicesController.cs" />
     <Compile Include="Controllers\endoquestionsController.cs" />
+    <Compile Include="Controllers\EndoriskCalculatorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\romechoicesController.cs" />
+    <Compile Include="Controllers\romediagnosisController.cs" />
+    <Compile Include="Controllers\RomeDiseaseDiagnosisController.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controllers\RomeQuestionnaireController.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controllers\romequestionnairesController.cs" />
+    <Compile Include="Controllers\romequestionsController.cs" />
     <Compile Include="Controllers\searchController.cs" />
     <Compile Include="Controllers\symptomsController.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
@@ -267,29 +278,42 @@
     <Compile Include="Models\Mapping\endochoiceMap.cs" />
     <Compile Include="Models\Mapping\endoquestionMap.cs" />
     <Compile Include="Models\Mapping\patientMap.cs" />
+    <Compile Include="Models\Mapping\patientsprecondMap.cs" />
     <Compile Include="Models\Mapping\patientsymptomMap.cs" />
+    <Compile Include="Models\Mapping\preExistingConditionsMap.cs" />
     <Compile Include="Models\Mapping\romeanswerMap.cs" />
     <Compile Include="Models\Mapping\romechoiceMap.cs" />
     <Compile Include="Models\Mapping\romedependencyMap.cs" />
     <Compile Include="Models\Mapping\romediagnosiMap.cs" />
+    <Compile Include="Models\Mapping\romeparameterMap.cs" />
     <Compile Include="Models\Mapping\romequestionMap.cs" />
     <Compile Include="Models\Mapping\romequestionnaireMap.cs" />
-    <Compile Include="Models\Mapping\severityMap.cs" />
+    <Compile Include="Models\Mapping\romestepMap.cs" />
     <Compile Include="Models\Mapping\symptomMap.cs" />
+    <Compile Include="Models\Mapping\symptomstodiseaseMap.cs" />
     <Compile Include="Models\patient.cs" />
+    <Compile Include="Models\patientsprecond.cs" />
     <Compile Include="Models\patientsymptom.cs" />
+    <Compile Include="Models\preExistingConditions.cs" />
     <Compile Include="Models\questions.cs" />
+    <Compile Include="Models\questionsRome.cs" />
     <Compile Include="Models\romeanswer.cs" />
     <Compile Include="Models\romechoice.cs" />
     <Compile Include="Models\romedependency.cs" />
     <Compile Include="Models\romediagnosi.cs" />
+    <Compile Include="Models\romeparameter.cs" />
     <Compile Include="Models\romequestion.cs" />
     <Compile Include="Models\romequestionnaire.cs" />
+    <Compile Include="Models\romestep.cs" />
     <Compile Include="Models\search.cs" />
+    <Compile Include="Models\searchdata.cs" />
     <Compile Include="Models\searchresult.cs" />
-    <Compile Include="Models\severity.cs" />
     <Compile Include="Models\symptom.cs" />
+    <Compile Include="Models\symptomstodisease.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Models\Default Models\AccountModels.cs" />
+    <Compile Include="Models\Default Models\SendEmailModel.cs" />
+    <Compile Include="Models\Default Models\UserProfile.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -342,6 +366,10 @@
     <Content Include="CodeTemplates\EFModelFromDatabase\Context.vb.t4" />
     <None Include="Scripts\jquery-2.1.3.intellisense.js" />
     <Content Include="Icon.png" />
+    <Content Include="Images\Logo ININ.jpg" />
+    <Content Include="Images\Logo UPR sin color.png" />
+    <Content Include="Images\MujerEndo.png" />
+    <Content Include="Images\ponce logo2.jpg" />
     <Content Include="Schema\endorisk.sql" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -387,18 +415,13 @@
     <Content Include="Images\orderedList9.png" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Views\comments\Create.cshtml" />
-    <Content Include="Views\comments\Delete.cshtml" />
-    <Content Include="Views\comments\Details.cshtml" />
-    <Content Include="Views\comments\Edit.cshtml" />
-    <Content Include="Views\comments\Index.cshtml" />
-    <Content Include="Views\administrators\Create.cshtml" />
+    <Content Include="Views\Comments\Delete.cshtml" />
+    <Content Include="Views\Comments\Details.cshtml" />
     <Content Include="Views\administrators\Delete.cshtml" />
     <Content Include="Views\administrators\Details.cshtml" />
     <Content Include="Views\administrators\Edit.cshtml" />
@@ -418,19 +441,54 @@
     <Content Include="Views\endochoices\Details.cshtml" />
     <Content Include="Views\endochoices\Edit.cshtml" />
     <Content Include="Views\endochoices\Index.cshtml" />
-    <Content Include="Views\Home\Login.cshtml" />
-    <Content Include="Views\Home\Admin.cshtml" />
-    <Content Include="Views\Home\Risk.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\administrators\Login.cshtml" />
     <Content Include="Views\administrators\Logout.cshtml" />
-    <Content Include="Views\administrators\Registration.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Search\Result.cshtml" />
-    <Content Include="Views\Search\Index.cshtml" />
+    <Content Include="Views\Search\SearchResult.cshtml" />
+    <Content Include="Views\Search\SearchPage.cshtml" />
+    <Content Include="Views\Comments\CommentConfirmation.cshtml" />
+    <Content Include="Views\Comments\SendComment.cshtml" />
+    <Content Include="Views\Comments\ViewComments.cshtml" />
+    <Content Include="Views\EndoriskCalculator\AddEndoriskQuestions.cshtml" />
+    <Content Include="Views\EndoriskCalculator\EditEndoriskQuestions.cshtml" />
+    <Content Include="Views\EndoriskCalculator\EndoriskQuestions.cshtml" />
+    <Content Include="Views\EndoriskCalculator\EndoriskResult.cshtml" />
+    <Content Include="Views\Home\EndoInfo.cshtml" />
+    <Content Include="Views\Home\Endorisk.cshtml" />
+    <Content Include="Views\administrators\_ChangePasswordPartial.cshtml" />
+    <Content Include="Views\administrators\_SetPasswordPartial.cshtml" />
+    <Content Include="Views\administrators\Admin.cshtml" />
+    <Content Include="Views\administrators\CreateAdmin.cshtml" />
+    <Content Include="Views\RomeQuestionnaire\DisplayRomeQuestionnaire.cshtml" />
+    <Content Include="Views\RomeQuestionnaire\NoRomeSymptoms.cshtml" />
+    <Content Include="Views\romequestions\Create.cshtml" />
+    <Content Include="Views\romequestions\Delete.cshtml" />
+    <Content Include="Views\romequestions\Details.cshtml" />
+    <Content Include="Views\romequestions\Edit.cshtml" />
+    <Content Include="Views\romequestions\Index.cshtml" />
+    <Content Include="Views\romediagnosis\Create.cshtml" />
+    <Content Include="Views\romediagnosis\Delete.cshtml" />
+    <Content Include="Views\romediagnosis\Details.cshtml" />
+    <Content Include="Views\romediagnosis\Edit.cshtml" />
+    <Content Include="Views\romediagnosis\Index.cshtml" />
+    <Content Include="Views\romechoices\Create.cshtml" />
+    <Content Include="Views\romechoices\Delete.cshtml" />
+    <Content Include="Views\romechoices\Details.cshtml" />
+    <Content Include="Views\romechoices\Edit.cshtml" />
+    <Content Include="Views\romechoices\Index.cshtml" />
+    <Content Include="Views\romequestionnaires\Create.cshtml" />
+    <Content Include="Views\romequestionnaires\Delete.cshtml" />
+    <Content Include="Views\romequestionnaires\Details.cshtml" />
+    <Content Include="Views\romequestionnaires\Edit.cshtml" />
+    <Content Include="Views\romequestionnaires\Index.cshtml" />
+    <Content Include="Views\administrators\PasswordSent.cshtml" />
+    <Content Include="Views\administrators\RecoverPassword.cshtml" />
+    <Content Include="Views\Notifications\AccessDenied.cshtml" />
+    <Content Include="Views\Notifications\EmailConfirmation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\RomeDiseaseDiagnosis\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

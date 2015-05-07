@@ -15,10 +15,7 @@ namespace EndoRiskWeb.Models.Mapping
                 .HasMaxLength(50);
 
             this.Property(t => t.criteria)
-                .HasMaxLength(3);
-
-            this.Property(t => t.comparedValue)
-                .HasMaxLength(3);
+                .HasMaxLength(3);      
 
             // Table & Column Mappings
             this.ToTable("diseases", "endorisk");

@@ -4,42 +4,45 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Questions for Endometriosis</h2>
+<h2 class="center">Preguntas de Endometriosis</h2>
+<div class="endoWrap">
+    <h3 class="center">
+        @Html.ActionLink("Añadir Pregunta Nueva", "Create", "endoquestions")  
+    </h3>
+    <br />
+    <table class="tableP">
+        <tr >
+            <th>
+                @Html.DisplayNameFor(model => model.endoQuestion1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.abbr)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.choiceSet)
+            </th>
+            <th></th>
+        </tr>
 
-<p>
-    @Html.ActionLink("Add a new question", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.endoQuestion1)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.abbr)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.choiceSet)
-        </th>
-        <th></th>
-    </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.endoQuestion1)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.abbr)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.choiceSet)
+                </td>
+                <td>
+                    @Html.ActionLink("Editar", "Edit", new { id = item.idQuestion }) |
+                    @*@Html.ActionLink("Detalles", "Details", new { id = item.idQuestion }) |*@
+                    @Html.ActionLink("Eliminar", "Delete", new { id = item.idQuestion })
+                </td>
+            </tr>
+        }
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.endoQuestion1)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.abbr)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.choiceSet)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.idQuestion }) |
-            @Html.ActionLink("Details", "Details", new { id=item.idQuestion }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.idQuestion })
-        </td>
-    </tr>
-}
-
-</table>
+    </table>
+</div>

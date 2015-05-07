@@ -8,26 +8,32 @@ namespace EndoRiskWeb.Models
     {
         public long idAdmin { get; set; }
 
-        [Display(Name = "Email address ")]
-        [Required(ErrorMessage = "Email address is required", AllowEmptyStrings=false)]
-        [EmailAddress(ErrorMessage = "Invalid Email Address")]
-        [StringLength(100, ErrorMessage = "Email can't be longer than 100 characters.")]
+        [Display(Name = "Correo electrónico ")]
+        [Required(ErrorMessage = "Correo electrónico requerido", AllowEmptyStrings=false)]
+        [EmailAddress(ErrorMessage = "Correo electrónico inválido")]
+        [StringLength(100, ErrorMessage = "El correo electrónico no puede contener más de 100 carateres.")]
         public string email { get; set; }
 
-        [Display(Name = " Password ")]
-        [Required(ErrorMessage = "A password is required", AllowEmptyStrings=false)]
+        [Display(Name = " Contraseña ")]
+        [Required(ErrorMessage = "Contraseña requerida", AllowEmptyStrings=false)]
         [DataType(System.ComponentModel.DataAnnotations.DataType.Password)]
-        [StringLength(25, ErrorMessage = "Password can't be longer than 25 characters.")]
+        [StringLength(255, ErrorMessage = "La contraseña no puede contener más de 255 carateres.")]
         public string password { get; set; }
-
-        [Display(Name = " First Name ")]
-        [StringLength(50, ErrorMessage = "Name can't be longer than 50 characters.")]
+        
+        [Display(Name = " Nombre ")]
+        [Required(ErrorMessage = "Nombre requerido", AllowEmptyStrings = false)]
+        [StringLength(50, ErrorMessage = "El nombre no puede contener más de 50 carateres.")]
         public string firstname { get; set; }
 
-        [Display(Name = " Last Name ")]
-        [StringLength(50, ErrorMessage = "Lastname can't be longer than 50 characters.")]
+        [Display(Name = " Apellido ")]
+        [Required(ErrorMessage = "Apellido requerido", AllowEmptyStrings = false)]
+        [StringLength(50, ErrorMessage = "El apellido no puede contener más de 50 carateres.")]
         public string lastname { get; set; }
-        [Display(Name = " SubAdmin ")]
+
+        [Display(Name = " Sub-Administador ")]
         public long subadmin { get; set; }
+
+        public string passwordSalt { get; set; }
+
     }
 }

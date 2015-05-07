@@ -23,15 +23,22 @@ namespace EndoRiskWeb.Models
         public IDbSet<endochoice> endochoices { get; set; }
         public IDbSet<endoquestion> endoquestions { get; set; }
         public IDbSet<patient> patients { get; set; }
+        public IDbSet<patientsprecond> patientspreconds { get; set; }
         public IDbSet<patientsymptom> patientsymptoms { get; set; }
+        public IDbSet<preExistingConditions> preExistingConditions { get; set; }
         public IDbSet<romeanswer> romeanswers { get; set; }
         public IDbSet<romechoice> romechoices { get; set; }
         public IDbSet<romedependency> romedependencies { get; set; }
         public IDbSet<romediagnosi> romediagnosis { get; set; }
+        public IDbSet<romeparameter> romeparameters { get; set; }
+       
         public IDbSet<romequestion> romequestions { get; set; }
         public IDbSet<romequestionnaire> romequestionnaires { get; set; }
-        public IDbSet<severity> severities { get; set; }
+        public IDbSet<romestep> romesteps { get; set; }
+       
         public IDbSet<symptom> symptoms { get; set; }
+        public IDbSet<symptomstodisease> symptomstodiseases { get; set; }
+
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -42,15 +49,20 @@ namespace EndoRiskWeb.Models
             modelBuilder.Configurations.Add(new endochoiceMap());
             modelBuilder.Configurations.Add(new endoquestionMap());
             modelBuilder.Configurations.Add(new patientMap());
+            modelBuilder.Configurations.Add(new patientsprecondMap());
             modelBuilder.Configurations.Add(new patientsymptomMap());
+            modelBuilder.Configurations.Add(new preExistingConditionsMap());
             modelBuilder.Configurations.Add(new romeanswerMap());
             modelBuilder.Configurations.Add(new romechoiceMap());
             modelBuilder.Configurations.Add(new romedependencyMap());
             modelBuilder.Configurations.Add(new romediagnosiMap());
+            modelBuilder.Configurations.Add(new romeparameterMap());
             modelBuilder.Configurations.Add(new romequestionMap());
             modelBuilder.Configurations.Add(new romequestionnaireMap());
-            modelBuilder.Configurations.Add(new severityMap());
+            modelBuilder.Configurations.Add(new romestepMap());
             modelBuilder.Configurations.Add(new symptomMap());
+            modelBuilder.Configurations.Add(new symptomstodiseaseMap());
+       
         }
     }
 }

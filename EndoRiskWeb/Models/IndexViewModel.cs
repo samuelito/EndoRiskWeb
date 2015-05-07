@@ -11,5 +11,7 @@ namespace EndoRiskWeb.Models
         public IList<questions> quest {get; set;}
         public IList<symptom> symp {get; set;}
 
+        public IList<preExistingConditions> prexCond { get; set; }
+
     }
 }

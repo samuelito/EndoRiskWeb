@@ -1,45 +1,73 @@
-﻿@model EndoRiskWeb.Models.administrator
+﻿@model EndoRiskWeb.Models.LoginModel
 
 @{
-    ViewBag.Title = "Login";
+    ViewBag.Title = "Iniciar Sesión";
+    ViewBag.Message = "Ingrese sus credenciales para iniciar sesion";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Login</h2>
+@*<hgroup class="title">
+        <h1>@ViewBag.Title.</h1>
+    </hgroup>*@
+
+@*<section id="loginForm">*@
+@*<h2>Iniciar Sesión.</h2>*@
+
+@*@if(){}
+    @Html.LabelFor(admin => admin.subadmin new { @class = "checkbox" })*@
+@*@using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl }))*@
+
+
 
 @using (Html.BeginForm("Login", "administrators", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
-    <div class="form-horizontal">
-        
-        <hr />       
-         <div class="form-group">
-            @Html.LabelFor(model => model.email, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(model => model.email, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.email, "", new { @class = "text-danger" })
+    @Html.ValidationSummary(true)
+    <section><h2 class="center">@ViewBag.Message</h2></section>
+    <br />
+    <div class="smallWrap">
+        <fieldset>
+            <legend>Log in Form</legend>
+            <ol>
+                <li>
+                    @Html.LabelFor(admin => admin.email)
+                    @Html.TextBoxFor(admin => admin.email)
+                    @Html.ValidationMessageFor(admin => admin.email)
+                </li>
+
+                <li>
+                    @Html.LabelFor(admin => admin.Password)
+                    @Html.PasswordFor(admin => admin.Password)
+                    @Html.ValidationMessageFor(admin => admin.Password)
+                </li>
+
+                @*<li>
+                        @Html.CheckBoxFor(admin => admin.RememberMe)
+                        @Html.LabelFor(admin => admin.RememberMe, new { @class = "checkbox" })
+                    </li>*@
+
+                @*-------PONER UN CAMPO DE ISSUBADMIN EN EL ADMINISTRATOR MODEL*@
+                @*<li>
+                        @Html.CheckBoxFor(admin => admin.subadmin)
+                        @Html.LabelFor(admin => admin.subadmin, new { @class = "checkbox" })
+                    </li>*@
+            </ol>
+            <div class="center">
+            <input type="submit" value="Iniciar Session" />
             </div>
+        </fieldset>
+        <div class="center">
+            @Html.ActionLink("Olvidé mi contraseña", "RecoverPassword","administrators")
+        </div>
+        <br />
+        <div class="center">
+            @Html.ActionLink("Volver al Inicio", "EndoriskQuestions", "EndoriskCalculator")
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.password, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.PasswordFor(model => model.password, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger" })
-            </div>
-        </div>
-     </div>
-
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">            
-            <input type="submit" value="Login" class="btn btn-default" />
-        </div>
     </div>
 }
+@*</section>*@
 
-<div>
-    @Html.ActionLink("Return Home", "Index")
-</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

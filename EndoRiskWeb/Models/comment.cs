@@ -8,12 +8,17 @@ namespace EndoRiskWeb.Models
     {
         public long idComment { get; set; }
 
+        [Display(Name = "Título ")]
         [StringLength(44, ErrorMessage = "Title can't be longer than 44 characters.")]
         public string title { get; set; }
-        [StringLength(255, ErrorMessage = "Content can't be longer than 255 characters.")]
+        [Display(Name = "Contenido ")]
+        [DataType(DataType.MultilineText)]
+        [StringLength(4900, ErrorMessage = "Content can't be longer than 4900 characters.")]
         public string content { get; set; }
+        [Display(Name = "Email ")]
         [StringLength(100, ErrorMessage = "Email can't be longer than 100 characters.")]
         public string email { get; set; }
+        [Display(Name = "Hora ")]
         public Nullable<System.DateTime> time { get; set; }
     }
 }

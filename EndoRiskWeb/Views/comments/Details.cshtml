@@ -1,49 +1,52 @@
 ﻿@model EndoRiskWeb.Models.comment
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Detalles";
 }
 
-<h2>Details</h2>
+<h2 class="center">@ViewBag.Title</h2>
+<br />
 
 <div>
-    <h4>comment</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.title)
-        </dt>
+    
+    <div class="detailWrap">
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.title)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.title)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.title)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.content)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.content)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.content)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.content)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.email)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.email)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.email)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.email)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.time)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.time)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.time)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.time)
+            </dd>
 
-    </dl>
+        </dl>
+        <p class="center">
+            @Html.ActionLink("Regresar a Comentarios", "ViewComments", "Comments")
+        </p>
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Back to List", "Index")
-</p>
+

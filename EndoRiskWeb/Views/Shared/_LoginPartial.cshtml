@@ -1,23 +1,22 @@
-﻿@*@if (Session["LoggedUserEmail"] != null) {
-    <text>
-        Hello, @Html.ActionLink(Session["LoggedUserName"].ToString(), "Admin", "Home", routeValues: null, htmlAttributes: new { @class = "username", title = "Manage" })!
-        
-        @using (Html.BeginForm("LogOff", "Index", FormMethod.Post, new { id = "logoutForm" })) {
-            @Html.AntiForgeryToken()
-            <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
-        }
-    </text>
-} else {
-    <ul>
-        <li>@Html.ActionLink("Administrators Log in", "Login", "Home", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
-    </ul>
-}*@
-@if(Request.IsAuthenticated){
-    <strong>@Html.Encode(User.Identity.Name)</strong>
-    @Html.ActionLink("Logout", "Logout", "administrators")
+﻿
+
+@if (Request.IsAuthenticated)
+{
+
+    <p>
+        Bienvenido(a), @Html.Encode(User.Identity.Name.Split(',')[2]) @Html.Encode(User.Identity.Name.Split(',')[3]) ( @Html.Encode(User.Identity.Name.Split(',')[0]) )
+         @Html.ActionLink("Cerrar Sesión", "Logout", "administrators")
+    </p>
+
+    if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 0)
+    {
+        <p style="font-size:larger;"><strong>@Html.ActionLink("Administrar Página", "Admin", "administrators")</strong></p>
+    }
+    <hr />
 }
-else{
-    @Html.ActionLink("Registración Va dentro de administrador", "Registration", "administrators")
-    <span> | </span>
+else
+{
     @Html.ActionLink("Iniciar Sesión", "Login", "administrators")
+    <hr />
 }
+

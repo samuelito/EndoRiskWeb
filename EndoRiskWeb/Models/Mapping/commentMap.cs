@@ -15,7 +15,7 @@ namespace EndoRiskWeb.Models.Mapping
                 .HasMaxLength(45);
 
             this.Property(t => t.content)
-                .HasMaxLength(255);
+                .HasMaxLength(5000);
 
             this.Property(t => t.email)
                 .HasMaxLength(100);

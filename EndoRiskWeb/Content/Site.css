@@ -1,12 +1,17 @@
-﻿html {
-    background-color: #e2e2e2;
+﻿/*Modified by: Luz M. González
+    This file contains all the css code used to
+    give the formatting and appearance of the 
+    Web page.
+*/
+
+html {
+    background-color: #fff;
     margin: 0;
     padding: 0;
 }
 
 body {
     background-color: #fff;
-    border-top: solid 10px #000;
     color: #333;
     font-size: .85em;
     font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
@@ -14,17 +19,21 @@ body {
     padding: 0;
 }
 
+header {
+    padding-bottom: 50px;
+}
+
 a {
-    color: #333;
+    color: #3e5667;
     outline: none;
     padding-left: 3px;
     padding-right: 3px;
-    text-decoration: underline;
+    text-decoration: none;
 }
 
     a:link, a:visited,
     a:active, a:hover {
-        color: #333;
+        color: #3e5667;
     }
 
     a:hover {
@@ -37,7 +46,7 @@ nav, section {
 }
 
 mark {
-    background-color: #a6dbed;
+    background-color: rgba(213, 179, 228, 0.79);
     padding-left: 5px;
     padding-right: 5px;
 }
@@ -48,6 +57,10 @@ mark {
 
 .float-right {
     float: right;
+}
+
+.center {
+    text-align: center;
 }
 
 .clear-fix:after {
@@ -65,20 +78,33 @@ h4, h5, h6 {
     padding-bottom: 0;
 }
 
+p {
+    color: #3e5667;
+}
+
 h1 {
     font-size: 2em;
 }
 
 h2 {
     font-size: 1.75em;
+    color: #1662a1;
+    /*
+        seashell2
+        hotpink4
+    */
 }
 
 h3 {
     font-size: 1.2em;
+    color: rgba(178, 0, 255, 0.79);
 }
 
 h4 {
     font-size: 1.1em;
+    color: #e80c4d;
+    margin-bottom: 0;
+    padding-bottom: 0;
 }
 
 h5, h6 {
@@ -99,30 +125,29 @@ h5, h6 {
 }
 
 #body {
-    background-color: #efeeef;
+    background-color: #fff;
     clear: both;
-    padding-bottom: 35px;
+    padding-bottom: 100px;
 }
 
-    .main-content {
-        background: url("../Images/accent.png") no-repeat;
-        padding-left: 10px;
-        padding-top: 30px;
-    }
+.main-content {
+    padding-left: 10px;
+    padding-top: 30px;
+}
 
-    .featured + .main-content {
-        background: url("../Images/heroAccent.png") no-repeat;
-    }
+.featured + .main-content {
+}
 
 header .content-wrapper {
-    padding-top: 20px; 
+    padding-top: 10px;
 }
 
 footer {
     clear: both;
-    background-color: #e2e2e2;
+    background-color: #fff;
     font-size: .8em;
-    height: 100px;
+    height: 50px;
+    margin-bottom: 0;
 }
 
 
@@ -130,17 +155,17 @@ footer {
 ----------------------------------------------------------*/
 .site-title {
     color: #c8c8c8;
-    font-family: Rockwell, Consolas, "Courier New", Courier, monospace;
-    font-size: 2.3em;
+    font-family: Rockwell, 'AR CENA', "Courier New", Courier, monospace;
+    font-size: 3.5em;
     margin: 0;
 }
 
-.site-title a, .site-title a:hover, .site-title a:active {
-    background: none;
-    color: #c8c8c8;
-    outline: none;
-    text-decoration: none;
-}
+    .site-title a, .site-title a:hover, .site-title a:active {
+        background: none;
+        color: rgba(178, 0, 255, 0.79);
+        outline: none;
+        text-decoration: none;
+    }
 
 
 /* login
@@ -153,19 +178,19 @@ footer {
 }
 
     #login a {
-        background-color: #d3dce0;
+        background-color: #fff;
         margin-left: 10px;
         margin-right: 3px;
-        padding: 2px 3px;
+        padding: 5px 3px;
         text-decoration: none;
     }
 
-    #login a.username {
-        background: none;
-        margin: 0;
-        padding: 0;
-        text-decoration: underline;
-    }
+        #login a.username {
+            background: none;
+            margin: 0;
+            padding: 0;
+            text-decoration: underline;
+        }
 
     #login ul {
         margin: 0;
@@ -191,18 +216,19 @@ ul#menu {
         display: inline;
         list-style: none;
         padding-left: 15px;
+        background: border-box;
     }
 
         ul#menu li a {
             background: none;
-            color: #999;
+            color: #95e62d;
             text-decoration: none;
         }
 
-        ul#menu li a:hover {
-            color: #333;
-            text-decoration: none;
-        }
+            ul#menu li a:hover {
+                color: #333;
+                text-decoration: underline;
+            }
 
 
 /* page elements
@@ -213,7 +239,7 @@ ul#menu {
 }
 
     .featured .content-wrapper {
-        background-color: #7ac0da;
+        background-color: rgba(213, 179, 228, 0.79);
         background-image: -ms-linear-gradient(left, #7ac0da 0%, #a4d4e6 100%);
         background-image: -o-linear-gradient(left, #7ac0da 0%, #a4d4e6 100%);
         background-image: -webkit-gradient(linear, left top, right top, color-stop(0, #7ac0da), color-stop(1, #a4d4e6));
@@ -223,27 +249,27 @@ ul#menu {
         padding: 20px 40px 30px 40px;
     }
 
-        .featured hgroup.title h1, .featured hgroup.title h2 {
-            color: #fff;
-        }
+    .featured hgroup.title h1, .featured hgroup.title h2 {
+        color: #fff;
+    }
 
-        .featured p {
-            font-size: 1.1em;
-        }
+    .featured p {
+        font-size: 1.1em;
+    }
 
 /* page titles */
 hgroup.title {
     margin-bottom: 10px;
 }
 
-hgroup.title h1, hgroup.title h2 {
-    display: inline;
-}
+    hgroup.title h1, hgroup.title h2 {
+        display: inline;
+    }
 
-hgroup.title h2 {
-    font-weight: normal;
-    margin-left: 3px;
-}
+    hgroup.title h2 {
+        font-weight: normal;
+        margin-left: 3px;
+    }
 
 /* features */
 section.feature {
@@ -330,7 +356,7 @@ aside {
 
 /* login page */
 #loginForm {
-    border-right: solid 2px #c8c8c8;
+    border-right: solid 2px #e80c4d;
     float: left;
     width: 55%;
 }
@@ -355,12 +381,12 @@ aside {
         width: 250px;
     }
 
-    #loginForm input[type="checkbox"],
-    #loginForm input[type="submit"],
-    #loginForm input[type="button"],
-    #loginForm button {
-        width: auto;
-    }
+        #loginForm input[type="checkbox"],
+        #loginForm input[type="submit"],
+        #loginForm input[type="button"],
+        #loginForm button {
+            width: auto;
+        }
 
 #socialLoginForm {
     margin-left: 40px;
@@ -369,7 +395,7 @@ aside {
 }
 
     #socialLoginForm h2 {
-        margin-bottom:  5px;
+        margin-bottom: 5px;
     }
 
 #socialLoginList button {
@@ -420,9 +446,26 @@ label {
     font-weight: 600;
 }
 
-label.checkbox {
-    display: inline;
+    label.checkbox {
+        display: inline;
+    }
+
+option {
+    background: #fff;
+    color: #333;
+    font-size: 1em;
+    margin: 5px 0 6px 0;
+    padding: 5px;
+    width: 284px;
 }
+
+select {
+    font-size: 1.2em;
+    margin: 5px 0 6px 0;
+    width: 310px;
+}
+
+
 
 input, textarea {
     border: 1px solid #e2e2e2;
@@ -431,44 +474,45 @@ input, textarea {
     font-size: 1.2em;
     margin: 5px 0 6px 0;
     padding: 5px;
-    width: 300px;
+    width: 296px;
 }
 
 textarea {
     font-family: inherit;
-    width: 500px;
+    max-width: 500px;
+    
 }
 
     input:focus, textarea:focus {
         border: 1px solid #7ac0da;
     }
 
-    input[type="checkbox"] {
-        background: transparent;
-        border: inherit;
-        width: auto;
-    }
+input[type="checkbox"] {
+    background: transparent;
+    border: inherit;
+    width: auto;
+}
 
-    input[type="submit"],
-    input[type="button"],
-    button {
-        background-color: #d3dce0;
-        border: 1px solid #787878;
-        cursor: pointer;
-        font-size: 1.2em;
-        font-weight: 600;
-        padding: 7px;
-        margin-right: 8px;
-        width: auto;
-    }
+input[type="submit"],
+input[type="button"],
+button {
+    background-color: rgba(251, 138, 186, 0.77);
+    border: 1px solid #333;
+    cursor: pointer;
+    font-size: 1.2em;
+    font-weight: 600;
+    padding: 7px;
+    margin-right: 8px;
+    width: auto;
+}
 
-    td input[type="submit"],
-    td input[type="button"],
-    td button {
-        font-size: 1em;
-        padding: 4px;
-        margin-right: 4px;
-    }
+td input[type="submit"],
+td input[type="button"],
+td button {
+    font-size: 1em;
+    padding: 4px;
+    margin-right: 4px;
+}
 
 /* info and errors */
 .message-info {
@@ -479,7 +523,7 @@ textarea {
 
 .message-error {
     clear: both;
-    color: #e80c4d;
+    color: #000;
     font-size: 1.1em;
     font-weight: bold;
     margin: 20px 0 10px 0;
@@ -534,10 +578,227 @@ table {
     border: 0 none;
 }
 
+/*Search Table*/
+
+.divS {
+    height: auto;
+    max-height: 500px;
+    width: auto;
+    clear: both;
+    /*border: thin solid black; */
+    overflow: scroll;
+}
+
+#header-fixed {
+    position: fixed;
+    top: 0; display:none;
+    background-color:white;
+}
+
+.boxS {
+    height: auto;
+    width: auto;
+    margin-left: 100px;
+}
+
+.searchWrap {
+    background-color: rgba(213, 179, 228, 0.79);
+    border: solid thin rgba(178, 0, 255, 0.79);
+    border-radius: 50px 50px 50px 50px;
+}
+
+.purpleWrap {
+    height: auto;
+    width: 700px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: rgba(213, 179, 228, 0.79);
+    border: solid thin rgba(178, 0, 255, 0.79);
+    border-radius: 50px 50px 50px 50px;
+}
+
+.questionWrap {
+    height: auto;
+    width: auto;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: rgba(213, 179, 228, 0.79);
+    border: solid thin rgba(178, 0, 255, 0.79);
+    border-radius: 50px 50px 50px 50px;
+}
+
+.endoWrap {
+    height: auto;
+    width: auto;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border: solid thin rgba(213, 179, 228, 0.79);
+    border-radius: 50px 50px 50px 50px;
+}
+
+.smallWrap {
+    height: auto;
+    width: 320px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: rgba(213, 179, 228, 0.79);
+    border: solid thin rgba(178, 0, 255, 0.79);
+    border-radius: 50px 50px 50px 50px;
+}
+
+.detailWrap {
+    height: auto;
+    width: 320px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: rgba(213, 179, 228, 0.79);
+    border: solid thin rgba(178, 0, 255, 0.79);
+    border-radius: 50px 50px 50px 50px;
+}
+
+.detailWrap dt {
+    font-size:medium;
+    font-weight:bold;
+     color:#b200ff;
+}
+
+.detailWrap dd {
+    padding-bottom:10px;
+}
+.commentWrap {
+    height: auto;
+    max-width: 320px;
+    width: auto;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: rgba(213, 179, 228, 0.79);
+    border: solid thin rgba(178, 0, 255, 0.79);
+    border-radius: 50px 50px 50px 50px;
+}
+
+.adminWrap {
+    height: 300px;
+    width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #e2e2e2;
+    border: solid thin #c7d1d6;
+    border-radius: 50px 50px 50px 50px;
+}
+
+.leftA{
+    float:left;
+    margin-left:60px;
+}
+
+.leftS {
+    float: left;
+    padding: 10px 10px 10px 10px;
+}
+
+.leftSS{
+    float: left;
+    margin-right: 190px;
+    padding: 10px 10px 10px 10px;
+}
+
+.rightS {
+    float: right;
+}
+
+.tableP {
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin-top: 0.75em;
+    margin: 0 auto;
+    border: 0 none;
+    color-interpolation:auto;
+}
+ .tableP th {
+     text-align:center;
+     padding:10px;
+ }
+ .tableP td {
+     text-align: center;
+     max-width: 400px;
+     padding-bottom: 10px;
+ }
+    .tableP tr:nth-child(odd){ 
+		background: rgba(213, 179, 228, 0.79);
+	}
+	
+	.tableP tr:nth-child(even){
+		background: #cb9dde;
+	}
+
+.tableC {
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin-top: 0.75em;
+    margin: 0 auto;
+    padding: 40px;
+    border: 0 none;
+}
+
+
+    .tableC td {
+        text-align: left;
+    }
+
+.tableS {
+    border-collapse: collapse;
+    border-spacing: 0;
+    border: 0 none;
+}
+
+    .tableS th {
+        font-size: 1.2em;
+        text-align: center;
+        padding: 0 0.25em 0 0.25em;
+        border: thin solid #000;
+        /*border-left: thin solid black;
+    border-bottom: thin solid black;*/
+    }
+
+    .tableS td {
+        text-align: center;
+        padding: 0.2em 0.5em 0.2em 0.5em;
+        border: thin solid #787878;
+        border-top: none;
+        border-bottom: none;
+        /*border-left: thin solid black;
+    border-bottom: thin solid black;*/
+    }
+
+.dataHS {
+    background-color: deepskyblue;
+}
+
+.answerHS {
+    background-color: #b200ff;
+}
+
+.symptomHS {
+    background-color: #ff00dc;
+}
+
+.dataS {
+    background-color: #a6dbed;
+}
+
+.answerS {
+    background-color: #cb9dde;
+}
+
+.symptomS {
+    background-color: #f39ce7;
+}
+
 th {
     font-size: 1.2em;
-    text-align: left;
-    border: none 0px;
+    text-align: center;
+    border: none 0;
     padding-left: 0;
 }
 
@@ -546,39 +807,40 @@ th {
         position: relative;
     }
 
-    th a:link, th a:visited, th a:active, th a:hover {
-        color: #333;
-        font-weight: 600;
-        text-decoration: none;
-        padding: 0;
-    }
+        th a:link, th a:visited, th a:active, th a:hover {
+            color: #333;
+            font-weight: 600;
+            text-decoration: none;
+            padding: 0;
+        }
 
-    th a:hover {
-        color: #000;
-    }
+        th a:hover {
+            color: #000;
+        }
 
     th.asc a, th.desc a {
         margin-right: .75em;
     }
 
-    th.asc a:after, th.desc a:after {
-        display: block;
-        position: absolute;
-        right: 0em;
-        top: 0;
-        font-size: 0.75em;
-    }
+        th.asc a:after, th.desc a:after {
+            display: block;
+            position: absolute;
+            right: 0em;
+            top: 0;
+            font-size: 0.75em;
+        }
 
-    th.asc a:after {
-        content: '▲';
-    }
+        th.asc a:after {
+            content: '▲';
+        }
 
-    th.desc a:after {
-        content: '▼';
-    }
+        th.desc a:after {
+            content: '▼';
+        }
 
 td {
-    padding: 0.25em 2em 0.25em 0em;
+    text-align: center;
+    padding: 0.2em 0.5em 0.2em 0.5em;
     border: 0 none;
 }
 
@@ -632,9 +894,9 @@ tr.pager td {
             padding: 0;
         }
 
-        #login a:hover {
-            color: #333;
-        }
+            #login a:hover {
+                color: #333;
+            }
 
     /* menu */
     nav {
@@ -699,12 +961,12 @@ tr.pager td {
                 background: none;
             }
 
-     /* features */
-     section.feature {
+    /* features */
+    section.feature {
         float: none;
         padding: 10px;
         width: auto;
-     }
+    }
 
         section.feature img {
             color: #999;
@@ -715,8 +977,9 @@ tr.pager td {
 
     /* forms */
     input {
-        width: 90%;
+        width: 300px;
     }
+
 
     /* login page */
     #loginForm {

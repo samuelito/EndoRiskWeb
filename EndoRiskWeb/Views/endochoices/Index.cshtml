@@ -4,36 +4,39 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Choices</h2>
+<h2 class="center">Set de Respuestas</h2>
+<div class="endoWrap">
+    <h3 class="center">
+        @Html.ActionLink("Añadir un nuevo elemento", "Create", "endochoices")
+    </h3>
+    <br />
+    <table class="tableP">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.choiceSet)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.choiceOption)
+            </th>
+            <th></th>
+        </tr>
 
-<p>
-    @Html.ActionLink("Add New Set of Choices", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.choiceSet)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.choiceOption)
-        </th>
-        <th></th>
-    </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.choiceSet)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.choiceOption)
+                </td>
+                <td>
+                    @Html.ActionLink("Editar", "Edit", new { id = item.idChoice }) | 
+                    @Html.ActionLink("Eliminar", "Delete", new { id = item.idChoice })
+                </td>
+            </tr>
+        }
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.choiceSet)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.choiceOption)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.idChoice }) |
-            @Html.ActionLink("Details", "Details", new { id=item.idChoice }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.idChoice })
-        </td>
-    </tr>
-}
+    </table>
 
-</table>
+</div>

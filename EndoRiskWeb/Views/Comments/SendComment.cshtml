@@ -1,0 +1,57 @@
+﻿@model EndoRiskWeb.Models.comment
+
+@{
+    ViewBag.Title = "Comentarios";
+    ViewBag.Message = "Escribanos cualquier duda, inquiertud o sugerencia acerca de esta página.";
+}
+
+@using (Html.BeginForm("CommentConfirmation", "Comments"))
+{
+    @Html.AntiForgeryToken()
+    <section class="center"><h2>@ViewBag.Title</h2></section>
+    <section class="center"><h3>@ViewBag.Message</h3></section>
+    <br />
+    <div class="commentWrap">
+   
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                <h3>@Html.LabelFor(model => model.title, htmlAttributes: new { @class = "control-label col-md-2" })</h3>
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.title, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.title, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <h3> @Html.LabelFor(model => model.content, htmlAttributes: new { @class = "control-label col-md-2" })</h3> 
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.content, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.content, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+               <h3> @Html.LabelFor(model => model.email, htmlAttributes: new { @class = "control-label col-md-2" })</h3>
+                <div class="col-md-10">          
+                    @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.email, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="center">
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <br />
+                        <br />
+                        <input type="submit" value="Enviar Comentario" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
+
+        
+        </div>
+    </div>
+
+
+}

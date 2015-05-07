@@ -22,7 +22,7 @@ namespace EndoRiskWeb.Controllers
          * Index shows the view for the comments
          * returns the view a list of the comments from the database
          */
-        public ActionResult Index()
+        public ActionResult ViewComments()
         {
             return View(db.comments.ToList());
         }
@@ -49,7 +49,7 @@ namespace EndoRiskWeb.Controllers
           * This method show the view to create a new comment
           * The view present fields to create a new comment
           */
-        public ActionResult Create()
+        public ActionResult SendComment()
         {
             return View();
         }
@@ -64,7 +64,7 @@ namespace EndoRiskWeb.Controllers
           */
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "idComment,title,content,email")] comment comment)
+        public ActionResult CommentConfirmation([Bind(Include = "idComment,title,content,email")] comment comment)
         {
             //comments includes id, title, content and email
             //time is missing - use datetime.now
@@ -77,10 +77,10 @@ namespace EndoRiskWeb.Controllers
                 {
                     c.comments.Add(comment);    //Add the comment entity to the context c
                     c.SaveChanges();            //Save changes to database 
-                    return RedirectToAction("Index");  //Return Comments Index
+                    return View();  //Return Comments Index
                 }
 
-                return View(comment);
+                return View();
             }
         }
 
@@ -117,7 +117,7 @@ namespace EndoRiskWeb.Controllers
             comment comment = db.comments.Find(id);
             db.comments.Remove(comment);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("ViewComments", "Comments");
         }
 
         protected override void Dispose(bool disposing)

@@ -18,6 +18,9 @@ namespace EndoRiskWeb.Models.Mapping
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
 
             this.Property(t => t.verified)
+                .HasMaxLength(100);
+
+            this.Property(t => t.severity)
                 .HasMaxLength(45);
 
             // Table & Column Mappings
@@ -25,6 +28,7 @@ namespace EndoRiskWeb.Models.Mapping
             this.Property(t => t.idQuiz).HasColumnName("idQuiz");
             this.Property(t => t.idPatient).HasColumnName("idPatient");
             this.Property(t => t.risk).HasColumnName("risk");
+            this.Property(t => t.severity).HasColumnName("severity");
             this.Property(t => t.verified).HasColumnName("verified");
             this.Property(t => t.time).HasColumnName("time");
         }

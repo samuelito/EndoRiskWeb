@@ -1,0 +1,42 @@
+﻿@model EndoRiskWeb.Models.romechoice
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>romechoice</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.romeChoice1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.romeChoice1)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.romeOption)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.romeOption)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.value)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.value)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.idRomeChoices }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

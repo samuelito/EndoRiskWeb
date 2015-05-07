@@ -1,66 +1,87 @@
 ﻿@model EndoRiskWeb.Models.administrator
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Detalles";
     var sub = Model.subadmin;
 }
 
-<h2>Details</h2>
+<h2 class="center">Detalles</h2>
+@*<div class="returnAdminHome"> @Html.ActionLink("Volver a menu principal de administrador", "Admin", "administrators")</div>*@
 
 <div>
-    <h4>administrator</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.email)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.email)
-        </dd>
+    <div class="detailWrap">
+        <dl class="dl-horizontal">
+            <dt >
+                @Html.DisplayNameFor(model => model.email)
+            </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.password)
-        </dt>
+            <dd >
+                @Html.DisplayFor(model => model.email)
+            </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.password)
-        </dd>
+            @*<dt>
+                    @Html.DisplayNameFor(model => model.password)
+                </dt>*@
 
-        <dt>
-            @Html.DisplayNameFor(model => model.firstname)
-        </dt>
+            @*<dd>
+                    @Html.DisplayFor(model => model.password)
+                </dd>*@
 
-        <dd>
-            @Html.DisplayFor(model => model.firstname)
-        </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.firstname)
+            </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.lastname)
-        </dt>
+            <dd >
+                @Html.DisplayFor(model => model.firstname)
+            </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.lastname)
-        </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.lastname)
+            </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.subadmin)
-        </dt>
+            <dd >
+                @Html.DisplayFor(model => model.lastname)
+            </dd>
 
-        <dd>      
-           @if (sub == 1)
-           {
-            <p>Yes</p>
-           }
-           else
-           {
-            <p>No</p>
-           }
-        </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.subadmin)
+            </dt>
+            @if (sub == 1)
+            {
+                <dd >Si</dd>
+            }
+            else
+            {
+                <dd >No</dd>
+            }
 
-    </dl>
+        </dl>
+        
+        <p class="center">
+            @Html.ActionLink("Editar", "Edit", new { id = Model.idAdmin }) |
+            @Html.ActionLink("Volver a la lista", "Index", "administrators")
+        </p>
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.idAdmin }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @*<style>
+            div.returnAdminHome {
+                width: 13px;
+                height: 17px;
+                padding: 0;
+                margin: 0;
+                vertical-align: bottom;
+                position: center;
+                top: -1px;
+                *overflow: hidden;
+                text-align: right;
+                margin-right: 7px;
+                float: none;
+                bottom: -10px;
+            }
+        </style>*@
+}

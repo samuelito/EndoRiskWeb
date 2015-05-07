@@ -4,26 +4,26 @@
     ViewBag.Title = "Delete";
 }
 
-<h2>Delete</h2>
+<h2 class="center">Eliminar elemento del Set</h2>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>endochoice</h4>
-    <hr />
+<h3 class="center">¿Seguro que desea borrar el elemento del Set?</h3>
+<br />
+<div class="detailWrap">
+    
     <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.choiceSet)
+        <dt >
+            @Html.DisplayNameFor(model => model.choiceSet) : @Html.DisplayFor(model => model.choiceSet)
         </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.choiceSet)
-        </dd>
+        @*<dd >
+        @Html.DisplayFor(model => model.choiceSet)
+    </dd>*@
 
-        <dt>
-            @Html.DisplayNameFor(model => model.choiceOption)
+        <dt >
+            @Html.DisplayNameFor(model => model.choiceOption) 
         </dt>
 
-        <dd>
+        <dd >
             @Html.DisplayFor(model => model.choiceOption)
         </dd>
 
@@ -33,8 +33,13 @@
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+            <div class="center">
+            <input type="submit" value="Eliminar Elemento" class="btn btn-default" />
+            </div>
+        </div>
+        <br />
+        <div class="center">
+            @Html.ActionLink("Volver a la lista de Sets ", "Index", "endochoices")
         </div>
     }
 </div>

@@ -2,64 +2,83 @@
 
 @{
     ViewBag.Title = "Index";
-    
+
 }
 
-<h2>List of Administrators</h2>
+<h2 class="center">Lista de Administradores</h2>
+<br />
+@*<label class="returnAdminHome"> @Html.ActionLink("Volver a menu principal de administrador", "Admin", "administrators")</label>*@
+<div class="endoWrap">
+    <h3 class="center">
+        @Html.ActionLink("Añadir Administrador", "CreateAdmin", "administrators")
+    </h3>
+    <br />
+    <table class="tableP">
+        <tr>
+            <th style="padding-left:0">
+                @Html.DisplayNameFor(model => model.email)
+            </th>
+            @*<th>
+                    @Html.DisplayNameFor(model => model.password)
+                </th>*@
+            <th style="padding-left:10px">
+                @Html.DisplayNameFor(model => model.firstname)
+            </th>
+            <th style="padding-left:10px">
+                @Html.DisplayNameFor(model => model.lastname)
+            </th>
+            <th style="padding-left:10px">
+                @Html.DisplayNameFor(model => model.subadmin)
+            </th>
+            <th></th>
+        </tr>
 
-<p>
-    @Html.ActionLink("Add an Administrator", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.email)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.password)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.firstname)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.lastname)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.subadmin)
-        </th>
-        <th></th>
-    </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.email)
+                </td>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.password)
+                    </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.firstname)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.lastname)
+                </td>
+                <td>
+                    @if (item.subadmin == 1)
+                    {
+                        <p>Si</p>
+                    }
+                    else
+                    {
+                        <p>No</p>
+                    }
+                </td>
+                <td>
+                    @Html.ActionLink("Editar", "Edit", new { id = item.idAdmin }) |
+                    @Html.ActionLink("Detalles", "Details", new { id = item.idAdmin }) |
+                    @Html.ActionLink("Eliminar", "Delete", new { id = item.idAdmin })
+                </td>
+            </tr>
+        }
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.email)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.password)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.firstname)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.lastname)
-        </td>
-        <td>
-            @if (item.subadmin == 1)
-            {
-                <p>Yes</p>
+    </table>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    @*<style>
+            label.returnAdminHome {
+              display: block;
+                            padding-left: 15px;
+                            text-indent: -15px;
+                            float:right;
+                            bottom: -10px
             }
-            else
-            {
-                <p>No</p>
-            }
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.idAdmin }) |
-            @Html.ActionLink("Details", "Details", new { id=item.idAdmin }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.idAdmin })
-        </td>
-    </tr>
+        </style>*@
 }
-
-</table>

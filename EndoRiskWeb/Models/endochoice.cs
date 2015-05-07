@@ -10,7 +10,7 @@ namespace EndoRiskWeb.Models
         [Display(Name="Set")]
         [StringLength(5, ErrorMessage = "Set can't be longer than 5 characters.")]
         public string choiceSet { get; set; }
-        [Display(Name="Option")]
+        [Display(Name="Opcion del Set")]
         [StringLength(45, ErrorMessage = "Title can't be longer than 45 characters.")]
         public string choiceOption { get; set; }
     }

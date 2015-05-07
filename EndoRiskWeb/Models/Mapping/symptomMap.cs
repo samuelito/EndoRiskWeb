@@ -17,7 +17,7 @@ namespace EndoRiskWeb.Models.Mapping
 
             this.Property(t => t.abbr)
                 .IsRequired()
-                .HasMaxLength(5);
+                .HasMaxLength(10);
 
             // Table & Column Mappings
             this.ToTable("symptoms", "endorisk");

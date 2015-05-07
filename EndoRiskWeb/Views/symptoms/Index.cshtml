@@ -4,12 +4,13 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Symptoms</h2>
-
-<p>
-    @Html.ActionLink("Add Symptoms", "Create")
-</p>
-<table class="table">
+<h2 class="center">Síntomas de Endometriosis</h2>
+<div class="endoWrap">
+<h3 class="center">
+    @Html.ActionLink("Añadir Nuevo Síntoma de Endometriosis", "Create", "symptoms")
+</h3>
+    <br />
+<table class="tableP">
     <tr>
     
         <th>
@@ -18,6 +19,7 @@
         <th>
             @Html.DisplayNameFor(model => model.abbr)
         </th>
+        <th></th>
     </tr>
 
 @foreach (var item in Model) {
@@ -29,11 +31,12 @@
             @Html.DisplayFor(modelItem => item.abbr)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new {  id=item.idSymptom  }) |
-            <!--@Html.ActionLink("Details", "Details", new { id=item.idSymptom  }) |-->
-            @Html.ActionLink("Delete", "Delete", new {  id=item.idSymptom  })
+            @Html.ActionLink("Editar", "Edit", new {  id=item.idSymptom  }) |
+           
+            @Html.ActionLink("Eliminar", "Delete", new {  id=item.idSymptom  })
         </td>
     </tr>
 }
 
 </table>
+    </div>

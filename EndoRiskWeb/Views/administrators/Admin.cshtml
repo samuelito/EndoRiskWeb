@@ -1,0 +1,64 @@
+﻿@model EndoRiskWeb.Models.administrator
+
+@{
+    ViewBag.Title = "Funciones de Administrador";
+}
+
+@section featured {
+    <section>
+        <div class="center">
+
+            <h2>@ViewBag.Title</h2>
+            <br />
+        </div>
+    </section>
+
+    <div class="adminWrap">
+
+        <div class="leftA">
+            <h3 style="font-size:large">Busqueda</h3>
+            <p style="margin-left:20px">
+                @Html.ActionLink("Busqueda de Pacientes", "SearchPage", "Search")
+            </p>
+
+            <h3 style="font-size:large">Administradores</h3>
+            <p style="margin-left:20px">
+                @Html.ActionLink("Manejar administradores", "Index", "administrators")
+            </p>
+
+            <h3 style="font-size:large">Comentarios</h3>
+            <p style="margin-left:20px">
+                @Html.ActionLink("Ver comentarios", "ViewComments", "Comments")
+            </p>
+        </div>
+
+
+        <div class="leftA">
+            <h3 style="font-size:large">Endometriosis</h3>
+            <p style="margin-left:20px">
+                @Html.ActionLink("Manejar síntomas", "Index", "symptoms")
+            </p>
+
+            <p style="margin-left:20px">
+                @Html.ActionLink("Manejar preguntas", "Index", "endoquestions")
+            </p>
+
+            <p style="margin-left:20px">
+                @Html.ActionLink("Manejar opciones para preguntas", "Index", "endochoices")
+            </p>
+
+            <h3 style="font-size:large">Cuestionarios de Rome</h3>
+            <p style="margin-left:20px">
+                @Html.ActionLink("Manejar preguntas", "Index", "romequestions")
+            </p>
+            <p style="margin-left:20px">
+                @Html.ActionLink("Manejar opciones para las preguntas", "Index", "romechoices")
+            </p>
+            <p style="margin-left:20px">
+                @Html.ActionLink("Manejar Diagnosticos", "Index", "romediagnosis")
+            </p>
+        </div>
+
+    </div>
+}
+

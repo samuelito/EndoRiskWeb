@@ -1,0 +1,119 @@
+﻿@model EndoRiskWeb.Models.search
+<!--
+    Documentation: Samuel Feliciano
+
+-->
+@{
+    ViewBag.Title = "Página de Busqueda de Resultado";
+  
+}
+
+<section class="center">
+    <h2>@ViewBag.Title</h2>
+</section>
+<br />
+
+<!-- Start the form (POST) to use in the Risk Method-->
+@using (Html.BeginForm("SearchResult", "Search", FormMethod.Post, new { @name = "searchForm" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="searchWrap">
+        <div class="form-horizontal">
+            
+            
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+
+                <h3 class="center">Seleccione la Edad</h3>
+                <div class="center">
+                    <input class="center" type="number" name="AGE" min="12" max="74" value="" />
+                </div>
+
+
+                <h3 class="center">Seleccione Origen Etnico</h3>
+                <div class="col-md-10">
+                    <label class="center">
+                        <select name="EBA">
+                            <option value="TODOS" selected></option>
+                            @foreach (var choice in Model.ethnicitySearch)
+                            {
+                                <option value="@choice.choiceOption">@choice.choiceOption</option>
+                            }
+                        </select>
+                    </label>
+                </div>
+
+                <h3 class="center">Buscar Resultados Verificados</h3>
+                <div class="col-md-10">
+                    <label class="center">
+                        <select name="VER">
+                            <option value="TODOS" selected></option>
+                            <option value="NO">No Verificados</option>
+                            <option value="SI">Verificados</option>
+                        </select>
+                    </label>
+                </div>
+
+                <h3 class="center">Riesgo</h3>
+                <div class="col-md-10">
+                    <label class="center">
+                        <select name="LTR">
+                            <option value="TODOS" selected></option>
+                            <option value="ALTO">Alto Riesgo</option>
+                            <option value="MEDIANO">Mediano Riesgo</option>
+                            <option value="BAJO">Bajo Riesgo</option>
+                        </select>
+                    </label>
+                </div>
+
+                <h3 class="center">Severidad</h3>
+                <div class="col-md-10">
+                    <label class="center">
+                        <select name="SEV">
+                            <option value="TODOS" selected></option>
+                            <option value="Mínimo-Leve(I-II)">Mínimo-Leve</option>
+                            <option value="Moderado-Severo(III-IV)">Moderado-Severo</option>
+                        </select>
+                    </label>
+                </div>
+
+                <h3 class="center">Seleccione Sintomas</h3>
+                <div class="boxS">
+                    <div class="leftS">
+                        @for (int i = 0; i <= (Model.symptomsSearch.Count / 2); i++)
+                        {   <div>
+                            <input id="showChecked" type="checkbox" name="SYM" value="@Model.symptomsSearch.ElementAt(i).abbr" />
+                            @Model.symptomsSearch.ElementAt(i).symptom1
+                        </div>
+                        }
+                    </div>
+                    <div class="leftS">
+
+                        @for (int i = (Model.symptomsSearch.Count / 2)+1; i < Model.symptomsSearch.Count; i++)
+                        {   <div>
+                            <input id="showChecked" type="checkbox" name="SYM" value="@Model.symptomsSearch.ElementAt(i).abbr" />
+                            @Model.symptomsSearch.ElementAt(i).symptom1
+                        </div>
+                        }
+                        <br />
+                        <br />
+                    </div>
+                </div>
+            </div>
+            <br />
+            <!-- Submit button for the form -> SEARCH:Result -->
+            <div class="center" style="clear:both;">
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input id="submitted" type="submit" value="Buscar" class="btn btn-default" @*disabled="disabled"*@ />
+                    </div>
+                </div>
+            </div>
+            <br />
+        </div>
+    </div>
+}
+
+@section Scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+}

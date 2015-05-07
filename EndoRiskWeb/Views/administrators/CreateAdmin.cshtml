@@ -1,0 +1,74 @@
+﻿@model EndoRiskWeb.Models.RegisterModel
+
+@{
+    ViewBag.Title = "Crear administrador";
+}
+
+   <h2 class="center">Añadir administrador</h2>
+<br />
+
+<div class="detailWrap">
+
+    @using (Html.BeginForm("CreateAdmin", "administrators", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary()
+
+        @*<div class="returnAdminHome"> @Html.ActionLink("Volver a menu principal", "Admin", "administrators")</div>*@
+
+        <fieldset>
+            <legend>Registration Form</legend>
+            <ol>
+                <li>
+                    @Html.LabelFor(admin => admin.firstname)
+                    @Html.TextBoxFor(admin => admin.firstname)
+                </li>
+                <li>
+                    @Html.LabelFor(admin => admin.lastname)
+                    @Html.TextBoxFor(admin => admin.lastname)
+                </li>
+                <li>
+                    @Html.LabelFor(admin => admin.email)
+                    @Html.TextBoxFor(admin => admin.email)
+                </li>
+                <li>
+                    @Html.LabelFor(admin => admin.Password)
+                    @Html.PasswordFor(admin => admin.Password)
+                </li>
+                <li>
+                    @Html.LabelFor(admin => admin.ConfirmPasswordRegister)
+                    @Html.PasswordFor(admin => admin.ConfirmPasswordRegister)
+                </li>
+
+            </ol>
+
+            <label class="center">Administrador:@Html.RadioButtonFor(admin => admin.subadmin, 0, false) </label>
+            <label class="center">Sub-administrador:@Html.RadioButtonFor(admin => admin.subadmin, 1, true) </label>
+            <br />
+            <div class="center">
+                <input type="submit" value="Crear Administrador" />
+            </div>
+        </fieldset>
+    }
+    <br />
+    <div class="center">
+        @Html.ActionLink("Volver a la lista", "Index", "administrators")
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    @*<style>
+        
+    div.returnAdminHome{
+                       display: block;
+                        padding-left: 15px;
+                        text-indent: -15px;
+                        float:right;
+                        bottom: -10px
+    }
+    </style>*@
+}

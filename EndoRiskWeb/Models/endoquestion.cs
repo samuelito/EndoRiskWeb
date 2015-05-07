@@ -7,14 +7,14 @@ namespace EndoRiskWeb.Models
     public partial class endoquestion
     {
         public long idQuestion { get; set; }
-        [Display(Name="Question")]
-        [StringLength(255, ErrorMessage = "Question can't be longer than 255 characters.")]
+        [Display(Name="Pregunta")]
+        [StringLength(255, ErrorMessage = "La pregunta no debe tener mas de 255 caracteres.")]
         public string endoQuestion1 { get; set; }
-        [Display(Name="Abbreviation")]
-        [StringLength(5, ErrorMessage = "Abbreviation can't be longer than 5 characters.")]
+        [Display(Name="Abbreviatura")]
+        [StringLength(5, ErrorMessage = "La abbreviatura debe tener menos de 5 caracteres.")]
         public string abbr { get; set; }
-        [Display(Name="Set of Answers")]
-        [StringLength(5, ErrorMessage = "Set can't be longer than 5 characters.")]
+        [Display(Name="Set de respuestas")]
+        [StringLength(5, ErrorMessage = "El set de preguntas debe ser menos de 5 caracteres.")]
         public string choiceSet { get; set; }
     }
 }

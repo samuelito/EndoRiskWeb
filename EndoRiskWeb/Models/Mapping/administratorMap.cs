@@ -17,13 +17,16 @@ namespace EndoRiskWeb.Models.Mapping
 
             this.Property(t => t.password)
                 .IsRequired()
-                .HasMaxLength(25);
+                .HasMaxLength(255);
 
             this.Property(t => t.firstname)
                 .HasMaxLength(50);
 
             this.Property(t => t.lastname)
                 .HasMaxLength(50);
+
+            this.Property(t => t.passwordSalt)
+                .HasMaxLength(255);
 
             // Table & Column Mappings
             this.ToTable("administrator", "endorisk");
@@ -33,6 +36,7 @@ namespace EndoRiskWeb.Models.Mapping
             this.Property(t => t.firstname).HasColumnName("firstname");
             this.Property(t => t.lastname).HasColumnName("lastname");
             this.Property(t => t.subadmin).HasColumnName("subadmin");
+            this.Property(t => t.passwordSalt).HasColumnName("passwordSalt");
         }
     }
 }

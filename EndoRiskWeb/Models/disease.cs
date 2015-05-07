@@ -9,6 +9,6 @@ namespace EndoRiskWeb.Models
         public string disease1 { get; set; }
         public Nullable<int> idRomeQuestion { get; set; }
         public string criteria { get; set; }
-        public string comparedValue { get; set; }
+        public int comparedValue { get; set; }
     }
 }
