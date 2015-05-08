@@ -24,7 +24,19 @@ namespace EndoRiskWeb.Controllers
          */
         public ActionResult Index()
         {
-            return View(db.symptoms.ToList());
+            if (User.Identity.IsAuthenticated)
+            {
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 0)
+                {
+                    return View(db.symptoms.ToList());
+                }
+
+                else { return View("~/Views/Notifications/AccessDenied.cshtml"); }
+            }
+
+            else { return View("~/Views/Notifications/AccessDenied.cshtml"); }
+
+            
         }
 
         /*
@@ -33,7 +45,17 @@ namespace EndoRiskWeb.Controllers
            */
         public ActionResult Create()
         {
-            return View();
+            if (User.Identity.IsAuthenticated)
+            {
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 0)
+                {
+                    return View();
+                }
+
+                else { return View("~/Views/Notifications/AccessDenied.cshtml"); }
+            }
+
+            else { return View("~/Views/Notifications/AccessDenied.cshtml"); }            
         }
 
         /*
@@ -70,16 +92,27 @@ namespace EndoRiskWeb.Controllers
          */
         public ActionResult Edit(int? id)
         {
-            if (id == null)
+            if (User.Identity.IsAuthenticated)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 0)
+                {
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    symptom symptom = db.symptoms.Find(id);
+                    if (symptom == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    return View(symptom);
+                }
+
+                else { return View("~/Views/Notifications/AccessDenied.cshtml"); }
             }
-            symptom symptom = db.symptoms.Find(id);
-            if (symptom == null)
-            {
-                return HttpNotFound();
-            }
-            return View(symptom);
+
+            else { return View("~/Views/Notifications/AccessDenied.cshtml"); }
+            
         }
 
         /*
@@ -108,16 +141,26 @@ namespace EndoRiskWeb.Controllers
          */
         public ActionResult Delete(int? id)
         {
-            if (id == null)
+            if (User.Identity.IsAuthenticated)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 0)
+                {
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    symptom symptom = db.symptoms.Find(id);
+                    if (symptom == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    return View(symptom);
+                }
+
+                else { return View("~/Views/Notifications/AccessDenied.cshtml"); }
             }
-            symptom symptom = db.symptoms.Find(id);
-            if (symptom == null)
-            {
-                return HttpNotFound();
-            }
-            return View(symptom);
+
+            else { return View("~/Views/Notifications/AccessDenied.cshtml"); }            
         }
 
         /*

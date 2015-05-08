@@ -24,7 +24,17 @@ namespace EndoRiskWeb.Controllers
          */
         public ActionResult ViewComments()
         {
-            return View(db.comments.ToList());
+             if (User.Identity.IsAuthenticated)
+            {
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 0)
+                {
+                    return View(db.comments.ToList());
+                }
+
+                else { return View("~/Views/Notifications/AccessDenied.cshtml"); }
+            }
+
+            else { return View("~/Views/Notifications/AccessDenied.cshtml"); }           
         }
 
         /*
@@ -33,16 +43,29 @@ namespace EndoRiskWeb.Controllers
          */
         public ActionResult Details(long? id)
         {
-            if (id == null)
+            if (User.Identity.IsAuthenticated)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 0)
+                {
+                     if (id == null)
+                     {
+                            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                     }
+                     
+                    comment comment = db.comments.Find(id);
+
+                     if (comment == null)
+                     {
+                            return HttpNotFound();
+                     }
+
+                     return View(comment);
+                }
+
+                else { return View("~/Views/Notifications/AccessDenied.cshtml"); }
             }
-            comment comment = db.comments.Find(id);
-            if (comment == null)
-            {
-                return HttpNotFound();
-            }
-            return View(comment);
+
+            else { return View("~/Views/Notifications/AccessDenied.cshtml"); }         
         }
 
         /*
@@ -92,16 +115,31 @@ namespace EndoRiskWeb.Controllers
         */
         public ActionResult Delete(long? id)
         {
-            if (id == null)
+            if (User.Identity.IsAuthenticated)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 0)
+                {
+                     if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+
+                    comment comment = db.comments.Find(id);
+
+                    if (comment == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    return View(comment);
+                }
+
+                else { return View("~/Views/Notifications/AccessDenied.cshtml"); }
             }
-            comment comment = db.comments.Find(id);
-            if (comment == null)
-            {
-                return HttpNotFound();
-            }
-            return View(comment);
+
+            else { return View("~/Views/Notifications/AccessDenied.cshtml"); }
+
+
+           
         }
 
         /*
@@ -114,10 +152,24 @@ namespace EndoRiskWeb.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(long id)
         {
-            comment comment = db.comments.Find(id);
-            db.comments.Remove(comment);
-            db.SaveChanges();
-            return RedirectToAction("ViewComments", "Comments");
+
+            if (User.Identity.IsAuthenticated)
+            {
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 0)
+                {
+                    comment comment = db.comments.Find(id);
+                    db.comments.Remove(comment);
+                    db.SaveChanges();
+                    return RedirectToAction("ViewComments", "Comments");
+                }
+
+                else { return View("~/Views/Notifications/AccessDenied.cshtml"); }
+            }
+
+            else { return View("~/Views/Notifications/AccessDenied.cshtml"); }
+
+
+            
         }
 
         protected override void Dispose(bool disposing)

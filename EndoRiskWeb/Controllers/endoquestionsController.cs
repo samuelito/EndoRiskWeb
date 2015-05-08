@@ -19,9 +19,21 @@ namespace EndoRiskWeb.Controllers
          * Create
          */
         public ActionResult Index()
-        {   
+        {
+
+            if (User.Identity.IsAuthenticated)
+            {
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 0)
+                {
+                    return View(db.endoquestions.ToList());
+                }
+
+                else { return View("~/Views/Notifications/AccessDenied.cshtml"); }
+            }
+
+            else { return View("~/Views/Notifications/AccessDenied.cshtml"); }
             //Returns in the index view, the list of questions for endometriosis
-            return View(db.endoquestions.ToList());
+            
         }
 
         /*
@@ -30,16 +42,28 @@ namespace EndoRiskWeb.Controllers
         */
         public ActionResult Details(long? id)
         {
-            if (id == null)
+            if (User.Identity.IsAuthenticated)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 0)
+                {
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+
+                    endoquestion endoquestion = db.endoquestions.Find(id);
+
+                    if (endoquestion == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    return View(endoquestion);
+                }
+
+                else { return View("~/Views/Notifications/AccessDenied.cshtml"); }
             }
-            endoquestion endoquestion = db.endoquestions.Find(id);
-            if (endoquestion == null)
-            {
-                return HttpNotFound();
-            }
-            return View(endoquestion);
+
+            else { return View("~/Views/Notifications/AccessDenied.cshtml"); }            
         }
 
         /*
@@ -48,7 +72,17 @@ namespace EndoRiskWeb.Controllers
           */
         public ActionResult Create()
         {
-            return View();
+            if (User.Identity.IsAuthenticated)
+            {
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 0)
+                {
+                    return View();
+                }
+
+                else { return View("~/Views/Notifications/AccessDenied.cshtml"); }
+            }
+
+            else { return View("~/Views/Notifications/AccessDenied.cshtml"); }           
         }
 
         /*
@@ -94,16 +128,29 @@ namespace EndoRiskWeb.Controllers
          */
         public ActionResult Edit(long? id)
         {
-            if (id == null)
+            if (User.Identity.IsAuthenticated)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 0)
+                {
+                       if (id == null)
+                        {
+                            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                        }
+
+                        endoquestion endoquestion = db.endoquestions.Find(id);
+
+                        if (endoquestion == null)
+                        {
+                            return HttpNotFound();
+                        }
+                        return View(endoquestion);
+                }
+
+                else { return View("~/Views/Notifications/AccessDenied.cshtml"); }
             }
-            endoquestion endoquestion = db.endoquestions.Find(id);
-            if (endoquestion == null)
-            {
-                return HttpNotFound();
-            }
-            return View(endoquestion);
+
+            else { return View("~/Views/Notifications/AccessDenied.cshtml"); }
+         
         }
 
         
@@ -134,16 +181,27 @@ namespace EndoRiskWeb.Controllers
         */
         public ActionResult Delete(long? id)
         {
-            if (id == null)
+            if (User.Identity.IsAuthenticated)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 0)
+                {
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    endoquestion endoquestion = db.endoquestions.Find(id);
+                    if (endoquestion == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    return View(endoquestion);
+                }
+
+                else { return View("~/Views/Notifications/AccessDenied.cshtml"); }
             }
-            endoquestion endoquestion = db.endoquestions.Find(id);
-            if (endoquestion == null)
-            {
-                return HttpNotFound();
-            }
-            return View(endoquestion);
+
+            else { return View("~/Views/Notifications/AccessDenied.cshtml"); }
+            
         }
 
         /*

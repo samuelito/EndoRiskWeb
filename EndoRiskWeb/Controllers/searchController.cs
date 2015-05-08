@@ -13,29 +13,39 @@ namespace EndoRiskWeb.Controllers
          // GET: search
         public ActionResult SearchPage()
         {
-            using (endoriskContext db = new endoriskContext()) 
+            if (User.Identity.IsAuthenticated)
             {
-                search s = new search();
-                s.symptomsSearch = new List<symptom>();
-                s.ethnicitySearch = new List<endochoice>();
-
-                var ethnicity = db.endoquestions.Where(m => m.abbr.Equals("EBA")).Select(m=>m.choiceSet).FirstOrDefault().ToString();
-
-                var listSymptoms = db.symptoms;
-                var listChoices = db.endochoices.Where(m => m.choiceSet.Equals(ethnicity));
-                
-                foreach (var item in listSymptoms)
-                {  
-                    s.symptomsSearch.Add(item);    
-                }
-                
-                foreach (var item in listChoices)
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 0)
                 {
-                    s.ethnicitySearch.Add(item);
+                     using (endoriskContext db = new endoriskContext()) 
+                    {
+                        search s = new search();
+                        s.symptomsSearch = new List<symptom>();
+                        s.ethnicitySearch = new List<endochoice>();
+
+                        var ethnicity = db.endoquestions.Where(m => m.abbr.Equals("EBA")).Select(m=>m.choiceSet).FirstOrDefault().ToString();
+
+                        var listSymptoms = db.symptoms;
+                        var listChoices = db.endochoices.Where(m => m.choiceSet.Equals(ethnicity));
+                
+                        foreach (var item in listSymptoms)
+                        {  
+                            s.symptomsSearch.Add(item);    
+                        }
+                
+                        foreach (var item in listChoices)
+                        {
+                            s.ethnicitySearch.Add(item);
+                        }
+
+                        return View(s);
+                    }
                 }
 
-                return View(s);
+                else { return View("~/Views/Notifications/AccessDenied.cshtml"); }
             }
+
+            else { return View("~/Views/Notifications/AccessDenied.cshtml"); }           
         }
 
         public ActionResult SearchResult(FormCollection searchValues)
