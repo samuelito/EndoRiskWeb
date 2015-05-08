@@ -419,12 +419,11 @@ namespace EndoRiskWeb.Controllers
 
                         else
                         {
-                            ViewBag.Error = "El usuario no existe en el sistema. Por favor ingrese su correo electrónico correctamente.";
+                            var errorMessage = "El usuario no existe en el sistema. Por favor ingrese su correo electrónico correctamente.";
+                            ViewData["errorMessage"] = errorMessage; 
                             return View();
                         }
-                    }
-
-                    return RedirectToAction("PasswordSent", "administrators");           
+                    }                              
         }
 
         [HttpGet]
@@ -438,6 +437,8 @@ namespace EndoRiskWeb.Controllers
         [HttpPost]
         public ActionResult ResetPassword(LocalPasswordModel userNewPassword)
         {
+            if (ModelState.IsValid)
+            {
                     using (endoriskContext db = new endoriskContext())
                     {
                         //string mail = Request["recoverPassword"].ToString();
@@ -452,14 +453,15 @@ namespace EndoRiskWeb.Controllers
                             var newSalt = crypto.Salt;
                             adminUser.password = encrypTemp;
                             adminUser.passwordSalt = newSalt;
-                            db.SaveChanges();                          
+                            db.SaveChanges();
 
-                            RedirectToAction("PasswordSent", "administrators");
+                            return View("~/Views/Notifications/PasswordChangeSuccesful.cshtml");
                         }
                      
                     }
+            }
              
-            return View("~/Views/Notifications/PasswordChangeSuccesful.cshtml");
+            return View(userNewPassword);
         }
 
         [HttpGet]

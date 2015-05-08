@@ -6,53 +6,26 @@ using System.Web;
 
 namespace EndoRiskWeb.Models
 {
-    //public class UsersContext : DbContext
-    //{
-    //    public UsersContext()
-    //        : base("DefaultConnection")
-    //    {
-    //    }
-
-    //    public DbSet<UserProfile> UserProfiles { get; set; }
-    //}
-
-    //[Table("UserProfile")]
-    //public class UserProfile
-    //{
-    //    [Key]
-    //    [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
-    //    public int UserId { get; set; }
-    //    public string UserName { get; set; }
-    //}
-
-    //public class RegisterExternalLoginModel
-    //{
-    //    [Required]
-    //    [Display(Name = "User name")]
-    //    public string UserName { get; set; }
-
-    //    public string ExternalLoginData { get; set; }
-    //}
-
     public class LocalPasswordModel
     {       
         //[DataType(DataType.EmailAddress)] 
         [Display(Name = "Correo electrónico")]
         public string userEmail { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Contraseña requerida", AllowEmptyStrings = false)]
         [DataType(DataType.Password)]
-        [StringLength(25, ErrorMessage = "La contraseña no puede contener más de 25 carateres.")]
+        [StringLength(100, ErrorMessage = "La contraseña no puede contener más de 100 carateres.")]
         [Display(Name = "Contraseña actual")]
         public string OldPassword { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Contraseña requerida", AllowEmptyStrings = false)]
         [StringLength(100, ErrorMessage = "La {0} debe contener al menos {2} caracteres.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Nueva contraseña")]
         public string NewPassword { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Por favor, introduzca su contraseña nuevamente", AllowEmptyStrings = false)]
+        [StringLength(100, ErrorMessage = "La {0} debe contener al menos {2} caracteres.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Confirme su contraseña")]
         [Compare("NewPassword", ErrorMessage = "Su contraseña no es igual a la escrita en el campo anterior.")]
@@ -71,10 +44,7 @@ namespace EndoRiskWeb.Models
         [StringLength(100, ErrorMessage = "La {0} debe contener al menos {2} caracteres.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Contraseña")]
-        public string Password { get; set; }
-
-        //[Display(Name = "Recuérdame")]
-        //public bool RememberMe { get; set; }   
+        public string Password { get; set; }      
     }
 
     public class RegisterModel
@@ -105,6 +75,7 @@ namespace EndoRiskWeb.Models
         public string Password { get; set; }
 
         [Required(ErrorMessage = "Por favor, introduzca su contraseña nuevamente", AllowEmptyStrings = false)]
+        [StringLength(100, ErrorMessage = "La {0} debe contener al menos {2} caracteres.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Confirmar contraseña")]
         [Compare("Password", ErrorMessage = "Su contraseña no es igual a la escrita en el campo anterior.")]
