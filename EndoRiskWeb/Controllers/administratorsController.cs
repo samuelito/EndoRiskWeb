@@ -21,11 +21,20 @@ namespace EndoRiskWeb.Controllers
     public class administratorsController : Controller
     {
         private endoriskContext db = new endoriskContext();
-
         // GET: administrators
         public ActionResult Index()
         {
-            return View(db.administrators.ToList());
+            if (User.Identity.IsAuthenticated)
+            {
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 0)
+                {
+                    return View(db.administrators.ToList());
+                }
+
+                else { return View("~/Views/Notifications/AccessDenied.cshtml"); }
+            }
+
+            else { return View("~/Views/Notifications/AccessDenied.cshtml"); }
         }
 
         [HttpGet]
@@ -33,45 +42,62 @@ namespace EndoRiskWeb.Controllers
         // GET: administrators/Details/5
         public ActionResult Details(long? id)
         {
-            if (id == null)
+            if (User.Identity.IsAuthenticated)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 0)
+                {
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+
+                    administrator administrator = db.administrators.Find(id);
+
+                    if (administrator == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    return View(administrator);
+                }
+                else { return View("~/Views/Notifications/AccessDenied.cshtml"); }
             }
-            administrator administrator = db.administrators.Find(id);
-            if (administrator == null)
-            {
-                return HttpNotFound();
-            }
-            return View(administrator);
+
+            else { return View("~/Views/Notifications/AccessDenied.cshtml"); }
         }
-
+       // [HttpGet]
+       //// [ChildActionOnly]
+       // // GET: administrators/Create
+       // public ActionResult Create()
+       // {
+       //     return View();
+       // }
+        
         [HttpGet]
-       // [ChildActionOnly]
-        // GET: administrators/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-       
-
-        [HttpGet]
-       // [ChildActionOnly]
+        // [ChildActionOnly]
         // GET: administrators/Edit/5
         public ActionResult Edit(long? id)
         {
-            if (id == null)
+            if (User.Identity.IsAuthenticated)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            administrator administrator = db.administrators.Find(id);
-            if (administrator == null)
-            {
-                return HttpNotFound();
-            }
-            return View(administrator);
-        }
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 0)
+                {
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    administrator administrator = db.administrators.Find(id);
+                    if (administrator == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    return View(administrator);
+                }
 
+                else { return View("~/Views/Notifications/AccessDenied.cshtml"); }
+            }
+
+            else { return View("~/Views/Notifications/AccessDenied.cshtml"); }
+        }
         // POST: administrators/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -80,17 +106,27 @@ namespace EndoRiskWeb.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "idAdmin,email,password,firstname,lastname,subadmin")] administrator administrator)
         {
-                
-            if (ModelState.IsValid)
+            if (User.Identity.IsAuthenticated)
             {
-               var salt = db.administrators.Where(m => m.email.Equals(administrator.email)).Select(m => m.passwordSalt).FirstOrDefault();
-                administrator.password = administrator.password;
-                administrator.passwordSalt = salt; 
-                db.Entry(administrator).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 0)
+                {
+
+                    if (ModelState.IsValid)
+                    {
+                        var salt = db.administrators.Where(m => m.email.Equals(administrator.email)).Select(m => m.passwordSalt).FirstOrDefault();
+                        administrator.password = administrator.password;
+                        administrator.passwordSalt = salt;
+                        db.Entry(administrator).State = EntityState.Modified;
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                    return View(administrator);
+                }
+
+                else { return View("~/Views/Notifications/AccessDenied.cshtml"); }
             }
-            return View(administrator);
+
+            else { return View("~/Views/Notifications/AccessDenied.cshtml"); }
         }
 
         [HttpGet]
@@ -98,16 +134,29 @@ namespace EndoRiskWeb.Controllers
         // GET: administrators/Delete/5
         public ActionResult Delete(long? id)
         {
-            if (id == null)
+            if (User.Identity.IsAuthenticated)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 0)
+                {
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+
+                    administrator administrator = db.administrators.Find(id);
+
+                    if (administrator == null)
+                    {
+                        return HttpNotFound();
+                    }
+
+                    return View(administrator);
+                }
+
+                else { return View("~/Views/Notifications/AccessDenied.cshtml"); }
             }
-            administrator administrator = db.administrators.Find(id);
-            if (administrator == null)
-            {
-                return HttpNotFound();
-            }
-            return View(administrator);
+
+            else { return View("~/Views/Notifications/AccessDenied.cshtml"); }
         }
 
         // POST: administrators/Delete/5
@@ -116,10 +165,20 @@ namespace EndoRiskWeb.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(long id)
         {
-            administrator administrator = db.administrators.Find(id);
-            db.administrators.Remove(administrator);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            if (User.Identity.IsAuthenticated)
+            {
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 0)
+                {
+                    administrator administrator = db.administrators.Find(id);
+                    db.administrators.Remove(administrator);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+
+                else { return View("~/Views/Notifications/AccessDenied.cshtml"); }
+            }
+
+            else { return View("~/Views/Notifications/AccessDenied.cshtml"); }
         }
 
         protected override void Dispose(bool disposing)
@@ -185,16 +244,36 @@ namespace EndoRiskWeb.Controllers
 
         public ActionResult Logout()
         {
-            
-            FormsAuthentication.SignOut();
-            return RedirectToAction("EndoriskQuestions", "EndoriskCalculator");
+            if (User.Identity.IsAuthenticated)
+            {
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 0)
+                {
+
+                    FormsAuthentication.SignOut();
+                    return RedirectToAction("EndoriskQuestions", "EndoriskCalculator");
+                }
+
+                else { return View("~/Views/Notifications/AccessDenied.cshtml"); }
+            }
+
+            else { return View("~/Views/Notifications/AccessDenied.cshtml"); }
         }
 
         [HttpGet]
        // [ChildActionOnly]
         public ActionResult CreateAdmin()
         {
-            return View();
+            if (User.Identity.IsAuthenticated)
+            {
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 0)
+                {
+                    return View();
+                }
+
+                else { return View("~/Views/Notifications/AccessDenied.cshtml"); }
+            }
+
+            else { return View("~/Views/Notifications/AccessDenied.cshtml"); }           
         }
 
         [HttpPost]
@@ -203,6 +282,9 @@ namespace EndoRiskWeb.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 0)
+
+                    //return View("~/Views/Notifications/AccessDenied.cshtml");
                 using (endoriskContext db = new endoriskContext())
                 {
                     var user1 = db.administrators.Where(user => user.email.Equals(registerAdmin.email)).ToList();
@@ -267,10 +349,9 @@ namespace EndoRiskWeb.Controllers
         }
 
         public void SendEmail(EndoRiskWeb.Models.SendEmailModel emailObject)
-        {
+        {           
             if (ModelState.IsValid)
             {
-
                 MailMessage mail = new MailMessage();
                 mail.To.Add(emailObject.To);
                 mail.From = new MailAddress(emailObject.From);
@@ -289,65 +370,106 @@ namespace EndoRiskWeb.Controllers
                 smtp.EnableSsl = true;
                 smtp.Send(mail);
             }
+            else { }      
         }
 
 
         [HttpGet]
         public ActionResult RecoverPassword()
-        {
-            return View();
+        {           
+             return View();              
         }
 
         [HttpPost]
-        public ActionResult RecoverPassword(string email)
+        public ActionResult RecoverPassword(string a)
         {
-            //RegisterModel registerAdmin = new RegisterModel();
-            using (endoriskContext db = new endoriskContext())
-            {
-                string mail = Request["recoverPassword"].ToString();
-                var User = db.administrators.Where(user => user.email.Equals(mail)).ToList();
-
-                if (User.Count != 0)
-                {
-                    var crypto = new SimpleCrypto.PBKDF2();
-                    var userPassword = crypto.Compute(User[0].password, User[0].passwordSalt.ToString());
-
-                    string adminMessage = "Saludos " + mail + "!\n Su contraseña: " + userPassword.ToString() + ". Gracias por utilizar Endorisk!";
-                    adminMessage = adminMessage.Replace("\n", System.Environment.NewLine);
-
-                    SendEmailModel Email = new SendEmailModel()
+                    using (endoriskContext db = new endoriskContext())
                     {
-                        From = "epm059@gmail.com",
-                        To = mail,
-                        Subject = "Bienvenido(a) a EndoRisk!",
-                        Body = adminMessage,
-                    };
+                        string mail = Request["recoverPassword"].ToString();
+                        var adminUser = db.administrators.Where(user => user.email.Equals(mail)).FirstOrDefault();
 
-                    SendEmail(Email);
+                        if (adminUser != null)
+                        {
+                            //makes temporary password and saves it to the DB
+                            var crypto = new SimpleCrypto.PBKDF2(); 
+                            string tempPass = "endorisk" + Guid.NewGuid().ToString();
+                            var encrypTemp = crypto.Compute(tempPass);
+                            var tempSalt = crypto.Salt;
+                            adminUser.password = encrypTemp;
+                            adminUser.passwordSalt = tempSalt;
+                            db.SaveChanges();
 
-                    RedirectToAction("PasswordSent", "administrators");
-                }
+                            //send temporary password to user
+                            string adminMessage = "Saludos " + mail + "!\n Su contraseña temporera es: " + tempPass + ". Gracias por utilizar Endorisk!";
+                            adminMessage = adminMessage.Replace("\n", System.Environment.NewLine);
 
-                else
-                {
-                    ViewBag.Error = "El usuario no existe en el sistema. Por favor ingrese su correo electrónico correctamente.";
-                    // ModelState.AddModelError("", );
-                    //Redirect("RecoverPassword","Notifications");
+                            SendEmailModel Email = new SendEmailModel()
+                            {
+                                From = "epm059@gmail.com",
+                                To = mail,
+                                Subject = "Bienvenido(a) a EndoRisk!",
+                                Body = adminMessage,
+                            };
 
-                }
-            }
+                            SendEmail(Email);
 
-            return View();
+                            ViewBag.email = mail;
+                            return RedirectToAction("PasswordSent", "administrators", new {email = mail});
+                        }
+
+                        else
+                        {
+                            ViewBag.Error = "El usuario no existe en el sistema. Por favor ingrese su correo electrónico correctamente.";
+                            return View();
+                        }
+                    }
+
+                    return RedirectToAction("PasswordSent", "administrators");           
         }
 
         [HttpGet]
-        public ActionResult PasswordSent()
+        public ActionResult ResetPassword(string email)
         {
+            
+           ViewData["email"] = email;
+           return View();
+        }
+
+        [HttpPost]
+        public ActionResult ResetPassword(LocalPasswordModel userNewPassword)
+        {
+                    using (endoriskContext db = new endoriskContext())
+                    {
+                        //string mail = Request["recoverPassword"].ToString();
+                        var adminUser = db.administrators.Where(user => user.email.Equals(userNewPassword.userEmail)).FirstOrDefault();
+
+                        if (adminUser != null)
+                        {
+                            //makes temporary password and saves it to the DB
+                            var crypto = new SimpleCrypto.PBKDF2();
+                            string newPass = userNewPassword.NewPassword;
+                            var encrypTemp = crypto.Compute(newPass);
+                            var newSalt = crypto.Salt;
+                            adminUser.password = encrypTemp;
+                            adminUser.passwordSalt = newSalt;
+                            db.SaveChanges();                          
+
+                            RedirectToAction("PasswordSent", "administrators");
+                        }
+                     
+                    }
+             
+            return View("~/Views/Notifications/PasswordChangeSuccesful.cshtml");
+        }
+
+        [HttpGet]
+        public ActionResult PasswordSent(string email)
+        {
+            ViewData["email"] =  email;
             return View();
         }
 
         [HttpGet]
-       // [ChildActionOnly]
         public ActionResult Admin()
         {
             if (User.Identity.IsAuthenticated)
@@ -357,7 +479,7 @@ namespace EndoRiskWeb.Controllers
                     return View();
                 }
             }
-            return RedirectToAction("EndoriskQuestions","EndoriskCalculator");
+            return View("~/Views/Notifications/AccessDenied.cshtml");
         }
 
         private ActionResult RedirectToLocal(string returnUrl)

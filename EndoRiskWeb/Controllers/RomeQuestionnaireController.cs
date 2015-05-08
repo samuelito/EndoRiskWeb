@@ -41,146 +41,161 @@ namespace EndoRiskWeb.Controllers
          */
         public ActionResult DisplayRomeQuestionnaire(int quizNum, int patientNum) 
         {
-            //Por el momento obtengo el Quiz y el Paciente por parámetro.
-            
-            IDquiz = quizNum;
-            IDPatient = patientNum; 
-
-            
-            /*
-             * Utilizar esta lógica de enviar lista vacía con un mensaje para cuando el id de paciente con el quiz, no sea válido
-            if(IDquiz == 13 && passWord.Equals("12"))
-            {
-                List<questionsRome> romeQuestionsListi = new List<questionsRome>(); //lisa vacia para que no le salga nada en el view.
-                return View (romeQuestionsListi);
-            }
-            */
-
-            determineDiseases(IDquiz); //Call the method to determine the diseases of this patient's quiz, according to her symptoms.
-
-            //If patient has no symptoms
-            //Crear otro view para decir que no tiene enfermedades relacionadas y hacer un redirect to action
-            if(errorStatus.Equals("Patient has no symptoms to compare"))
-            {
-                return RedirectToAction("NoRomeSymptoms", "RomeQuestionnaire");
-            }
-
-            //Else continue normally:
-
-            System.Diagnostics.Debug.Write("\nDeben estar las enfermedades de la paciente según sus síntomas.\n"); //For testing
-
-            //At this point variable displayDiseases has all diseases obtained from the symptoms
-            //but did not include pre-diseases.  In the next step, pre-diseases should be added.
-
-
-            /* 
-             * Logic to determine the order in which diseases should be calculated. (LIST OF STRINGS)
-             */
-            var dependencies = db.romedependencies.ToList(); //Get all the dependencies of the diseases.
-
-            for(int i = 0; i < displayDiseases.Count; i++)
-            {
-                if(dependencies.Select(m => m.disease).Contains(displayDiseases[i]))
+            //if (User.Identity.IsAuthenticated)
+            //{
+                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 0)
                 {
-                    determineOrder(displayDiseases[i]); //Call the method to store diseases in order, according to their pre-diseases dependencies.
                     
-                    if(!orderDisplayDiseases.Contains(displayDiseases[i]))
+                    //Por el momento obtengo el Quiz y el Paciente por parámetro.
+
+                    IDquiz = quizNum;
+                    IDPatient = patientNum;
+
+
+                    /*
+                     * Utilizar esta lógica de enviar lista vacía con un mensaje para cuando el id de paciente con el quiz, no sea válido
+                    if(IDquiz == 13 && passWord.Equals("12"))
                     {
-                        orderDisplayDiseases.Add(displayDiseases[i]); //Add the disease that generates the first call of the recursive method.
+                        List<questionsRome> romeQuestionsListi = new List<questionsRome>(); //lisa vacia para que no le salga nada en el view.
+                        return View (romeQuestionsListi);
                     }
+                    */
+
+                    determineDiseases(IDquiz); //Call the method to determine the diseases of this patient's quiz, according to her symptoms.
+
+                    //If patient has no symptoms
+                    //Crear otro view para decir que no tiene enfermedades relacionadas y hacer un redirect to action
+                    if (errorStatus.Equals("Patient has no symptoms to compare"))
+                    {
+                        return RedirectToAction("NoRomeSymptoms", "RomeQuestionnaire");
+                    }
+
+                    //Else continue normally:
+
+                    System.Diagnostics.Debug.Write("\nDeben estar las enfermedades de la paciente según sus síntomas.\n"); //For testing
+
+                    //At this point variable displayDiseases has all diseases obtained from the symptoms
+                    //but did not include pre-diseases.  In the next step, pre-diseases should be added.
+
+
+                    /* 
+                     * Logic to determine the order in which diseases should be calculated. (LIST OF STRINGS)
+                     */
+                    var dependencies = db.romedependencies.ToList(); //Get all the dependencies of the diseases.
+
+                    for (int i = 0; i < displayDiseases.Count; i++)
+                    {
+                        if (dependencies.Select(m => m.disease).Contains(displayDiseases[i]))
+                        {
+                            determineOrder(displayDiseases[i]); //Call the method to store diseases in order, according to their pre-diseases dependencies.
+
+                            if (!orderDisplayDiseases.Contains(displayDiseases[i]))
+                            {
+                                orderDisplayDiseases.Add(displayDiseases[i]); //Add the disease that generates the first call of the recursive method.
+                            }
+                        }
+                        else
+                        {
+                            orderDisplayDiseases.Add(displayDiseases[i]); //Add the disease to the list in any order if it did not have any pre-disease dependency.
+                        }
+                    }
+                    System.Diagnostics.Debug.Write("\nDeben estar ya las enfermedades de la paciente originales, más las pre-enfermedades en orden\n"); //For testing
+
+                    //At this point variable orderDisplayDiseases has all diseases obtained from the symptoms and
+                    //the pre-diseases.  This are the ones that should be "showed" (the questions) to the user.
+
+
+                    /* 
+                     * Logic to select the desired diseases criteria and questions items in order. (LIST OF VAR TYPE DISEASES)
+                     */
+                    String primera = orderDisplayDiseases[0]; //Se tiene que hacer esto porque si se pone directo dentro del equals de abajo, tira un exception.
+                    var patientDiseases = db.diseases.Where(m => m.disease1.Equals(primera)).ToList(); //Contiene las lista de diseases con id de preguntas, criterio, valor.
+                    System.Diagnostics.Debug.Write("Enfermedad: " + primera); //For testing
+
+                    for (int i = 1; i < orderDisplayDiseases.Count; i++)
+                    {
+                        String siguiente = orderDisplayDiseases[i];
+                        System.Diagnostics.Debug.Write("Enfermedad: " + siguiente); //For testing
+                        patientDiseases.AddRange(db.diseases.Where(m => m.disease1.Equals(siguiente)).ToList());
+                    }
+                    System.Diagnostics.Debug.Write("\nDeben estar la lista de variables tipo 'disease'='idDisease, disease, idRomeQuestion, criteria, comparedValue' de las enfermedades que son. \n"); //For testing
+
+                    //At this point a list of variables of type disease, which includes 'idDisease, disease, idRomeQuestion, criteria, comparedValue'
+                    //from all the supposed diseased and pre-diseases should be created.
+
+                    diseasesCriteria = patientDiseases; //To send criteria to the RomeDiseaseDiagnosisController
+
+                    /* 
+                     * Logic to select the questions in order without repetitions. (LIST OF VAR TYPE ROMEQUESTIONS)
+                     */
+                    var allquestions = db.romequestions.ToList(); //Contains all the questions stored in the DB.
+                    int firstID = (int)allquestions[0].idRomeQuestion; //To add a first dummy element to create var questions.     
+                    var questions = db.romequestions.Where(m => m.idRomeQuestion.Equals(firstID)).ToList(); //Variable questions contains all the questions to be displayed
+
+                    for (int j = 0; j < allquestions.Count; j++)
+                    {
+                        int nextID = (int)allquestions[j].idRomeQuestion;
+
+                        if (patientDiseases.Select(m => m.idRomeQuestion).ToList().Contains(nextID))
+                        {
+                            System.Diagnostics.Debug.Write("Se añadió pregunta: " + nextID + "\n"); //For testing
+                            questions.Add(allquestions[j]);
+                        }
+                    }
+                    questions.RemoveAt(0); //Removes first dummy element.
+                    System.Diagnostics.Debug.Write("\nDeben estar las preguntas que son y en orden.\n"); //For testing
+
+                    //At this point the list of all the questions that needs to be displayed to the user
+                    //have been created.
+
+
+                    /*
+                     * Logic to create the list of numbers of this questions, to be used when the answers are stored.
+                     */
+                    questionsNumbers = questions.Select(m => m.idRomeQuestion).ToList(); //List of integers that contains the idRomeQuestions who will be used when the answers are stored.
+
+
+                    /* 
+                     * Logic to display the questions with their choices in the view. 
+                     */
+                    var choices = db.romechoices.ToList();      //variable contains choices for Rome questions
+
+                    List<questionsRome> romeQuestionsList = new List<questionsRome>(); //New list of questionsRome items.
+                    questionsRome question = null; //New questionsRome item
+
+                    foreach (var item in questions)
+                    {
+                        question = new questionsRome(); //Create new question
+
+                        question.questionRome = item.romeQuestion1; //Set "questionRome" field of 'question' to the "romeQuestion1" field of the 'item' variable   
+                        question.questionID = (int)item.idRomeQuestion; //Set "questionID" field of 'question' to the "idRomeQuestion" field of the 'item' variable          
+                        question.choiceSet = item.romeChoice; //Set "choiceSet" field of 'question' to the "romeChoice" field of the 'item' variable 
+                        question.choices = new List<string>(); //Set "choice" field of 'question' with a new List of strings
+
+                        foreach (var item2 in choices)
+                        {
+                            if (question.choiceSet.Equals(item2.romeChoice1))
+                            {
+                                question.choices.Add(item2.romeOption.ToString());
+                            }
+                        }
+                        romeQuestionsList.Add(question); //Add the new created question structure to the list of all the questions of Rome III
+                    }
+
+                    /* 
+                     * Finally return the view for this Action method.                     
+                     */
+                    return View(romeQuestionsList);                    
                 }
+
                 else
-                {
-                    orderDisplayDiseases.Add(displayDiseases[i]); //Add the disease to the list in any order if it did not have any pre-disease dependency.
-                }
-            }
-            System.Diagnostics.Debug.Write("\nDeben estar ya las enfermedades de la paciente originales, más las pre-enfermedades en orden\n"); //For testing
-
-            //At this point variable orderDisplayDiseases has all diseases obtained from the symptoms and
-            //the pre-diseases.  This are the ones that should be "showed" (the questions) to the user.
-
-
-            /* 
-             * Logic to select the desired diseases criteria and questions items in order. (LIST OF VAR TYPE DISEASES)
-             */
-            String primera = orderDisplayDiseases[0]; //Se tiene que hacer esto porque si se pone directo dentro del equals de abajo, tira un exception.
-            var patientDiseases = db.diseases.Where(m => m.disease1.Equals(primera)).ToList(); //Contiene las lista de diseases con id de preguntas, criterio, valor.
-            System.Diagnostics.Debug.Write("Enfermedad: " + primera); //For testing
-
-            for (int i = 1; i < orderDisplayDiseases.Count; i++)
-            {
-                String siguiente = orderDisplayDiseases[i];
-                System.Diagnostics.Debug.Write("Enfermedad: " + siguiente); //For testing
-                patientDiseases.AddRange(db.diseases.Where(m => m.disease1.Equals(siguiente)).ToList());
-            }
-            System.Diagnostics.Debug.Write("\nDeben estar la lista de variables tipo 'disease'='idDisease, disease, idRomeQuestion, criteria, comparedValue' de las enfermedades que son. \n"); //For testing
-
-            //At this point a list of variables of type disease, which includes 'idDisease, disease, idRomeQuestion, criteria, comparedValue'
-            //from all the supposed diseased and pre-diseases should be created.
-
-            diseasesCriteria = patientDiseases; //To send criteria to the RomeDiseaseDiagnosisController
-
-            /* 
-             * Logic to select the questions in order without repetitions. (LIST OF VAR TYPE ROMEQUESTIONS)
-             */
-            var allquestions = db.romequestions.ToList(); //Contains all the questions stored in the DB.
-            int firstID = (int) allquestions[0].idRomeQuestion; //To add a first dummy element to create var questions.     
-            var questions = db.romequestions.Where(m => m.idRomeQuestion.Equals(firstID)).ToList(); //Variable questions contains all the questions to be displayed
-
-            for(int j = 0; j < allquestions.Count; j++)
-            {
-                int nextID = (int) allquestions[j].idRomeQuestion;
-
-                if(patientDiseases.Select(m => m.idRomeQuestion).ToList().Contains(nextID))
-                {
-                    System.Diagnostics.Debug.Write("Se añadió pregunta: " + nextID + "\n"); //For testing
-                    questions.Add(allquestions[j]);   
-                }
-            }
-            questions.RemoveAt(0); //Removes first dummy element.
-            System.Diagnostics.Debug.Write("\nDeben estar las preguntas que son y en orden.\n"); //For testing
-
-            //At this point the list of all the questions that needs to be displayed to the user
-            //have been created.
-
-
-            /*
-             * Logic to create the list of numbers of this questions, to be used when the answers are stored.
-             */
-            questionsNumbers = questions.Select(m => m.idRomeQuestion).ToList(); //List of integers that contains the idRomeQuestions who will be used when the answers are stored.
-
-
-            /* 
-             * Logic to display the questions with their choices in the view. 
-             */
-            var choices = db.romechoices.ToList();      //variable contains choices for Rome questions
-
-            List<questionsRome> romeQuestionsList = new List<questionsRome>(); //New list of questionsRome items.
-            questionsRome question = null; //New questionsRome item
-
-            foreach(var item in questions)
-            {         
-                question = new questionsRome(); //Create new question
-  
-                question.questionRome = item.romeQuestion1; //Set "questionRome" field of 'question' to the "romeQuestion1" field of the 'item' variable   
-                question.questionID = (int)item.idRomeQuestion; //Set "questionID" field of 'question' to the "idRomeQuestion" field of the 'item' variable          
-                question.choiceSet = item.romeChoice; //Set "choiceSet" field of 'question' to the "romeChoice" field of the 'item' variable 
-                question.choices = new List<string>(); //Set "choice" field of 'question' with a new List of strings
-
-                foreach(var item2 in choices)
-                {
-                    if(question.choiceSet.Equals(item2.romeChoice1))
-                    {
-                        question.choices.Add(item2.romeOption.ToString());
-                    }
-                }
-                romeQuestionsList.Add(question); //Add the new created question structure to the list of all the questions of Rome III
-            }
-
-            /* 
-             * Finally return the view for this Action method.
-             */
-            return View(romeQuestionsList);
+                
+                   // return View("~/Views/Notifications/AccessDenied.cshtml");
+                
+            //}
+                                   
+            return View("~/Views/Notifications/AccessDenied.cshtml");
+           
         }
 
 

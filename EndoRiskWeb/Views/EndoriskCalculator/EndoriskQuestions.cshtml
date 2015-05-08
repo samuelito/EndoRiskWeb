@@ -42,7 +42,7 @@
 
                 <label class="accept_terms">
                     <strong style="color: #3e5667">
-                        <input id="showChecked" type="checkbox" name="enable_test" value="" class="accept_terms" required />
+                        <input id="showChecked" type="checkbox" name="enable_test" value="" class="accept_terms" required title =" " oninvalid="this.setCustomValidity('Por favor, marque esta casilla para aceptar los términos y condiciones.')" />
                         Acepto los términos y condiciones
                     </strong>
                 </label>
@@ -65,7 +65,7 @@
                             if (questionItem.abbr.Equals("OETR"))
                             {
                                 <label class="campo_requerido" style="font-size:medium">
-                                    <input id="question' + counter + '" type="text" name="@questionItem.abbr" maxlength="50" required />*
+                                    <input id="question' + counter + '" type="text" name="@questionItem.abbr" maxlength="50" required title ="" oninvalid="this.setCustomValidity('Por favor, complete este campo.')" />*
 
                                     @*data-val="true" data-val-required="Favor de llenar este campo" data-val-length="Por favor introduzca algún tratamiento" data-val-length-max="20"*@
                                 </label>
@@ -75,7 +75,7 @@
                             {
 
                                 <label class="campo_requerido" style="font-size:medium">
-                                    <input id="question' + counter + '" type="number" name="@questionItem.abbr" min="0" required />*
+                                    <input id="question' + counter + '" type="number" name="@questionItem.abbr" min="0" required title="" oninvalid="this.setCustomValidity('Por favor, complete este campo.')" />*
                                 </label>
                             }
                         }
@@ -85,7 +85,7 @@
                                 <!--Display the choices for the question in a select-->
                                 <!-- Value will be the selected choice = element(i)-->
                             <label class="campo_requerido">
-                                <select name="@questionItem.abbr" required>
+                                <select name="@questionItem.abbr" required title="" oninvalid="this.setCustomValidity('Por favor, seleccione una opción.')">
                                     <option selected></option>
 
                                     @foreach (var choiceIndex in questionItem.choices)
