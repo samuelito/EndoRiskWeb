@@ -59,6 +59,7 @@ namespace EndoRiskWeb.Controllers
                 var sev = searchValues.Get(5);
               
                 ViewBag.Test = "Success";
+                ViewData["failed"] = "";
                 string [] symptomsList;
                 if (searchValues.Count == 6)
                 {
@@ -107,10 +108,12 @@ namespace EndoRiskWeb.Controllers
                             {             
                                 allQuices.Add(item);
                             }
+                            
                         }
                         else
                         {
-                            ViewBag.Test = "There were no matched patients with age: " + age;
+                            ViewBag.Test = "No hay pacientes para la edad: " + age;
+                            ViewData["failed"] = "No hay pacientes para la edad: " + age;
                             RedirectToAction("Result", "Search");
                             
                             return View();
@@ -153,7 +156,9 @@ namespace EndoRiskWeb.Controllers
                         }
                         else
                         {
-                            ViewBag.Test = "No matched result for ethnicity: " + eth;
+                            ViewBag.Test = "No hay pacientes para la etnia: " + eth;
+                            ViewData["failed"] = "No hay pacientes para la etnia: " + eth;
+                            RedirectToAction("Result", "Search");
                             return View();
                         }
                     }
@@ -202,7 +207,10 @@ namespace EndoRiskWeb.Controllers
                         }
                         else
                         {
-                            ViewBag.Test = "No result matched Verficied: " + ver;
+                            
+                            ViewBag.Test = "No hay data: " + ver;
+                            ViewData["failed"] = "No hay data: " + ver;
+                            RedirectToAction("Result", "Search");
                             return View();
                         }
                     }
@@ -215,16 +223,16 @@ namespace EndoRiskWeb.Controllers
                     //Get the quiz id for the risk
                     if (!(ltr.Equals("TODOS")))
                     {
-                        float ltrMax = 50.00f;
+                        float ltrMax = 00.50f;
                         float ltrMin = 0.00f;
                         if (ltr.Equals("ALTO"))
                         {
-                            ltrMax = 100.00f;
-                            ltrMin = 70.00f;
+                            ltrMax = 1.00f;
+                            ltrMin = 0.70f;
                         }
                         else if(ltr.Equals("MEDIANO")){
-                            ltrMax= 70.00f;
-                            ltrMin= 50.00f;
+                            ltrMax= 00.70f;
+                            ltrMin= 00.50f;
                         }
                         
                         var ltrIDs = ltrDB.patients.Where(m=> m.risk < ltrMax && ltrMin <= m.risk).Select(m=>m.idQuiz).ToList();
@@ -253,7 +261,9 @@ namespace EndoRiskWeb.Controllers
                         }
                         else
                         {
-                            ViewBag.Test = "No hay resuldatos con el riesgo: " + ltr;
+                            ViewBag.Test = "No hay resuldatos con el riesgo: " + ltr;   
+                            ViewData["failed"] = "No hay resultados con el riesgo: " + ltr;
+                            RedirectToAction("Result", "Search");
                            
                             return View();
                         }
@@ -296,6 +306,8 @@ namespace EndoRiskWeb.Controllers
                         else
                         {
                             ViewBag.Test = "No existen resultados con severidad: " + sev;
+                            ViewData["failed"] = "No existen resultados con severidad: " + sev;
+                            RedirectToAction("Result", "Search");
                             return View();
                         }
                     }

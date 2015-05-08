@@ -8,6 +8,7 @@
     List<string> answerHeaders = new List<string>();
     List<string> symptomHeaders = new List<string>();
     int set = 0;
+    
 }
 
 <div class="content-wrapper">
@@ -19,6 +20,8 @@
         <h3>@Html.ActionLink("Regresar a la Busqueda", "SearchPage", "Search")</h3>
     </div>
     <!--View patients result: Quiz, ID, Risk, Time and Verified-->
+    <p class="center">@ViewBag.Test</p>
+    @if (ViewData["failed"].Equals("")){ 
     <div class="divS">
         <table class="tableS">
             <thead >
@@ -123,6 +126,7 @@
 
 
     </div>
+    }
 </div>
 
 
