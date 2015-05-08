@@ -17,6 +17,9 @@ namespace EndoRiskWeb.Models.Mapping
             this.Property(t => t.que)
                 .HasMaxLength(5);
 
+            this.Property(t => t.cual)
+                .HasMaxLength(50);
+
 
 
             // Table & Column Mappings
