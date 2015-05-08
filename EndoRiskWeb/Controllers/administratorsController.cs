@@ -424,7 +424,7 @@ namespace EndoRiskWeb.Controllers
                         }
                     }
 
-                    return RedirectToAction("PasswordSent", "administrators");           
+                    //return RedirectToAction("PasswordSent", "administrators");           
         }
 
         [HttpGet]
