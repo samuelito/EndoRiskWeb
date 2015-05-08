@@ -137,17 +137,21 @@ namespace EndoRiskWeb.Controllers
         static Semaphore semaphore = new Semaphore(1, 1);
         public ActionResult EndoriskResult(FormCollection endoForm)
         {
+            
             //Model to store patients data in Database
             patient paciente = new patient();
+
 
             //Calculate Lifetime Risk: Using R prediction models
             //verify convertions of parameters of the required data
             //Testing example using linear prediction
             object[,] answerList = endoAnswerlist(endoForm);
             semaphore.WaitOne();
-            C_Sharp_RExcel pred = new C_Sharp_RExcel();
-            object [] prediccion = pred.Prediction(answerList);
-            double riesgo = (double)prediccion[0];
+            //C_Sharp_RExcel pred = new C_Sharp_RExcel();
+           // object [] prediccion = pred.Prediction(answerList);
+           // double riesgo = (double)prediccion[0];
+            
+            
             semaphore.Release();
 
             //Calculos del paciente
@@ -176,8 +180,8 @@ namespace EndoRiskWeb.Controllers
                 paciente.idPatient = tempPaciente;
             }
 
-            paciente.risk = (float) riesgo;             //Lifetime risk result 
-            paciente.severity = prediccion[1].ToString();
+            paciente.risk = (float) 55.55;//(float) riesgo;             //Lifetime risk result 
+            paciente.severity = "Moderado-Severo(III-IV)";// prediccion[1].ToString();
             paciente.time = DateTime.Now;                   //time of the quiz
 
             //Verify if logged in
@@ -203,16 +207,17 @@ namespace EndoRiskWeb.Controllers
 
 
             //Store the Patients Answers & Symptoms to the database
-
+            var symp = endoForm.GetValue("symp").AttemptedValue;
+            var prexCond = endoForm.GetValue("prexCond").AttemptedValue;
             storeAnswers(idquiz.First(), endoForm);
-            storeSymptoms(idquiz.First(), endoForm.Get(endoForm.Count-2) );
-            storeConditions(idquiz.First(), endoForm.Get(endoForm.Count-1));
+            storeSymptoms(idquiz.First(), symp);
+            storeConditions(idquiz.First(), prexCond);
 
             //Return a patient type to the Risk view: 
             //Includes-> idquiz, paciente id, resultado, verified
             //float? thePercent = paciente.risk == null ? -1 : paciente.risk * 100;
-            float lifetimeRiskPercent = (float)(riesgo * 100);
-            string severityPercent = (prediccion[1].ToString());
+            float lifetimeRiskPercent = (float)( paciente.risk * 100); //(float)(riesgo * 100);
+            string severityPercent = paciente.severity; //(prediccion[1].ToString());
             ViewBag.RiskPercent = lifetimeRiskPercent;
             ViewBag.SeverityPercent = severityPercent;
             return View(paciente);

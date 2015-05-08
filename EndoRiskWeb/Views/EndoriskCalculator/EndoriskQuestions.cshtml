@@ -4,7 +4,9 @@
 -->
 @{
     ViewBag.Title = "Calculadora de Riesgo de Endometirosis";
+   
 }
+
 @section featured {
 
     <div>
@@ -101,27 +103,31 @@
                     </div>
                 }
                 <p style="font-size:medium">Seleccione los sintomas que presente</p>
-                <div class="boxS">
+                <div class="boxS" >
+                    
                     <div class="leftS">
                         @for (int i = 0; i < (Model.FirstOrDefault().symp.Count / 2); i++)
                         {   <div>
-                            <input id="showChecked" type="checkbox" name="symp" value="@Model.FirstOrDefault().symp.ElementAt(i).abbr" />
+                            <input id="symp" type="checkbox" name="symp" value="@Model.FirstOrDefault().symp.ElementAt(i).abbr" />
                             @Model.FirstOrDefault().symp.ElementAt(i).symptom1
                         </div>
                         }
                     </div>
                     <div class="leftS">
-
+                        
                         @for (int i = (Model.FirstOrDefault().symp.Count / 2); i < Model.FirstOrDefault().symp.Count; i++)
                         {   <div>
-                            <input id="showChecked" type="checkbox" name="symp" value="@Model.FirstOrDefault().symp.ElementAt(i).abbr" />
+                            <input id="symp" type="checkbox" name="symp" value="@Model.FirstOrDefault().symp.ElementAt(i).abbr" />
                             @Model.FirstOrDefault().symp.ElementAt(i).symptom1
                         </div>
-                            
+
                         }
                         <div>
-                            <input id="showChecked" type="checkbox" name="symp" value="NTS" checked />
+                            <input id="symp" type="checkbox" name="symp" value="NTS" checked />
                             No tengo sintomas
+                        </div>
+                        <div>
+                            <input id="symp" type="checkbox" name="symp" value=""  checked hidden />
                         </div>
                         <br />
 
@@ -134,7 +140,7 @@
                     <div class="leftSS">
                         @for (int i = 0; i < (Model.FirstOrDefault().prexCond.Count / 2); i++)
                         {   <div>
-                            <input id="showChecked" type="checkbox" name="prexCond" value="@Model.FirstOrDefault().prexCond.ElementAt(i).abbr" />
+                                <input id="prexCond"  type="checkbox" name="prexCond" value="@Model.FirstOrDefault().prexCond.ElementAt(i).abbr" />
                             @Model.FirstOrDefault().prexCond.ElementAt(i).condition
                         </div>
                         }
@@ -142,13 +148,16 @@
                     <div class="leftSS">
                         @for (int i = (Model.FirstOrDefault().prexCond.Count / 2) + 1; i < Model.FirstOrDefault().prexCond.Count; i++)
                         {   <div>
-                            <input id="showChecked" type="checkbox" name="prexCond" value="@Model.FirstOrDefault().prexCond.ElementAt(i).abbr" />
+                            <input id="prexCond" type="checkbox" name="prexCond" value="@Model.FirstOrDefault().prexCond.ElementAt(i).abbr" />
                             @Model.FirstOrDefault().prexCond.ElementAt(i).condition
                         </div>
                         }
                         <div>
-                            <input id="showChecked" type="checkbox" name="prexCond" value="NTOPC" checked />
+                            <input id="prexCond"  type="checkbox" name="prexCond" value="NOOPC" checked />
                             No tengo condiciones
+                        </div>
+                        <div>
+                            <input id="prexCond" type="checkbox" name="prexCond" value="" checked hidden />
                         </div>
                         <br />
                         <br />
@@ -163,7 +172,8 @@
             <div class="form-group">
                 <div class="center" style="clear:both;">
                     <div class="col-md-offset-2 col-md-10">
-                        <input id="submitted" type="submit" value="Calcular Riesgo" class="btn btn-default" @*disabled="disabled"*@ />
+                        <input id="submitted" type="submit" value="Calcular Riesgo" 
+                                class="btn btn-default" @*disabled="disabled"*@ />
 
                     </div>
                 </div>
@@ -177,6 +187,10 @@
     @Scripts.Render("~/bundles/jqueryval")
 
     @**@
+    <script>
+       
+
+    </script>
 
     <style type="text/css">
         label.accept_terms {
