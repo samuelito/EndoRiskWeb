@@ -17,6 +17,7 @@
 
 }
 @{int counter = 0;}
+
 <div class="questionWrap">
     <!-- Start the form (POST) to use in the Risk Method-->
     @using (Html.BeginForm("EndoriskResult", "EndoriskCalculator", FormMethod.Post, new { @name = "userAnswersForm" }))
@@ -44,20 +45,20 @@
 
                 <label class="accept_terms">
                     <strong style="color: #3e5667">
-                        <input id="showChecked" type="checkbox" name="enable_test" value="" class="accept_terms" required title =" " oninvalid="this.setCustomValidity('Por favor, marque esta casilla para aceptar los términos y condiciones.')" />
+                        <input id="showChecked" type="checkbox" name="enable_test" value="" class="accept_terms" required  />
                         Acepto los términos y condiciones
                     </strong>
                 </label>
 
                 <p class="inicio_preguntas">Por favor complete las siguientes preguntas: </p>
-                <p class="campo_requerido">* Campo requerido</p>
+                <p class="campo_requerido" hidden>* Campo requerido</p><br />
                 <p class="PID_number" style="font-size:medium">Si posee algún número de paciente, escribálo en este campo. De lo contrario deje este campo vacío. </p>
-                <input type="number" name="PID" value="" placeholder="000000" min="0" max="1000000" />
+                <input type="number" name="PID" value="" placeholder="" min="0" max="1000000" />
 
                 @foreach (var questionItem in Model.FirstOrDefault().quest)
                 {
                 <!--Displays the question -->
-                    <p style="font-size:medium">@questionItem.question</p>
+                    <p style="font-size:medium;display:block" id="q-@questionItem.abbr"> @questionItem.question</p>
                     @*<input type="text" name="@questionItem.question" value=" " required />*@ <!--Displays the question -->
 
                     <div class="col-md-10">
@@ -67,7 +68,7 @@
                             if (questionItem.abbr.Equals("OETR"))
                             {
                                 <label class="campo_requerido" style="font-size:medium">
-                                    <input id="question' + counter + '" type="text" name="@questionItem.abbr" maxlength="50" required title ="" oninvalid="this.setCustomValidity('Por favor, complete este campo.')" />*
+                                    <input id="@questionItem.abbr" type="text" name="@questionItem.abbr" maxlength="50"  />
 
                                     @*data-val="true" data-val-required="Favor de llenar este campo" data-val-length="Por favor introduzca algún tratamiento" data-val-length-max="20"*@
                                 </label>
@@ -77,7 +78,7 @@
                             {
 
                                 <label class="campo_requerido" style="font-size:medium">
-                                    <input id="question' + counter + '" type="number" name="@questionItem.abbr" min="0" required title="" oninvalid="this.setCustomValidity('Por favor, complete este campo.')" />*
+                                    <input id="@questionItem.abbr" type="number" name="@questionItem.abbr" min="0"  />
                                 </label>
                             }
                         }
@@ -86,25 +87,26 @@
                         {
                                 <!--Display the choices for the question in a select-->
                                 <!-- Value will be the selected choice = element(i)-->
-                            <label class="campo_requerido">
-                                <select name="@questionItem.abbr" required title="" oninvalid="this.setCustomValidity('Por favor, seleccione una opción.')">
-                                    <option selected></option>
+                        <label class="campo_requerido">
+                            <select id="@questionItem.abbr" name="@questionItem.abbr"
+                                     style="display:inline">
+                                <option selected></option>
 
-                                    @foreach (var choiceIndex in questionItem.choices)
-                                    {
-                                        <option value="@choiceIndex">@choiceIndex</option>
-                                    }
-
-                                </select>*
-
+                                @foreach (var choiceIndex in questionItem.choices)
+                                {
+                                    <option value="@choiceIndex">@choiceIndex</option>
+                                }
+                            </select>
                             </label>
+
+
                         }
-                        @{counter++;}
-                    </div>
+                    @{counter++;}
+</div>
                 }
                 <p style="font-size:medium">Seleccione los sintomas que presente</p>
                 <div class="boxS" >
-                    
+
                     <div class="leftS">
                         @for (int i = 0; i < (Model.FirstOrDefault().symp.Count / 2); i++)
                         {   <div>
@@ -114,7 +116,7 @@
                         }
                     </div>
                     <div class="leftS">
-                        
+
                         @for (int i = (Model.FirstOrDefault().symp.Count / 2); i < Model.FirstOrDefault().symp.Count; i++)
                         {   <div>
                             <input id="symp" type="checkbox" name="symp" value="@Model.FirstOrDefault().symp.ElementAt(i).abbr" />
@@ -123,7 +125,7 @@
 
                         }
                         <div>
-                            <input id="symp" type="checkbox" name="symp" value="NTS" checked />
+                            <input id="symp" type="checkbox" name="symp" value="NTS"  />
                             No tengo sintomas
                         </div>
                         <div>
@@ -153,7 +155,7 @@
                         </div>
                         }
                         <div>
-                            <input id="prexCond"  type="checkbox" name="prexCond" value="NOOPC" checked />
+                            <input id="prexCond"  type="checkbox" name="prexCond" value="NOOPC" />
                             No tengo condiciones
                         </div>
                         <div>
@@ -172,7 +174,7 @@
             <div class="form-group">
                 <div class="center" style="clear:both;">
                     <div class="col-md-offset-2 col-md-10">
-                        <input id="submitted" type="submit" value="Calcular Riesgo" 
+                        <input id="submitted" type="submit" value="Calcular Riesgo"
                                 class="btn btn-default" @*disabled="disabled"*@ />
 
                     </div>
@@ -187,10 +189,170 @@
     @Scripts.Render("~/bundles/jqueryval")
 
     @**@
-    <script>
-       
+    <script type="text/javascript">
 
-    </script>
+        document.getElementById('SM').onchange = function () {
+            var value = this.options[this.selectedIndex].value;     
+
+            if (value == "No") {
+                document.getElementById('q-YS').style.display = 'none';
+                document.getElementById('q-CI').style.display = 'none';
+                
+                document.getElementById('YS').setAttribute('value', 0);
+                document.getElementById('YS').style.display = 'none'; 
+                document.getElementById('CI').setAttribute('value', 0);
+                document.getElementById('CI').style.display = 'none';             
+            }
+            else {
+                document.getElementById('q-YS').style.display = 'block';
+                document.getElementById('q-CI').style.display = 'block';          
+                document.getElementById('YS').style.display = 'inline';             
+                document.getElementById('CI').style.display = 'inline'; 
+             
+            }
+        };
+
+        document.getElementById('PGP').onchange = function () {
+            var value = this.options[this.selectedIndex].value;
+
+            if (value == "No" || value == "No Aplica") {
+
+                document.getElementById('q-IT').style.display = 'none';
+                document.getElementById('IT').setAttribute('value', 'No');
+                document.getElementById('IT').style.display = 'none'; // hide element1
+                          
+            }
+            else {
+                document.getElementById('q-IT').style.display = 'block';   
+                document.getElementById('IT').style.display = 'inline'; // hide element1            
+
+            }
+        };
+
+        $('#TP').on('input', function () {
+            var value = $('#TP').val();
+
+            if (value == 0) {
+                document.getElementById('q-PA').style.display = 'none';
+                document.getElementById('PA').setAttribute('value', 0);
+                document.getElementById('PA').style.display = 'none';
+                document.getElementById('q-SA').style.display = 'none';
+                document.getElementById('SA').setAttribute('value', 'No');
+                document.getElementById('SA').style.display = 'none';
+                document.getElementById('q-NA').style.display = 'none';
+                document.getElementById('NA').setAttribute('value', 0);
+                document.getElementById('NA').style.display = 'none'; 
+
+            }
+            else {
+                document.getElementById('q-PA').style.display = 'block';
+                document.getElementById('PA').style.display = 'inline';
+                document.getElementById('PA').setAttribute('value', '');
+                document.getElementById('q-SA').style.display = 'block';
+                document.getElementById('SA').style.display = 'inline';
+                document.getElementById('SA').setAttribute('value', '');
+                document.getElementById('q-NA').style.display = 'block';
+                document.getElementById('NA').style.display = 'inline';
+                document.getElementById('NA').setAttribute('value', '');
+
+            }
+        });
+
+        document.getElementById('SA').onchange = function () {
+            var value = this.options[this.selectedIndex].value;
+
+            if (value == "No" || value == "No Aplica") {
+
+                document.getElementById('q-NA').style.display = 'none';
+                document.getElementById('NA').setAttribute('value', 'No');
+                document.getElementById('NA').style.display = 'none'; 
+
+            }
+            else {
+                document.getElementById('q-NA').style.display = 'block';
+                document.getElementById('NA').style.display = 'inline';             
+
+            }
+        };
+
+        document.getElementById('SI').onchange = function () {
+            var value = this.options[this.selectedIndex].value;
+
+            if (value == "No" || value == "No Aplica") {
+
+                document.getElementById('q-SIA').style.display = 'none';
+                document.getElementById('SIA').setAttribute('value', 'No Aplica');
+                document.getElementById('SIA').style.display = 'none';
+
+            }
+            else {
+                document.getElementById('q-SIA').style.display = 'block';
+                document.getElementById('SIA').style.display = 'inline';
+
+            }
+        };
+
+        document.getElementById('ED').onchange = function () {
+            var value = this.options[this.selectedIndex].value;
+
+            if (value == "No" || value == "No Aplica") {
+
+                document.getElementById('q-SU').style.display = 'none';
+                document.getElementById('SU').setAttribute('value', 'Leve');
+                document.getElementById('SU').style.display = 'none';
+
+                document.getElementById('q-SE').style.display = 'none';
+                document.getElementById('SE').setAttribute('value', 'No Aplica');
+                document.getElementById('SE').style.display = 'none';
+
+                document.getElementById('q-ETR').style.display = 'none';
+                document.getElementById('ETR').setAttribute('value', 'No Aplica');
+                document.getElementById('ETR').style.display = 'none';
+
+                document.getElementById('q-OETR').style.display = 'none';
+                document.getElementById('OETR').setAttribute('value', 'No aplica');
+                document.getElementById('OETR').style.display = 'none';
+
+            }
+            else {
+                document.getElementById('q-SU').style.display = 'block';
+                document.getElementById('SU').style.display = 'inline';
+                document.getElementById('SU').setAttribute('value', '');
+
+                document.getElementById('q-SE').style.display = 'block';
+                document.getElementById('SE').style.display = 'inline';
+                document.getElementById('SE').setAttribute('value', '');
+
+                document.getElementById('q-ETR').style.display = 'block';
+                document.getElementById('ETR').style.display = 'inline';
+                document.getElementById('ETR').setAttribute('value', '');
+
+                document.getElementById('q-OETR').style.display = 'block';
+                document.getElementById('OETR').style.display = 'inline';
+                document.getElementById('OETR').setAttribute('value', '');
+
+            }
+        };
+
+        document.getElementById('ETR').onchange = function () {
+            var value = this.options[this.selectedIndex].value;
+
+            if (value != "Otro" ) {
+                document.getElementById('q-OETR').style.display = 'none';
+                document.getElementById('OETR').setAttribute('value', 'No Aplica');
+                document.getElementById('OETR').style.display = 'none';
+            }
+            else {
+                document.getElementById('q-OETR').style.display = 'block';
+                document.getElementById('OETR').style.display = 'inline';
+                document.getElementById('OETR').setAttribute('value', '');
+
+            }
+        };
+  
+
+</script>
+
 
     <style type="text/css">
         label.accept_terms {
