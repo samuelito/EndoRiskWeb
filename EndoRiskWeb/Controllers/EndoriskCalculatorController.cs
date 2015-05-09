@@ -147,9 +147,9 @@ namespace EndoRiskWeb.Controllers
             //Testing example using linear prediction
             object[,] answerList = endoAnswerlist(endoForm);
             semaphore.WaitOne();
-            //C_Sharp_RExcel pred = new C_Sharp_RExcel();
-           // object [] prediccion = pred.Prediction(answerList);
-           // double riesgo = (double)prediccion[0];
+            C_Sharp_RExcel pred = new C_Sharp_RExcel();
+           object [] prediccion = pred.Prediction(answerList);
+           double riesgo = (double)prediccion[0];
             
             
             semaphore.Release();
@@ -180,8 +180,8 @@ namespace EndoRiskWeb.Controllers
                 paciente.idPatient = tempPaciente;
             }
 
-            paciente.risk = (float) 55.55;//(float) riesgo;             //Lifetime risk result 
-            paciente.severity = "Moderado-Severo(III-IV)";// prediccion[1].ToString();
+            paciente.risk = (float) riesgo;             //Lifetime risk result 
+            paciente.severity = prediccion[1].ToString();
             paciente.time = DateTime.Now;                   //time of the quiz
 
             //Verify if logged in
@@ -216,8 +216,8 @@ namespace EndoRiskWeb.Controllers
             //Return a patient type to the Risk view: 
             //Includes-> idquiz, paciente id, resultado, verified
             //float? thePercent = paciente.risk == null ? -1 : paciente.risk * 100;
-            float lifetimeRiskPercent = (float)( paciente.risk * 100); //(float)(riesgo * 100);
-            string severityPercent = paciente.severity; //(prediccion[1].ToString());
+            float lifetimeRiskPercent = (float)(riesgo * 100);
+            string severityPercent = (prediccion[1].ToString());
             ViewBag.RiskPercent = lifetimeRiskPercent;
             ViewBag.SeverityPercent = severityPercent;
             return View(paciente);
