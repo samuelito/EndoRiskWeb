@@ -421,8 +421,8 @@
     <Content Include="Views\Web.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Views\romequestions\Comments\Delete.cshtml" />
-    <Content Include="Views\romequestions\Comments\Details.cshtml" />
+    <Content Include="Views\Comments\Delete.cshtml" />
+    <Content Include="Views\Comments\Details.cshtml" />
     <Content Include="Views\administrators\Delete.cshtml" />
     <Content Include="Views\administrators\Details.cshtml" />
     <Content Include="Views\administrators\Edit.cshtml" />
@@ -447,9 +447,9 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Search\SearchResult.cshtml" />
     <Content Include="Views\Search\SearchPage.cshtml" />
-    <Content Include="Views\romequestions\Comments\CommentConfirmation.cshtml" />
-    <Content Include="Views\romequestions\Comments\SendComment.cshtml" />
-    <Content Include="Views\romequestions\Comments\ViewComments.cshtml" />
+    <Content Include="Views\Comments\CommentConfirmation.cshtml" />
+    <Content Include="Views\Comments\SendComment.cshtml" />
+    <Content Include="Views\Comments\ViewComments.cshtml" />
     <Content Include="Views\EndoriskCalculator\AddEndoriskQuestions.cshtml" />
     <Content Include="Views\EndoriskCalculator\EditEndoriskQuestions.cshtml" />
     <Content Include="Views\EndoriskCalculator\EndoriskQuestions.cshtml" />
