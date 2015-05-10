@@ -24,16 +24,16 @@ header {
 }
 
 a {
-    color: #3e5667;
+    color: #b200ff;
     outline: none;
     padding-left: 3px;
     padding-right: 3px;
-    text-decoration: none;
+    text-decoration: underline;
 }
 
     a:link, a:visited,
     a:active, a:hover {
-        color: #3e5667;
+        color: #b200ff;
     }
 
     a:hover {
@@ -88,7 +88,7 @@ h1 {
 
 h2 {
     font-size: 1.75em;
-    color: #1662a1;
+    color: #b200ff;
     /*
         seashell2
         hotpink4
@@ -221,7 +221,7 @@ ul#menu {
 
         ul#menu li a {
             background: none;
-            color: #95e62d;
+            color: #b200ff;
             text-decoration: none;
         }
 
@@ -602,8 +602,8 @@ table {
 }
 
 .searchWrap {
-    background-color: rgba(213, 179, 228, 0.79);
-    border: solid thin rgba(178, 0, 255, 0.79);
+        background-color: #e2e2e2;
+    border: solid thin #c7d1d6;
     border-radius: 50px 50px 50px 50px;
 }
 
@@ -612,8 +612,8 @@ table {
     width: 700px;
     margin: 0 auto;
     padding: 20px;
-    background-color: rgba(213, 179, 228, 0.79);
-    border: solid thin rgba(178, 0, 255, 0.79);
+        background-color: #e2e2e2;
+    border: solid thin #c7d1d6;
     border-radius: 50px 50px 50px 50px;
 }
 
@@ -622,8 +622,8 @@ table {
     width: auto;
     margin: 0 auto;
     padding: 20px;
-    background-color: rgba(213, 179, 228, 0.79);
-    border: solid thin rgba(178, 0, 255, 0.79);
+        background-color: #e2e2e2;
+    border: solid thin #c7d1d6;
     border-radius: 50px 50px 50px 50px;
 }
 
@@ -632,8 +632,8 @@ table {
     width: auto;
     margin: 0 auto;
     padding: 20px;
-    background-color: #fff;
-    border: solid thin rgba(213, 179, 228, 0.79);
+        background-color: #e2e2e2;
+    border: solid thin #c7d1d6;
     border-radius: 50px 50px 50px 50px;
 }
 
@@ -642,8 +642,8 @@ table {
     width: 320px;
     margin: 0 auto;
     padding: 20px;
-    background-color: rgba(213, 179, 228, 0.79);
-    border: solid thin rgba(178, 0, 255, 0.79);
+        background-color: #e2e2e2;
+    border: solid thin #c7d1d6;
     border-radius: 50px 50px 50px 50px;
 }
 
@@ -652,15 +652,16 @@ table {
     width: 320px;
     margin: 0 auto;
     padding: 20px;
-    background-color: rgba(213, 179, 228, 0.79);
-    border: solid thin rgba(178, 0, 255, 0.79);
+        background-color: #e2e2e2;
+    border: solid thin #c7d1d6;
     border-radius: 50px 50px 50px 50px;
 }
 
 .detailWrap dt {
     font-size:medium;
     font-weight:bold;
-     color:#b200ff;
+         background-color: #e2e2e2;
+    border: solid thin #c7d1d6;
 }
 
 .detailWrap dd {
@@ -672,8 +673,8 @@ table {
     width: auto;
     margin: 0 auto;
     padding: 20px;
-    background-color: rgba(213, 179, 228, 0.79);
-    border: solid thin rgba(178, 0, 255, 0.79);
+    background-color: #e2e2e2;
+    border: solid thin #c7d1d6;
     border-radius: 50px 50px 50px 50px;
 }
 

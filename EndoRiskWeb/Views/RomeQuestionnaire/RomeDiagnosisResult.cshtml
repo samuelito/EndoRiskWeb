@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<EndoRiskWeb.Models.romediagnosi>
 @{
-    ViewBag.Title = "Resultados Cuestionarios ROME";
+    ViewBag.Title = "Resultados de Cuestionarios ROME";
+    int counter = 1;
 }
 
 <h2>De acuerdo a sus síntomas, contestaciones y al criterio 'Rome' para enfermedades gastrointestinales,</h2>
@@ -9,7 +10,7 @@
 
 @foreach (var item in Model)
 {
-    <p>@item.diagnosis</p>
+    <p>Diagnostico @counter++ : @item.diagnosis</p>
 }
 <p>@ViewBag.NoSymp</p>
 
