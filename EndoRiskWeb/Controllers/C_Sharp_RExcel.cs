@@ -160,14 +160,14 @@ namespace EndoRiskWeb.Controllers
 
             foreach (var process in excel_process)
             {
-                process.Kill();
+                process.CloseMainWindow();
             }
             var R_process = from proc in System.Diagnostics.Process.GetProcessesByName("Rgui") select proc;
 
             foreach (var process in R_process)
             {
                 if (process.MainWindowTitle == "R Console (32-bit)")
-                    process.Kill();
+                    process.CloseMainWindow();
             }
         }
     }

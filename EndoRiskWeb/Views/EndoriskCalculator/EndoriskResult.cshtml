@@ -24,7 +24,7 @@
                 <h3> ID de paciente:</h3> <p>@Model.idPatient</p>
                 <h3> Riesgo: </h3><p> @ViewBag.RiskPercent%</p>
                 <h3> Nivel de Severidad:</h3> <p> @ViewBag.SeverityPercent</p>
-                <h3> Feach y hora al tomar el examen: </h3> <p> @Model.time</p>
+                <h3> Fecha y hora al tomar el examen: </h3> <p> @Model.time</p>
                 <h3> Examen validado por: </h3>
                
                 @if (verificado.Equals("No"))
@@ -57,7 +57,7 @@
     A continuación le proveemos la opción de llenar el cuestionario de "Rome III", para saber si este puede ser su caso:
 </p>
 
-<section class="center">
+<section class="center" style="a">
     <!--Este nuevo link que añadí, es para ir a Rome III enviandole como parámetro el ID del quiz y de la paciente-->
     @Html.ActionLink("Cuestionario Enfermedades Gastrointestinales", "DisplayRomeQuestionnaire", "RomeQuestionnaire", new { quizNum = Model.idQuiz, patientNum = Model.idPatient }, null)
 </section>
