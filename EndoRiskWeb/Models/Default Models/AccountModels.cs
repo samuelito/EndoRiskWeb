@@ -8,7 +8,7 @@ namespace EndoRiskWeb.Models
 {
     public class LocalPasswordModel
     {       
-        //[DataType(DataType.EmailAddress)] 
+        [DataType(DataType.EmailAddress)] 
         [Display(Name = "Correo electrónico")]
         public string userEmail { get; set; }
 
@@ -40,7 +40,7 @@ namespace EndoRiskWeb.Models
         [StringLength(100, ErrorMessage = "El correo electrónico no puede contener más de 100 carateres.")]
         public string email { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Contraseña requerida", AllowEmptyStrings = false)]
         [StringLength(100, ErrorMessage = "La {0} debe contener al menos {2} caracteres.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Contraseña")]

@@ -64,14 +64,7 @@ namespace EndoRiskWeb.Controllers
 
             else { return View("~/Views/Notifications/AccessDenied.cshtml"); }
         }
-       // [HttpGet]
-       //// [ChildActionOnly]
-       // // GET: administrators/Create
-       // public ActionResult Create()
-       // {
-       //     return View();
-       // }
-        
+             
         [HttpGet]
         // [ChildActionOnly]
         // GET: administrators/Edit/5
@@ -199,7 +192,6 @@ namespace EndoRiskWeb.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        //[ChildActionOnly]
         public ActionResult Login(LoginModel login, string returnUrl)
         {
             if (ModelState.IsValid)
@@ -246,14 +238,8 @@ namespace EndoRiskWeb.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 0)
-                {
-
-                    FormsAuthentication.SignOut();
-                    return RedirectToAction("EndoriskQuestions", "EndoriskCalculator");
-                }
-
-                else { return View("~/Views/Notifications/AccessDenied.cshtml"); }
+                FormsAuthentication.SignOut();
+                return RedirectToAction("EndoriskQuestions", "EndoriskCalculator");               
             }
 
             else { return View("~/Views/Notifications/AccessDenied.cshtml"); }
@@ -281,10 +267,7 @@ namespace EndoRiskWeb.Controllers
         public ActionResult CreateAdmin(RegisterModel registerAdmin)
         {
             if (ModelState.IsValid)
-            {
-                if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 0)
-
-                    //return View("~/Views/Notifications/AccessDenied.cshtml");
+            {          
                 using (endoriskContext db = new endoriskContext())
                 {
                     var user1 = db.administrators.Where(user => user.email.Equals(registerAdmin.email)).ToList();
@@ -480,6 +463,8 @@ namespace EndoRiskWeb.Controllers
                 {
                     return View();
                 }
+
+                else { return RedirectToAction("EndoriskQuestions", "EndoriskCalculator"); }    
             }
             return View("~/Views/Notifications/AccessDenied.cshtml");
         }

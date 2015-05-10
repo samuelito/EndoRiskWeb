@@ -129,7 +129,7 @@ namespace EndoRiskWeb.Controllers
             //Quit the Excel Application and releaese all Excel application objects used in the program from memory
             if (excelApp != null)
             {
-                KillExcelFileProcess();
+                EndProcess();
                 releaseObject(excelWorksheet);
                 releaseObject(excelWorkbook);
                 releaseObject(excelApp);
@@ -154,7 +154,7 @@ namespace EndoRiskWeb.Controllers
         }
 
         //Method to end the process executing Excel
-        private void KillExcelFileProcess()
+        private void EndProcess()
         {
             var excel_process = from proc in System.Diagnostics.Process.GetProcessesByName("EXCEL") select proc;
 
