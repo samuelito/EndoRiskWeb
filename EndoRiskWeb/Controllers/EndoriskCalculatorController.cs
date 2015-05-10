@@ -149,7 +149,7 @@ namespace EndoRiskWeb.Controllers
             semaphore.WaitOne();
             //C_Sharp_RExcel pred = new C_Sharp_RExcel();
            //object [] prediccion = pred.Prediction(answerList);
-            double riesgo = 76.65;//(double)prediccion[0];
+            double riesgo = 0.7665;//(double)prediccion[0];
             
             
             semaphore.Release();
