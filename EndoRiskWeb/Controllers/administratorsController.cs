@@ -38,7 +38,6 @@ namespace EndoRiskWeb.Controllers
         }
 
         [HttpGet]
-        //[ChildActionOnly]
         // GET: administrators/Details/5
         public ActionResult Details(long? id)
         {
@@ -66,7 +65,6 @@ namespace EndoRiskWeb.Controllers
         }
              
         [HttpGet]
-        // [ChildActionOnly]
         // GET: administrators/Edit/5
         public ActionResult Edit(long? id)
         {

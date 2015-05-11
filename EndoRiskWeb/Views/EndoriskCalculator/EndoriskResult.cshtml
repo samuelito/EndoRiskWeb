@@ -8,7 +8,7 @@
     ViewBag.Title = "Resultados";
     string verificado = Model.verified;
 }
- 
+
 <!-- All the things -->
 <div class="loader"></div>
 
@@ -16,56 +16,60 @@
     <h2 class="center">@ViewBag.Title</h2>
     <br />
     <article class="questionWrap">
-        <p>
-            Se ha determinado que su riesgo de padecer endometriosis a lo largo de su vida es:
+        <p><strong>
+            Se ha determinado que su riesgo de padecer endometriosis a lo largo de su vida es:</strong>
         </p>
+        
+            <section class="center" style="background-color: #ebeef6;margin: 0 auto;border-radius: 30px 30px 30px 30px; border: thin solid gray;width:400px">
+                <!--View patients result: Quiz, ID, Risk, Time and Verified-->
+                <h3> Número de Examen: </h3> <p>@Model.idQuiz</p>
+                <h3> ID de paciente:</h3> <p>@Model.idPatient</p>
+                <h3> Riesgo: </h3><p> @ViewBag.RiskPercent%</p>
+                <h3> Nivel de Severidad:</h3> <p> @ViewBag.SeverityPercent</p>
+                <h3> Fecha y hora al tomar el examen: </h3> <p> @Model.time</p>
+                <h3> Examen validado por: </h3>
+               
+                @if (verificado.Equals("No"))
+                {
+                    <p><strong> No ha sido validado por administradores</strong> </p>
+                }
+                else
+                {
+                    <p><strong> @Model.verified</strong></p>
+                }
+                
+            </section>
 
-        <section class="center" style="background-color: #ebeef6;margin: 0 auto;border-radius: 30px 30px 30px 30px; border: thin solid gray;width:400px">
-            <!--View patients result: Quiz, ID, Risk, Time and Verified-->
-            <h3> Número de Examen: </h3> <p>@Model.idQuiz</p>
-            <h3> ID de paciente:</h3> <p>@Model.idPatient</p>
-            <h3> Riesgo: </h3><p> @ViewBag.RiskPercent%</p>
-            <h3> Nivel de Severidad:</h3> <p> @ViewBag.SeverityPercent</p>
-            <h3> Fecha y hora al tomar el examen: </h3> <p> @Model.time</p>
-            <h3> Examen validado por: </h3>
 
-            @if (verificado.Equals("No"))
-            {
-                <p> No ha sido validado por administradores </p>
-            }
-            else
-            {
-                <p> @Model.verified</p>
-            }
+<p><strong>
+    Para obneter más información acerca de esta enfermedad, o sobre la interpretación de su riesgo visite la sección
+    sobre @Html.ActionLink("Endometriosis", "EndoInfo", "Home") o consulte algún profesional de la salud. </strong>
+    <!-- Un link al tab de Endometriosis para más información sobre el resultado-->
+</p>
 
-        </section>
+<p><strong>
+    *Recuerde que esta herramienta es solamente una guía, y no pretende sustituir el diagnóstico de un médico. Le
+    sugerimos que visite su médico para un diagnóstico más preciso.</strong>
+</p>
 
-        <p>
-            Para obneter más información acerca de esta enfermedad, o sobre la interpretación de su riesgo visite la sección
-            sobre @Html.ActionLink("Endometriosis", "EndoInfo", "Home") o consulte algún profesional de la salud.
-            <!-- Un link al tab de Endometriosis para más información sobre el resultado-->
-        </p>
-        <p>
-            *Recuerde que esta herramienta es solamente una guía, y no pretende sustituir el diagnóstico de un médico. Le
-            sugerimos que visite su médico para un diagnóstico más preciso.
-        </p>
+<h2 class="center">Cuestionario Opcional:</h2>
+<p><strong>
+    Los síntomas de endometriosis, en algunas ocasiones pueden confundirse con algún tipo de enfermedad gastrointestinal.
+    A continuación le proveemos la opción de llenar el cuestionario de "Rome III", para saber si este puede ser su caso:</strong>
+</p>
 
-        <h2 class="center">Cuestionario Opcional:</h2>
-        <p>
-            Los síntomas de endometriosis, en algunas ocasiones pueden confundirse con algún tipo de enfermedad gastrointestinal.
-            A continuación le proveemos la opción de llenar el cuestionario de "Rome III", para saber si este puede ser su caso:
-        </p>
-        <section class="center">
-            <!--Este nuevo link que añadí, es para ir a Rome III enviandole como parámetro el ID del quiz y de la paciente-->
-            @Html.ActionLink("Cuestionario Enfermedades Gastrointestinales", "DisplayRomeQuestionnaire", "RomeQuestionnaire", new { quizNum = Model.idQuiz, patientNum = Model.idPatient }, null)
-        </section>
-        <p>
-            ¡Gracias por utilizar Endorisk!
-        </p>
-        <section class="center">
-            <p>@Html.ActionLink("Regresar a página de inicio", "EndoriskQuestions", "EndoriskCalculator")</p>
-        </section>
-    </article>
+<section class="center"><strong>
+    <!--Este nuevo link que añadí, es para ir a Rome III enviandole como parámetro el ID del quiz y de la paciente-->
+    @Html.ActionLink("Cuestionario Enfermedades Gastrointestinales", "DisplayRomeQuestionnaire", "RomeQuestionnaire", new { quizNum = Model.idQuiz, patientNum = Model.idPatient }, null)</strong>
+</section>
+
+<p><strong>
+    ¡Gracias por utilizar Endorisk!</strong>
+</p>
+<section class="center">
+    <p>@Html.ActionLink("Regresar a página de inicio", "EndoriskQuestions", "EndoriskCalculator")</p>
+</section>
+</article>
 
     @section Scripts {
         @Scripts.Render("~/bundles/jqueryval")
@@ -74,10 +78,10 @@
                 $(".loader").fadeOut("slow");
             })
         </script>
-         
-        
 
-      
-    }
+
+
+
+}
 
 
