@@ -1,22 +1,23 @@
 ﻿
-
-@if (Request.IsAuthenticated)
-{
-
-    <p>
-        Bienvenido(a), @Html.Encode(User.Identity.Name.Split(',')[2]) @Html.Encode(User.Identity.Name.Split(',')[3]) ( @Html.Encode(User.Identity.Name.Split(',')[0]) )
-         @Html.ActionLink("Cerrar Sesión", "Logout", "administrators")
-    </p>
-
-    if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 0)
+<div class="loginpartial">
+    @if (Request.IsAuthenticated)
     {
-        <p style="font-size:larger;"><strong>@Html.ActionLink("Administrar Página", "Admin", "administrators")</strong></p>
+
+        <p >
+            Bienvenido(a), @Html.Encode(User.Identity.Name.Split(',')[2]) @Html.Encode(User.Identity.Name.Split(',')[3]) ( @Html.Encode(User.Identity.Name.Split(',')[0]) )
+            @Html.ActionLink("Cerrar Sesión", "Logout", "administrators")
+        </p>
+
+        if (Int32.Parse(User.Identity.Name.Split(',')[1]) == 0)
+        {
+            <p style="font-size:larger;"><strong>@Html.ActionLink("Administrar Página", "Admin", "administrators")</strong></p>
+        }
+        <hr />
     }
-    <hr />
-}
-else
-{
-    @Html.ActionLink("Iniciar Sesión", "Login", "administrators")
-    <hr />
-}
+    else
+    {
+        @Html.ActionLink("Iniciar Sesión", "Login", "administrators")
+        <hr />
+    }
+</div>
 

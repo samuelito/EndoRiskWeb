@@ -11,7 +11,7 @@ html {
 }
 
 body {
-    background-color: #fff;
+    background-color: #ffffff;
     color: #333;
     font-size: .85em;
     font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
@@ -24,7 +24,7 @@ header {
 }
 
 a {
-    color: #b200ff;
+    color: #3e5667;
     outline: none;
     padding-left: 3px;
     padding-right: 3px;
@@ -33,7 +33,7 @@ a {
 
     a:link, a:visited,
     a:active, a:hover {
-        color: #b200ff;
+        color: #a91a93;
     }
 
     a:hover {
@@ -88,16 +88,13 @@ h1 {
 
 h2 {
     font-size: 1.75em;
-    color: #b200ff;
-    /*
-        seashell2
-        hotpink4
-    */
+    color: #3e5667;
+   
 }
 
 h3 {
     font-size: 1.2em;
-    color: rgba(178, 0, 255, 0.79);
+    color: #3e5667;
 }
 
 h4 {
@@ -154,7 +151,7 @@ footer {
 /* site title
 ----------------------------------------------------------*/
 .site-title {
-    color: #c8c8c8;
+    color: #fff;
     font-family: Rockwell, 'AR CENA', "Courier New", Courier, monospace;
     font-size: 3.5em;
     margin: 0;
@@ -162,7 +159,7 @@ footer {
 
     .site-title a, .site-title a:hover, .site-title a:active {
         background: none;
-        color: rgba(178, 0, 255, 0.79);
+        color: #a91a93;
         outline: none;
         text-decoration: none;
     }
@@ -201,6 +198,9 @@ footer {
         list-style: none;
     }
 
+.loginpartial a {
+        color:  #3e5667;
+    }
 
 /* menu
 ----------------------------------------------------------*/
@@ -221,7 +221,7 @@ ul#menu {
 
         ul#menu li a {
             background: none;
-            color: #b200ff;
+            color: #a91a93;
             text-decoration: none;
         }
 
@@ -496,7 +496,8 @@ input[type="checkbox"] {
 input[type="submit"],
 input[type="button"],
 button {
-    background-color: rgba(251, 138, 186, 0.77);
+    color: #e2e2e2;
+    background-color: #3e5667;;
     border: 1px solid #333;
     cursor: pointer;
     font-size: 1.2em;
@@ -602,7 +603,7 @@ table {
 }
 
 .searchWrap {
-        background-color: #e2e2e2;
+    background-color: #e2e2e2;
     border: solid thin #c7d1d6;
     border-radius: 50px 50px 50px 50px;
 }
@@ -622,7 +623,7 @@ table {
     width: auto;
     margin: 0 auto;
     padding: 20px;
-        background-color: #e2e2e2;
+    background-color: #e2e2e2;
     border: solid thin #c7d1d6;
     border-radius: 50px 50px 50px 50px;
 }
@@ -642,7 +643,7 @@ table {
     width: 320px;
     margin: 0 auto;
     padding: 20px;
-        background-color: #e2e2e2;
+    background-color: #e2e2e2;
     border: solid thin #c7d1d6;
     border-radius: 50px 50px 50px 50px;
 }
@@ -726,11 +727,12 @@ table {
      padding-bottom: 10px;
  }
     .tableP tr:nth-child(odd){ 
-		background: rgba(213, 179, 228, 0.79);
+		
+        background: #e2e2e2;
 	}
 	
 	.tableP tr:nth-child(even){
-		background: #cb9dde;
+		background: #c7d1d6;
 	}
 
 .tableC {
@@ -757,7 +759,7 @@ table {
         font-size: 1.2em;
         text-align: center;
         padding: 0 0.25em 0 0.25em;
-        border: thin solid #000;
+        border: thin solid #c7d1d6;
         /*border-left: thin solid black;
     border-bottom: thin solid black;*/
     }
@@ -765,7 +767,7 @@ table {
     .tableS td {
         text-align: center;
         padding: 0.2em 0.5em 0.2em 0.5em;
-        border: thin solid #787878;
+        border: thin solid #e2e2e2;
         border-top: none;
         border-bottom: none;
         /*border-left: thin solid black;
@@ -773,27 +775,27 @@ table {
     }
 
 .dataHS {
-    background-color: deepskyblue;
+    background-color: #e2e2e2;
 }
 
 .answerHS {
-    background-color: #b200ff;
+    background-color: #e2e2e2;
 }
 
 .symptomHS {
-    background-color: #ff00dc;
+    background-color: #e2e2e2;
 }
 
 .dataS {
-    background-color: #a6dbed;
+    background-color: #e2e2e2;
 }
 
 .answerS {
-    background-color: #cb9dde;
+    background-color: #e2e2e2;
 }
 
 .symptomS {
-    background-color: #f39ce7;
+    background-color: #e2e2e2;
 }
 
 th {

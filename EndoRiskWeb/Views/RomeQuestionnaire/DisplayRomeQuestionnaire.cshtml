@@ -1,19 +1,18 @@
 ﻿@model IEnumerable<EndoRiskWeb.Models.questionsRome>
 
 @{
-    ViewBag.Title = "Cuestionarios de Rome 3";
+    ViewBag.Title = "Cuestionarios de Rome III";
 }
 
 @section featured {
-    <section class="featured">
-        <div class="content-wrapper">
-            <hgroup class="title">
-                <h1>@ViewBag.Title.</h1>
-            </hgroup>
-        </div>
-    </section>
+    
+        
+                <h2 class="center">@ViewBag.Title</h2>
+            
+        
+    
 }
-
+<div class="center" style="width:500px; margin:0 auto;">
 <!-- Start the form (POST) to use in the Risk Method-->
 @using (Html.BeginForm("RomeAnswers", "RomeQuestionnaire", FormMethod.Post))
 {
@@ -66,6 +65,7 @@
         </div>
     </div>
 }
+    </div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

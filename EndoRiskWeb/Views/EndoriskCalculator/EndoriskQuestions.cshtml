@@ -33,7 +33,7 @@
                     question includes: ID, Question, Abbreviation, Choices Set Name, and the List of Choices
                     -->
 
-                <p style="font-size:medium;font-weight:bold">
+                <p style="font-size:large;font-weight:bold; color:#3e5667">
                     Nota: El resultado que obtendrá mediante este examen es un diagnóstico preliminar por lo que no es 100% preciso.
                     Para obtener un diagnóstico completo y totalmente preciso, por favor <u>visite a su médico primario</u>.
                     Marque la casilla de "Acepto los términos y condiciones", en la parte posterior derecha a este mensaje
@@ -52,13 +52,13 @@
 
                 <p class="inicio_preguntas">Por favor complete las siguientes preguntas: </p>
                 <p class="campo_requerido" hidden>* Campo requerido</p><br />
-                <p class="PID_number" style="font-size:medium">Si posee algún número de paciente, escribálo en este campo. De lo contrario deje este campo vacío. </p>
+                <p class="PID_number" style="font-size:large">Si posee algún número de paciente, escribálo en este campo. De lo contrario deje este campo vacío. </p>
                 <input type="number" name="PID" value="" placeholder="" min="0" max="1000000" />
 
                 @foreach (var questionItem in Model.FirstOrDefault().quest)
                 {
                 <!--Displays the question -->
-                    <p style="font-size:medium;display:block" id="q-@questionItem.abbr"> @questionItem.question</p>
+                    <p style="font-size:large;display:block" id="q-@questionItem.abbr"> @questionItem.question</p>
                     @*<input type="text" name="@questionItem.question" value=" " required />*@ <!--Displays the question -->
 
                     <div class="col-md-10">
@@ -104,7 +104,7 @@
                     @{counter++;}
 </div>
                 }
-                <p style="font-size:medium">Seleccione los sintomas que presente</p>
+                <p style="font-size:large">Seleccione los sintomas que presente</p>
                 <div class="boxS" >
 
                     <div class="leftS">
@@ -137,7 +137,7 @@
                 </div>
                 <br />
                 <br />
-                <p style="font-size:medium; clear:both;">Seleccione otras condiciones pre-existentes</p>
+                <p style="font-size:large; clear:both;">Seleccione otras condiciones pre-existentes</p>
                 <div class="boxS">
                     <div class="leftSS">
                         @for (int i = 0; i < (Model.FirstOrDefault().prexCond.Count / 2); i++)

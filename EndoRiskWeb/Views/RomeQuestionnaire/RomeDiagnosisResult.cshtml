@@ -3,14 +3,13 @@
     ViewBag.Title = "Resultados de Cuestionarios ROME";
     int counter = 1;
 }
-
 <h2>De acuerdo a sus síntomas, contestaciones y al criterio 'Rome' para enfermedades gastrointestinales,</h2>
 
 <h3>@ViewBag.Message</h3>
 
 @foreach (var item in Model)
 {
-    <p>Diagnostico @counter++ : @item.diagnosis</p>
+    <p>Diagnostico: @item.diagnosis</p>
 }
 <p>@ViewBag.NoSymp</p>
 

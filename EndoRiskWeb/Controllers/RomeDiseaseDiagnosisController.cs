@@ -28,8 +28,8 @@ namespace EndoRiskWeb.Controllers
 
         private static List<bool> questionsResults = new List<bool>(); //Lista de los resultados de cada comparacion de las preguntas para cada enfermedad en orden.
 
-        private static List<String> truePreDiseases = new List<String>(); //Lista de las enfermedades que me van dando ciertas
-        private static List<String> falsePreDiseases = new List<String>(); //Lista de las enfermedades que me van dando falsas
+        private  List<String> truePreDiseases = new List<String>(); //Lista de las enfermedades que me van dando ciertas
+        private  List<String> falsePreDiseases = new List<String>(); //Lista de las enfermedades que me van dando falsas
 
         private static String errorStatus = "";
 
@@ -50,6 +50,9 @@ namespace EndoRiskWeb.Controllers
 
             truePreDiseases.Clear();
             falsePreDiseases.Clear();
+
+            truePreDiseases.Add("");
+            falsePreDiseases.Add("");
            
             System.Diagnostics.Debug.Write("Quiz de Rome es: " + romequizID + "\n");
 
@@ -91,7 +94,7 @@ namespace EndoRiskWeb.Controllers
                             return truePreDiseases;
                         }
 
-                        else if (resultado)
+                        else if(resultado)
                         {
                             truePreDiseases.Add(eachDisease);
                             System.Diagnostics.Debug.Write(eachDisease + " se añadió a trueDiseases \n");
@@ -290,20 +293,60 @@ namespace EndoRiskWeb.Controllers
                             {
                                 if(comparedValue) //If disease has to be true
                                 {
-                                    if(truePreDiseases.Contains(CUAL)) //If in the list of true prediseases exist the disease parameter, add true
+                                    for (int m = 0; m < truePreDiseases.Count; m++)
                                     {
-                                        parameterList.Add(true);
-                                        System.Diagnostics.Debug.Write("Parámetro D (true) número: " + item.idOrder.ToString() + " de " + item.disease4.ToString() + " step " + item.step.ToString() + ", resultado es: " + parameterList.Last().ToString() + "\n"); //For testing
+                                        if(truePreDiseases[m].Equals(CUAL))
+                                        {
+                                            parameterList.Add(true);
+                                            m = truePreDiseases.Count + 1;
+                                            System.Diagnostics.Debug.Write("Parámetro D (true) número: " + item.idOrder.ToString() + " de " + item.disease4.ToString() + " step " + item.step.ToString() + ", resultado es: " + parameterList.Last().ToString() + "\n"); //For testing
+                                        }
                                     }
+
+                                    for (int m = 0; m < falsePreDiseases.Count; m++)
+                                    {
+                                        if (falsePreDiseases[m].Equals(CUAL))
+                                        {
+                                            parameterList.Add(false);
+                                            m = falsePreDiseases.Count + 1;
+                                            System.Diagnostics.Debug.Write("Parámetro D (false) número: " + item.idOrder.ToString() + " de " + item.disease4.ToString() + " step " + item.step.ToString() + ", resultado es: " + parameterList.Last().ToString() + "\n"); //For testing
+                                        }
+                                    }
+                                        //if (truePreDiseases.Any(str => str.Contains(CUAL)))
+                                        ////if(truePreDiseases.Contains(CUAL)) //If in the list of true prediseases exist the disease parameter, add true
+                                        //{
+                                        //    parameterList.Add(true);
+                                        //    System.Diagnostics.Debug.Write("Parámetro D (true) número: " + item.idOrder.ToString() + " de " + item.disease4.ToString() + " step " + item.step.ToString() + ", resultado es: " + parameterList.Last().ToString() + "\n"); //For testing
+                                        //}
                                 }
 
                                 else if(!comparedValue) //If disease has to be false
                                 {
-                                    if(falsePreDiseases.Contains(CUAL)) //If in the list of false prediseases exist the disease parameter, add true
+                                    for (int n = 0; n < falsePreDiseases.Count; n++)
                                     {
-                                        parameterList.Add(false);
-                                        System.Diagnostics.Debug.Write("Parámetro D (false) número: " + item.idOrder.ToString() + " de " + item.disease4.ToString() + " step " + item.step.ToString() + ", resultado es: " + parameterList.Last().ToString() + "\n"); //For testing
+                                        if (falsePreDiseases[n].Equals(CUAL))
+                                        {
+                                            parameterList.Add(true);
+                                            n = falsePreDiseases.Count + 1;
+                                            System.Diagnostics.Debug.Write("Parámetro D (true) número: " + item.idOrder.ToString() + " de " + item.disease4.ToString() + " step " + item.step.ToString() + ", resultado es: " + parameterList.Last().ToString() + "\n"); //For testing
+                                        }
                                     }
+
+                                    for (int n = 0; n < truePreDiseases.Count; n++)
+                                    {
+                                        if (truePreDiseases[n].Equals(CUAL))
+                                        {
+                                            parameterList.Add(false);
+                                            n = truePreDiseases.Count + 1;
+                                            System.Diagnostics.Debug.Write("Parámetro D (false) número: " + item.idOrder.ToString() + " de " + item.disease4.ToString() + " step " + item.step.ToString() + ", resultado es: " + parameterList.Last().ToString() + "\n"); //For testing
+                                        }
+                                    }
+                                    //if (falsePreDiseases.Any(str => str.Contains(CUAL)))
+                                    ////if(falsePreDiseases.Contains(CUAL)) //If in the list of false prediseases exist the disease parameter, add true
+                                    //{
+                                    //    parameterList.Add(false);
+                                    //    System.Diagnostics.Debug.Write("Parámetro D (false) número: " + item.idOrder.ToString() + " de " + item.disease4.ToString() + " step " + item.step.ToString() + ", resultado es: " + parameterList.Last().ToString() + "\n"); //For testing
+                                    //}
                                 }
 
                                 else //Did not fulfill the comparison criteria.

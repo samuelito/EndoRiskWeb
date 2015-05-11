@@ -229,7 +229,10 @@ namespace EndoRiskWeb.Controllers
             {               
                 trueDisease = trueDiseasesResult[k];
 
-                diagnosticos.Add(allDiagnostics.Where(m => m.disease.Equals(trueDisease)).Last()); //Select the diagnosis for current [k] disease.
+                if(!trueDisease.Equals(""))
+                {
+                    diagnosticos.Add(allDiagnostics.Where(m => m.disease.Equals(trueDisease)).Last()); //Select the diagnosis for current [k] disease.
+                }              
             }
 
             ViewBag.Message = "El resultado es el siguiente: ";
