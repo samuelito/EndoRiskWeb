@@ -18,6 +18,7 @@
 }
 @{int counter = 0;}
 
+
 <div class="questionWrap">
     <!-- Start the form (POST) to use in the Risk Method-->
     @using (Html.BeginForm("EndoriskResult", "EndoriskCalculator", FormMethod.Post, new { @name = "userAnswersForm" }))
@@ -174,7 +175,7 @@
             <div class="form-group">
                 <div class="center" style="clear:both;">
                     <div class="col-md-offset-2 col-md-10">
-                        <input id="submitted" type="submit" value="Calcular Riesgo"
+                        <input id="submitted" type="submit" value="Calcular Riesgo" 
                                 class="btn btn-default" @*disabled="disabled"*@ />
 
                     </div>
@@ -190,6 +191,13 @@
 
     @**@
     <script type="text/javascript">
+
+        $('submitted').on('click', function () {
+            $("div.page").showLoading();
+        });
+       /*function loading() {
+            $(".se-pre-con").fadeOut("slow");;
+        };*/
 
         document.getElementById('SM').onchange = function () {
             var value = this.options[this.selectedIndex].value;     
