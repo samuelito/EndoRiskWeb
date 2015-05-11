@@ -14,8 +14,8 @@
     <h2 class="center">@ViewBag.Title</h2>
     <br />
     <article class="questionWrap">
-        <p>
-            Se ha determinado que su riesgo de padecer endometriosis a lo largo de su vida es:
+        <p><strong>
+            Se ha determinado que su riesgo de padecer endometriosis a lo largo de su vida es:</strong>
         </p>
         
             <section class="center" style="background-color: #ebeef6;margin: 0 auto;border-radius: 30px 30px 30px 30px; border: thin solid gray;width:400px">
@@ -29,41 +29,41 @@
                
                 @if (verificado.Equals("No"))
                 {
-                    <p> No ha sido validado por administradores </p>
+                    <p><strong> No ha sido validado por administradores</strong> </p>
                 }
                 else
                 {
-                    <p> @Model.verified</p>
+                    <p><strong> @Model.verified</strong></p>
                 }
                 
             </section>
 
 
-<p>
+<p><strong>
     Para obneter más información acerca de esta enfermedad, o sobre la interpretación de su riesgo visite la sección
-    sobre @Html.ActionLink("Endometriosis", "EndoInfo", "Home") o consulte algún profesional de la salud.
+    sobre @Html.ActionLink("Endometriosis", "EndoInfo", "Home") o consulte algún profesional de la salud. </strong>
     <!-- Un link al tab de Endometriosis para más información sobre el resultado-->
 </p>
 
-<p>
+<p><strong>
     *Recuerde que esta herramienta es solamente una guía, y no pretende sustituir el diagnóstico de un médico. Le
-    sugerimos que visite su médico para un diagnóstico más preciso.
+    sugerimos que visite su médico para un diagnóstico más preciso.</strong>
 </p>
 
 
 <h2 class="center">Cuestionario Opcional:</h2>
-<p>
+<p><strong>
     Los síntomas de endometriosis, en algunas ocasiones pueden confundirse con algún tipo de enfermedad gastrointestinal.
-    A continuación le proveemos la opción de llenar el cuestionario de "Rome III", para saber si este puede ser su caso:
+    A continuación le proveemos la opción de llenar el cuestionario de "Rome III", para saber si este puede ser su caso:</strong>
 </p>
 
-<section class="center">
+<section class="center"><strong>
     <!--Este nuevo link que añadí, es para ir a Rome III enviandole como parámetro el ID del quiz y de la paciente-->
-    @Html.ActionLink("Cuestionario Enfermedades Gastrointestinales", "DisplayRomeQuestionnaire", "RomeQuestionnaire", new { quizNum = Model.idQuiz, patientNum = Model.idPatient }, null)
+    @Html.ActionLink("Cuestionario Enfermedades Gastrointestinales", "DisplayRomeQuestionnaire", "RomeQuestionnaire", new { quizNum = Model.idQuiz, patientNum = Model.idPatient }, null)</strong>
 </section>
 
-<p>
-    ¡Gracias por utilizar Endorisk!
+<p><strong>
+    ¡Gracias por utilizar Endorisk!</strong>
 </p>
 
 <section class="center">

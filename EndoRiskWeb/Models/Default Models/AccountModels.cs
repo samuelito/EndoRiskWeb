@@ -8,7 +8,7 @@ namespace EndoRiskWeb.Models
 {
     public class LocalPasswordModel
     {       
-        [DataType(DataType.EmailAddress)] 
+        //[DataType(DataType.EmailAddress)] 
         [Display(Name = "Correo electrónico")]
         public string userEmail { get; set; }
 
