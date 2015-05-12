@@ -181,7 +181,7 @@ namespace EndoRiskWeb.Controllers
             }
 
             paciente.risk = (float) riesgo;             //Lifetime risk result 
-            paciente.severity = "Moderado-Severo"; //prediccion[1].ToString(); ;
+            paciente.severity = prediccion[1].ToString();
             paciente.time = DateTime.Now;                   //time of the quiz
 
             //Verify if logged in
