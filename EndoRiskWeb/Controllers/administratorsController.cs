@@ -292,7 +292,7 @@ namespace EndoRiskWeb.Controllers
 
                             SendEmailModel Email = new SendEmailModel()
                             {
-                                From = "epm059@gmail.com",
+                                From = "endoriskpr@gmail.com",
                                 To = sysAdmin.email,
                                 Subject = "Bienvenido(a) a EndoRisk!",
                                 Body = adminMessage,
@@ -307,7 +307,7 @@ namespace EndoRiskWeb.Controllers
                             subadminMessage = subadminMessage.Replace("\n", System.Environment.NewLine);
                             SendEmailModel Email = new SendEmailModel()
                             {
-                                From = "epm059@gmail.com",
+                                From = "endoriskpr@gmail.com",
                                 To = sysAdmin.email,
                                 Subject = "Bienvenido(a) a EndoRisk!",
                                 Body = subadminMessage,
@@ -347,7 +347,7 @@ namespace EndoRiskWeb.Controllers
                 smtp.Host = "smtp.gmail.com";
                 smtp.Port = 587;
                 smtp.UseDefaultCredentials = false;
-                smtp.Credentials = new System.Net.NetworkCredential("epm059@gmail.com", "EpmJna59");// Enter sender's User name and password
+                smtp.Credentials = new System.Net.NetworkCredential("endoriskpr@gmail.com", "EndoRiskPR2015");// Enter sender's User name and password
                 smtp.EnableSsl = true;
                 smtp.Send(mail);
             }
@@ -386,9 +386,9 @@ namespace EndoRiskWeb.Controllers
 
                             SendEmailModel Email = new SendEmailModel()
                             {
-                                From = "epm059@gmail.com",
+                                From = "endoriskpr@gmail.com",
                                 To = mail,
-                                Subject = "Bienvenido(a) a EndoRisk!",
+                                Subject = "Reinicio de contraseña",
                                 Body = adminMessage,
                             };
 

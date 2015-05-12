@@ -4,7 +4,7 @@
 -->
 @{
     ViewBag.Title = "Calculadora de Riesgo de Endometriosis";
-
+   
 }
 
 @section featured {
@@ -36,8 +36,8 @@
 
                 <p style="font-size:large;font-weight:bold; color:#3e5667">
                     Nota: El resultado que obtendrá mediante este examen es un diagnóstico preliminar basado en mujeres de <u>EDAD REPRODUCTIVA</u> y el cual <u>NO SUSTITUYE</u> un diagnóstico médico.
-                    Para obtener un diagnóstico mucho más detallado y confiable, por favor <u>visite a su ginecólogo.</u>
-                    Marque la casilla de "Acepto los términos y condiciones", a continuación para asegurar que usted ha sido informado y entiende lo establecido anteriormente.
+                    Para una evaluación médica, por favor <u>visite a su ginecólogo.</u>
+                    Marque la casilla de "Acepto los términos y condiciones", a continuación para asegurar que usted ha sido informado y entiende lo establecido anteriormente. 
                     De no marcar el siguiente recuadro, <u>NO PODRÁ RECIBIR LOS RESULTADOS DEL EXAMEN.</u> Gracias por su cooperación y por utilizar EndoRisk.
 
                 </p>
@@ -70,14 +70,14 @@
 
                 @foreach (var questionItem in Model.FirstOrDefault().quest)
                 {
-                    if (questionItem.abbr.Equals("AWSS"))
+                    if (questionItem.abbr.Equals("AWSS")) 
                     {
                     }
-                    //Displays the question
-
+                //Displays the question 
+                  
                     else
                     {<p style="font-size:large;font-weight:500;display:block" id="q-@questionItem.abbr"> @questionItem.question</p> }
-
+                   
                     @*<input type="text" name="@questionItem.question" value=" " required />*@ <!--Displays the question -->
 
                     <div class="col-md-10">
@@ -89,12 +89,12 @@
                                 <label class="campo_requerido" style="font-size:medium">
                                     <input id="@questionItem.abbr" type="text" name="@questionItem.abbr" maxlength="50" />
                                 </label>
-                            }
+                            } 
                             else if (questionItem.abbr.Equals("AWSS"))
                             {
 
                             }
-
+                            
                             else
                             {
 
@@ -103,7 +103,7 @@
                                 </label>
                             }
 
-
+                           
 
                         }
 
@@ -130,23 +130,24 @@
                             {
                                 <!--Display the choices for the question in a select-->
                                 <!-- Value will be the selected choice = element(i)-->
-                                <label class="campo_requerido">
-                                    <select id="@questionItem.abbr" name="@questionItem.abbr"
-                                            style="display:inline;font-weight:500">
-                                        <option selected></option>
+                        <label class="campo_requerido">
+                            <select id="@questionItem.abbr" name="@questionItem.abbr"
+                                     style="display:inline;font-weight:500">
+                                <option selected></option>
 
-                                        @foreach (var choiceIndex in questionItem.choices)
-                                        {
-                                            <option value="@choiceIndex">@choiceIndex</option>
-                                        }
-                                    </select>
-                                </label>
+                                @foreach (var choiceIndex in questionItem.choices)
+                                {
+                                    <option value="@choiceIndex">@choiceIndex</option>
+                                }
+                            </select>
+                            </label>
                             }
 
                         }
-                        @{counter++;}
-                    </div>
+                    @{counter++;}
+</div>
                 }
+
                 <p style="font-size:large;font-weight:500">Seleccione los síntomas que padece o ha padecido:</p>
                 <div class="boxP">
 
@@ -174,9 +175,8 @@
                         <div>
                             <input id="symp" type="checkbox" name="symp" value="" checked hidden />
                         </div>
-
-                        <br />
-                    </div>
+                                                
+                      </div>
                 </div>
 
 
@@ -200,11 +200,11 @@
                             }
 
                             else { }
-                        </div>
+                    </div>
                     }
                 </div>
 
-
+                
                 <br />
                 <p style="font-size:large; clear:both; font-weight:500">Seleccione otras condiciones pre-existentes:</p>
                 <div class="boxP">
@@ -244,7 +244,7 @@
                 <div class="center" style="clear:both;">
                     <div class="col-md-offset-2 col-md-10">
                         <input id="submitted" type="submit" value="Calcular Riesgo"
-                               class="btn btn-default" @*disabled="disabled"*@ />
+                                class="btn btn-default" @*disabled="disabled"*@ />
 
                     </div>
                 </div>
@@ -276,7 +276,7 @@
 
 
     <script type="text/javascript">
-        
+
         
 
         $(document).ready(function () {
@@ -379,23 +379,23 @@
         };
 
         document.getElementById('SM').onchange = function () {
-            var value = this.options[this.selectedIndex].value;
+            var value = this.options[this.selectedIndex].value;     
 
             if (value == "No") {
                 document.getElementById('q-YS').style.display = 'none';
                 document.getElementById('q-CI').style.display = 'none';
-
+                
                 document.getElementById('YS').setAttribute('value', 0);
-                document.getElementById('YS').style.display = 'none';
+                document.getElementById('YS').style.display = 'none'; 
                 document.getElementById('CI').setAttribute('value', 0);
-                document.getElementById('CI').style.display = 'none';
+                document.getElementById('CI').style.display = 'none';             
             }
             else {
                 document.getElementById('q-YS').style.display = 'block';
-                document.getElementById('q-CI').style.display = 'block';
-                document.getElementById('YS').style.display = 'inline';
-                document.getElementById('CI').style.display = 'inline';
-
+                document.getElementById('q-CI').style.display = 'block';          
+                document.getElementById('YS').style.display = 'inline';             
+                document.getElementById('CI').style.display = 'inline'; 
+             
             }
         };
 
@@ -407,11 +407,11 @@
                 document.getElementById('q-IT').style.display = 'none';
                 document.getElementById('IT').setAttribute('value', 'No');
                 document.getElementById('IT').style.display = 'none'; // hide element1
-
+                          
             }
             else {
-                document.getElementById('q-IT').style.display = 'block';
-                document.getElementById('IT').style.display = 'inline'; // hide element1
+                document.getElementById('q-IT').style.display = 'block';   
+                document.getElementById('IT').style.display = 'inline'; // hide element1            
 
             }
         };
@@ -428,7 +428,7 @@
                 document.getElementById('SA').style.display = 'none';
                 document.getElementById('q-NA').style.display = 'none';
                 document.getElementById('NA').setAttribute('value', 0);
-                document.getElementById('NA').style.display = 'none';
+                document.getElementById('NA').style.display = 'none'; 
 
             }
             else {
@@ -452,12 +452,12 @@
 
                 document.getElementById('q-NA').style.display = 'none';
                 document.getElementById('NA').setAttribute('value', 'No');
-                document.getElementById('NA').style.display = 'none';
+                document.getElementById('NA').style.display = 'none'; 
 
             }
             else {
                 document.getElementById('q-NA').style.display = 'block';
-                document.getElementById('NA').style.display = 'inline';
+                document.getElementById('NA').style.display = 'inline';             
 
             }
         };
@@ -536,9 +536,9 @@
 
             }
         };
+  
 
-
-    </script>
+</script>
 
 
 
