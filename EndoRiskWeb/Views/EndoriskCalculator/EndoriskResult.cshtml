@@ -9,7 +9,9 @@
     string verificado = Model.verified;
 }
 
-<div >
+<!-- All the things -->
+<div class="loader"></div>
+
 
     <h2 class="center">@ViewBag.Title</h2>
     <br />
@@ -50,7 +52,6 @@
     sugerimos que visite su médico para un diagnóstico más preciso.</strong>
 </p>
 
-
 <h2 class="center">Cuestionario Opcional:</h2>
 <p><strong>
     Los síntomas de endometriosis, en algunas ocasiones pueden confundirse con algún tipo de enfermedad gastrointestinal.
@@ -65,23 +66,22 @@
 <p><strong>
     ¡Gracias por utilizar Endorisk!</strong>
 </p>
-
 <section class="center">
     <p>@Html.ActionLink("Regresar a página de inicio", "EndoriskQuestions", "EndoriskCalculator")</p>
 </section>
-
 </article>
 
-</div>
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+        <script type="text/javascript">
+            $(window).load(function () {
+                $(".loader").fadeOut("slow");
+            })
+        </script>
 
 
 
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
 }
-
-
-
 
 
