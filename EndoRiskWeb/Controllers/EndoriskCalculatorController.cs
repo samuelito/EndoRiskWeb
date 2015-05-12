@@ -242,26 +242,28 @@ namespace EndoRiskWeb.Controllers
                 //(Validation - Enable Test - PID ) -> First Elements
                 // x < c.count-2 _> since last 2 element in form contains the symptoms and preconditions.
                 
-                for (int x = 3; x < c.Count - 2; x++)
+                for (int x = 3; x < c.Count; x++)
                 {
+                    if (!(c.GetKey(x).Equals("symp")  || c.GetKey(x).Equals("prexCond")))
+                    {
+                        respuestas = new endoanswer();
+                        string ans = c.GetKey(x);                   //get the answer from the form
 
-                    respuestas = new endoanswer();
-                    string ans = c.GetKey(x);                   //get the answer from the form
+                        var ques = from q in data                   //Select the question id by checking
+                                   where q.abbr.Equals(ans)         //the abbreviation from the form in the 
+                                   select q.idQuestion;             //question table -> returns the ID of the question
 
-                    var ques = from q in data                   //Select the question id by checking
-                               where q.abbr.Equals(ans)         //the abbreviation from the form in the 
-                               select q.idQuestion;             //question table -> returns the ID of the question
+                        int idpreg = (int)ques.FirstOrDefault();     //get the first value in 
 
-                    int idpreg = (int)ques.FirstOrDefault();     //get the first value in 
+                        //Add the answers of the question 
+                        respuestas.answer = c.Get(x);               //the answer to the question
+                        respuestas.idQuestion = idpreg;             //quiestion id of the answer
+                        respuestas.idQuiz = idq;                    //quiz of the answered question
 
-                    //Add the answers of the question 
-                    respuestas.answer = c.Get(x);               //the answer to the question
-                    respuestas.idQuestion = idpreg;             //quiestion id of the answer
-                    respuestas.idQuiz = idq;                    //quiz of the answered question
-
-                    //Store all the answers in an array for risk calculation
-                    a.endoanswers.Add(respuestas);
-                    a.SaveChanges();
+                        //Store all the answers in an array for risk calculation
+                        a.endoanswers.Add(respuestas);
+                        a.SaveChanges();
+                    }
                 }
             }
 

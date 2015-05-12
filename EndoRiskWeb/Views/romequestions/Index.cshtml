@@ -8,9 +8,7 @@
 <br />
 
 <div class="endoWrap">
-    <h3 class="center">
-        @Html.ActionLink("A~adir una nueva pregunta", "Create")
-    </h3>
+   
     <br />
     <table class="tableP">
         <tr>
@@ -33,8 +31,8 @@
                     @Html.DisplayFor(modelItem => item.romeChoice)
                 </td>
                 <td>
-                    @Html.ActionLink("Editar", "Edit", new { id = item.idRomeQuestion }) |
-                    @Html.ActionLink("Eliminar", "Delete", new { id = item.idRomeQuestion })
+                    @Html.ActionLink("Editar", "Edit", new { id = item.idRomeQuestion }) 
+                    
                 </td>
             </tr>
         }
