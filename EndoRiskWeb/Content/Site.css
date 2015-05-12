@@ -701,6 +701,19 @@ table {
     border-radius: 50px 50px 50px 50px;
 }
 
+.warnings {
+    display:none; 
+    
+    margin:10px;
+    font-size:,medium;
+    color:#3e5667;
+    width: auto;
+    background-color: #d0a7ca;
+    border: solid thin #a91a93;
+    border-radius: 3px 3px 3px 3px;
+    padding: 10px;
+}
+
 .leftA{
     float:left;
     margin-left:60px;
@@ -708,6 +721,21 @@ table {
 
 .leftS {
     float: left;
+    padding: 10px 10px 10px 10px;
+}
+.boxP {
+    height: auto;
+    width: auto;
+    margin-left: 20px;
+}
+
+.leftP {
+    float: left;
+    padding: 10px 10px 10px 10px;
+}
+.leftPP{
+    float: left;
+    margin-right: 190px;
     padding: 10px 10px 10px 10px;
 }
 
@@ -1032,3 +1060,6 @@ tr.pager td {
             margin: 0;
         }
 }
+
+/*******************************************************************************************/
+

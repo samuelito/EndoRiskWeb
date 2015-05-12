@@ -4,7 +4,7 @@
 -->
 @{
     ViewBag.Title = "Calculadora de Riesgo de Endometriosis";
-   
+
 }
 
 @section featured {
@@ -37,7 +37,7 @@
                 <p style="font-size:large;font-weight:bold; color:#3e5667">
                     Nota: El resultado que obtendrá mediante este examen es un diagnóstico preliminar basado en mujeres de <u>EDAD REPRODUCTIVA</u> y el cual <u>NO SUSTITUYE</u> un diagnóstico médico.
                     Para obtener un diagnóstico mucho más detallado y confiable, por favor <u>visite a su ginecólogo.</u>
-                    Marque la casilla de "Acepto los términos y condiciones", a continuación para asegurar que usted ha sido informado y entiende lo establecido anteriormente. 
+                    Marque la casilla de "Acepto los términos y condiciones", a continuación para asegurar que usted ha sido informado y entiende lo establecido anteriormente.
                     De no marcar el siguiente recuadro, <u>NO PODRÁ RECIBIR LOS RESULTADOS DEL EXAMEN.</u> Gracias por su cooperación y por utilizar EndoRisk.
 
                 </p>
@@ -45,25 +45,39 @@
 
                 <label class="accept_terms">
                     <strong style="color: #3e5667">
-                        <input id="showChecked" type="checkbox" name="enable_test" value="" class="accept_terms" required  style="font-size: large;font-weight:bold"/>
+                        <input id="showChecked" type="checkbox" name="enable_test" value="" class="accept_terms" required style="font-size: large;font-weight:bold" />
                         Acepto los términos y condiciones
                     </strong>
                 </label>
 
                 <p class="inicio_preguntas" style="font-size:large;font-weight:500">Por favor complete las siguientes preguntas: </p>
                 <p class="campo_requerido" hidden>* Campo requerido</p><br />
+
+
+
+
                 <p class="PID_number" style="font-size:large;font-weight:500">Si posee algún número de paciente, escríbalo en este campo. De lo contrario deje este campo vacío. </p>
-                <input type="number" name="PID" value="" placeholder="" min="0" max="1000000" />
+
+
+                <input type="number" id="PID" name="PID" value="" placeholder="" min="0" max="1000000" />
+                <span class="warnings" id="warning">
+                    <strong>Nota!</strong> El ID de paciente debe ser menor a 999999.
+                </span>
+
+
+
+
 
                 @foreach (var questionItem in Model.FirstOrDefault().quest)
                 {
-                    if (questionItem.abbr.Equals("AWSS")) 
+                    if (questionItem.abbr.Equals("AWSS"))
                     {
                     }
-                //Displays the question 
-                  
-                    else {<p style="font-size:large;font-weight:500;display:block" id="q-@questionItem.abbr"> @questionItem.question</p> }
-                   
+                    //Displays the question
+
+                    else
+                    {<p style="font-size:large;font-weight:500;display:block" id="q-@questionItem.abbr"> @questionItem.question</p> }
+
                     @*<input type="text" name="@questionItem.question" value=" " required />*@ <!--Displays the question -->
 
                     <div class="col-md-10">
@@ -73,86 +87,105 @@
                             if (questionItem.abbr.Equals("OETR"))
                             {
                                 <label class="campo_requerido" style="font-size:medium">
-                                    <input id="@questionItem.abbr" type="text" name="@questionItem.abbr" maxlength="50"  />
+                                    <input id="@questionItem.abbr" type="text" name="@questionItem.abbr" maxlength="50" />
                                 </label>
-                            } 
+                            }
                             else if (questionItem.abbr.Equals("AWSS"))
                             {
 
                             }
-                            
+
                             else
                             {
 
                                 <label class="campo_requerido" style="font-size:medium">
-                                    <input id="@questionItem.abbr" type="number" name="@questionItem.abbr" min="0"  />
+                                    <input id="@questionItem.abbr" type="number" name="@questionItem.abbr" min="0" />
                                 </label>
                             }
 
-                           
+
 
                         }
 
                         else
                         {
+                            if (questionItem.abbr.Equals("EBA"))
+                            {
+                                
+                                <label class="campo_requerido">
+                                    <select id="@questionItem.abbr" name="@questionItem.abbr"
+                                            style="display:inline;font-weight:500">
+                                        <option selected></option>
+
+                                        @foreach (var choiceIndex in questionItem.choices)
+                                        {
+                                            <option value="@choiceIndex">@choiceIndex</option>
+                                        }
+                                    </select><span class="warnings" id="warningEBA">
+                                        <strong>Advertencia!</strong> El modelo de predicción esta basado en una población Hispana.
+                                    </span>
+                                </label>
+                            }
+                            else
+                            {
                                 <!--Display the choices for the question in a select-->
                                 <!-- Value will be the selected choice = element(i)-->
-                        <label class="campo_requerido">
-                            <select id="@questionItem.abbr" name="@questionItem.abbr"
-                                     style="display:inline;font-weight:500">
-                                <option selected></option>
+                                <label class="campo_requerido">
+                                    <select id="@questionItem.abbr" name="@questionItem.abbr"
+                                            style="display:inline;font-weight:500">
+                                        <option selected></option>
 
-                                @foreach (var choiceIndex in questionItem.choices)
-                                {
-                                    <option value="@choiceIndex">@choiceIndex</option>
-                                }
-                            </select>
-                            </label>
-
+                                        @foreach (var choiceIndex in questionItem.choices)
+                                        {
+                                            <option value="@choiceIndex">@choiceIndex</option>
+                                        }
+                                    </select>
+                                </label>
+                            }
 
                         }
-                    @{counter++;}
-</div>
+                        @{counter++;}
+                    </div>
                 }
                 <p style="font-size:large;font-weight:500">Seleccione los síntomas que padece o ha padecido:</p>
-                <div class="boxS" >
+                <div class="boxP">
 
-                    <div class="leftS">
+                    <div class="leftP">
                         @for (int i = 0; i < (Model.FirstOrDefault().symp.Count / 2); i++)
                         {   <div>
-                            <input id="symp" type="checkbox" name="symp" value="@Model.FirstOrDefault().symp.ElementAt(i).abbr" style="font-weight:500" />
-                           <span style="font-weight:500;color: #3e5667"> @Model.FirstOrDefault().symp.ElementAt(i).symptom1</span>
+                                <input id="symp" class="symptom" onclick="symptom(1)" type="checkbox" name="symp" value="@Model.FirstOrDefault().symp.ElementAt(i).abbr" style="font-weight:500" />
+                            <span style="font-weight:500;color: #3e5667"> @Model.FirstOrDefault().symp.ElementAt(i).symptom1</span>
                         </div>
                         }
                     </div>
-                    <div class="leftS">
+                    <div class="leftP">
 
                         @for (int i = (Model.FirstOrDefault().symp.Count / 2); i < Model.FirstOrDefault().symp.Count; i++)
                         {   <div>
-                            <input id="symp" type="checkbox" name="symp" value="@Model.FirstOrDefault().symp.ElementAt(i).abbr" style="font-weight:500" />
+                            <input id="symp" class="symptom" onclick="symptom(1)" type="checkbox" name="symp" value="@Model.FirstOrDefault().symp.ElementAt(i).abbr" style="font-weight:500" />
                             <span style="font-weight: 500;color: #3e5667">@Model.FirstOrDefault().symp.ElementAt(i).symptom1</span>
                         </div>
 
                         }
                         <div>
-                            <input id="symp" type="checkbox" name="symp" value="NTS"  style="font-weight:500"/>
+                            <input id="NTS" class="nosymp" type="checkbox" name="symp" value="NTS" style="font-weight:500" checked />
                             <span style="font-weight: 500;color: #3e5667">No tengo síntomas</span>
                         </div>
                         <div>
-                            <input id="symp" type="checkbox" name="symp" value=""  checked hidden />
+                            <input id="symp" type="checkbox" name="symp" value="" checked hidden />
                         </div>
-                                                
+
                         <br />
-                      </div>
+                    </div>
                 </div>
 
 
-                <div class="form-group">
+                <div class="form-group" style="clear:both">
                     @foreach (var questionItem in Model.FirstOrDefault().quest)
                     {
                 <!--Displays the question -->
                         if (questionItem.abbr.Equals("AWSS"))
-                        {<p style="font-size:large;font-weight:500;display:block" id="q-@questionItem.abbr"> @questionItem.question</p>}
+                        {<p style="font-size:large;font-weight:500;display:none;" id="q-@questionItem.abbr"> @questionItem.question</p>}
                         @*<input type="text" name="@questionItem.question" value=" " required />*@ <!--Displays the question -->
 
                         <div class="col-md-10">
@@ -161,37 +194,37 @@
                             {
 
                                 <label class="campo_requerido" style="font-size:medium">
-                                    <input id="@questionItem.abbr" type="text" name="@questionItem.abbr" maxlength="50" />
+                                    <input id="@questionItem.abbr" style="display:none" type="number" name="@questionItem.abbr" min="0" max="74" />
                                 </label>
 
                             }
 
                             else { }
-                    </div>
+                        </div>
                     }
                 </div>
 
-                
+
                 <br />
                 <p style="font-size:large; clear:both; font-weight:500">Seleccione otras condiciones pre-existentes:</p>
-                <div class="boxS">
-                    <div class="leftSS">
+                <div class="boxP">
+                    <div class="leftPP">
                         @for (int i = 0; i < (Model.FirstOrDefault().prexCond.Count / 2); i++)
                         {   <div>
-                                <input id="prexCond" type="checkbox" name="prexCond" value="@Model.FirstOrDefault().prexCond.ElementAt(i).abbr" style="font-weight:500" />
+                                <input id="prexCond" class="precon" type="checkbox" onclick="pre(1)" name="prexCond" value="@Model.FirstOrDefault().prexCond.ElementAt(i).abbr" style="font-weight:500" />
                             <span style="font-weight:500;color: #3e5667">@Model.FirstOrDefault().prexCond.ElementAt(i).condition</span>
                         </div>
                         }
                     </div>
-                    <div class="leftSS">
+                    <div class="leftPP">
                         @for (int i = (Model.FirstOrDefault().prexCond.Count / 2) + 1; i < Model.FirstOrDefault().prexCond.Count; i++)
                         {   <div>
-                                <input id="prexCond" type="checkbox" name="prexCond" value="@Model.FirstOrDefault().prexCond.ElementAt(i).abbr" style="font-weight:500" />
+                                <input id="prexCond" class="precon" type="checkbox" onclick="pre(1)" name="prexCond" value="@Model.FirstOrDefault().prexCond.ElementAt(i).abbr" style="font-weight:500" />
                             <span style="font-weight: 500;color: #3e5667">@Model.FirstOrDefault().prexCond.ElementAt(i).condition</span>
                         </div>
                         }
                         <div>
-                            <input id="prexCond" type="checkbox" name="prexCond" value="NOOPC" style="font-weight:500" />
+                            <input id="NOOPC" class="nopre" type="checkbox" name="prexCond" value="NOOPC" checked style="font-weight:500" />
                             <span style="font-weight: 500;color: #3e5667">No tengo condiciones</span>
                         </div>
                         <div>
@@ -211,7 +244,7 @@
                 <div class="center" style="clear:both;">
                     <div class="col-md-offset-2 col-md-10">
                         <input id="submitted" type="submit" value="Calcular Riesgo"
-                                class="btn btn-default" @*disabled="disabled"*@ />
+                               class="btn btn-default" @*disabled="disabled"*@ />
 
                     </div>
                 </div>
@@ -225,33 +258,144 @@
     @Scripts.Render("~/bundles/jqueryval")
 
     @**@
-    <script type="text/javascript">
 
-        $('submitted').on('click', function () {
-            $("div.page").showLoading();
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+
+    <style>
+        /*.btn-info{color:#fff;background-color:#5bc0de;border-color:#46b8da}
+        .btn-info.active,.btn-info.focus,.btn-info:active,.btn-info:focus,.btn-info:hover,.open>.dropdown-toggle.btn-info{color:#fff;background-color:#31b0d5;border-color:#269abc}
+        .btn-info.active,.btn-info:active,.open>.dropdown-toggle.btn-info{background-image:none}.btn-info.disabled,.btn-info.disabled.active,.btn-info.disabled.focus,.btn-info.disabled:active,.btn-info.disabled:focus,.btn-info.disabled:hover,.btn-info[disabled],.btn-info[disabled].active,.btn-info[disabled].focus,.btn-info[disabled]:active,.btn-info[disabled]:focus,.btn-info[disabled]:hover,fieldset[disabled]
+         .btn-info,fieldset[disabled] .btn-info.active,fieldset[disabled]
+        .btn-info.focus,fieldset[disabled] .btn-info:active,fieldset[disabled] .btn-info:focus,fieldset[disabled]
+        .btn-info:hover{background-color:#5bc0de;border-color:#46b8da}.btn-info .badge{color:#5bc0de;background-color:#fff}
+         */
+    </style>
+
+
+    <script type="text/javascript">
+        
+        
+
+        $(document).ready(function () {
+            $('#NTS').click(function (event) {  //on click
+                if (this.checked) { // check select status
+                    document.getElementById('AWSS').style.display = 'none';
+                    document.getElementById('AWSS').setAttribute('value', 0);
+                    document.getElementById('q-AWSS').style.display = 'none';
+
+                    $('.symptom').each(function () { //loop through each checkbox
+                        this.checked = false;  //select all checkboxes with class "checkbox1"              
+                    });
+                } else {
+
+                    document.getElementById('AWSS').style.display = 'block';
+                    document.getElementById('q-AWSS').style.display = 'block';
+                    document.getElementById('AWSS').setAttribute('value', 0);
+                }
+            });
+
         });
-       /*function loading() {
-            $(".se-pre-con").fadeOut("slow");;
-        };*/
+
+        $(document).ready(function () {
+            $('#NOOPC').click(function (event) {  //on click
+                if (this.checked) { // check select status
+                    $('.precon').each(function () { //loop through each checkbox
+                        this.checked = false;  //select all checkboxes with class "checkbox1"              
+                    });
+                } 
+
+                 
+                
+            });
+
+        });
+
+        function symptom(value) {
+            if (value == 1) {
+                $('.nosymp').each(function () { //loop through each checkbox
+                    this.checked = false;  //select all checkboxes with class "checkbox1"              
+                });
+                document.getElementById('AWSS').style.display = 'block';
+                document.getElementById('q-AWSS').style.display = 'block';
+                document.getElementById('AWSS').setAttribute('value', 0);
+            }
+           
+        }
+
+        function pre(value) {
+            if (value == 1) {
+                $('.nopre').each(function () { //loop through each checkbox
+                    this.checked = false;  //select all checkboxes with class "checkbox1"              
+                });
+            }
+
+        }
+        
+        
+        /*
+        $(document).ready(function () {
+            $('#symp').click(function (event) {  //on click
+                if (this.checked) { // check select status
+                    document.getElementById('AWSS').style.display = 'block';
+                    document.getElementById('q-AWSS').style.display = 'block';
+                    document.getElementById('AWSS').setAttribute('value', 0);
+                    $(".nosymp").attr('checked', false);
+                }
+                else {
+
+                }
+            });
+
+        });*/
+        
+
+        $('#PID').on('input', function () {
+            var value = $('#PID').val();
+
+            if (value > 999999) {
+                document.getElementById('warning').style.display = 'block';
+
+            }
+            else {
+                document.getElementById('warning').style.display = 'none';
+            }
+
+        });
+
+
+
+        document.getElementById('EBA').onchange = function () {
+            var value = this.options[this.selectedIndex].value;
+
+            if (value != "Hispano") {
+                document.getElementById('warningEBA').style.display = 'block';
+            }
+            else {
+                document.getElementById('warningEBA').style.display = 'none';
+            }
+        };
 
         document.getElementById('SM').onchange = function () {
-            var value = this.options[this.selectedIndex].value;     
+            var value = this.options[this.selectedIndex].value;
 
             if (value == "No") {
                 document.getElementById('q-YS').style.display = 'none';
                 document.getElementById('q-CI').style.display = 'none';
-                
+
                 document.getElementById('YS').setAttribute('value', 0);
-                document.getElementById('YS').style.display = 'none'; 
+                document.getElementById('YS').style.display = 'none';
                 document.getElementById('CI').setAttribute('value', 0);
-                document.getElementById('CI').style.display = 'none';             
+                document.getElementById('CI').style.display = 'none';
             }
             else {
                 document.getElementById('q-YS').style.display = 'block';
-                document.getElementById('q-CI').style.display = 'block';          
-                document.getElementById('YS').style.display = 'inline';             
-                document.getElementById('CI').style.display = 'inline'; 
-             
+                document.getElementById('q-CI').style.display = 'block';
+                document.getElementById('YS').style.display = 'inline';
+                document.getElementById('CI').style.display = 'inline';
+
             }
         };
 
@@ -263,11 +407,11 @@
                 document.getElementById('q-IT').style.display = 'none';
                 document.getElementById('IT').setAttribute('value', 'No');
                 document.getElementById('IT').style.display = 'none'; // hide element1
-                          
+
             }
             else {
-                document.getElementById('q-IT').style.display = 'block';   
-                document.getElementById('IT').style.display = 'inline'; // hide element1            
+                document.getElementById('q-IT').style.display = 'block';
+                document.getElementById('IT').style.display = 'inline'; // hide element1
 
             }
         };
@@ -284,7 +428,7 @@
                 document.getElementById('SA').style.display = 'none';
                 document.getElementById('q-NA').style.display = 'none';
                 document.getElementById('NA').setAttribute('value', 0);
-                document.getElementById('NA').style.display = 'none'; 
+                document.getElementById('NA').style.display = 'none';
 
             }
             else {
@@ -308,12 +452,12 @@
 
                 document.getElementById('q-NA').style.display = 'none';
                 document.getElementById('NA').setAttribute('value', 'No');
-                document.getElementById('NA').style.display = 'none'; 
+                document.getElementById('NA').style.display = 'none';
 
             }
             else {
                 document.getElementById('q-NA').style.display = 'block';
-                document.getElementById('NA').style.display = 'inline';             
+                document.getElementById('NA').style.display = 'inline';
 
             }
         };
@@ -380,7 +524,7 @@
         document.getElementById('ETR').onchange = function () {
             var value = this.options[this.selectedIndex].value;
 
-            if (value != "Otro" ) {
+            if (value != "Otro") {
                 document.getElementById('q-OETR').style.display = 'none';
                 document.getElementById('OETR').setAttribute('value', 'No Aplica');
                 document.getElementById('OETR').style.display = 'none';
@@ -392,9 +536,12 @@
 
             }
         };
-  
 
-</script>
+
+    </script>
+
+
+
 
 
     <style type="text/css">

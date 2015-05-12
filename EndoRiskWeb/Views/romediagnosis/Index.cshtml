@@ -7,9 +7,7 @@
 <h2 class="center">Diagnosticos para las enfermedades de los cuestionarios de Rome</h2>
 <br />
 <div class="endoWrap">
-<h3 class="center">
-    @Html.ActionLink("Anadir un diagnostico nuevo", "Create")
-</h3>
+
     <br />
 <table class="tableP">
     <tr>
@@ -37,8 +35,7 @@
             @Html.DisplayFor(modelItem => item.rome)
         </td>
         <td>
-            @Html.ActionLink("Editar", "Edit", new { id=item.idDiagnosis }) |        
-            @Html.ActionLink("Eliminar", "Delete", new { id=item.idDiagnosis })
+            @Html.ActionLink("Editar", "Edit", new { id=item.idDiagnosis }) 
         </td>
     </tr>
 }
