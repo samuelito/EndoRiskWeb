@@ -344,8 +344,7 @@ namespace EndoRiskWeb.Controllers
 
         public object[,] endoAnswerlist(FormCollection endoAnswersCollection)
         {
-            object[,] endoAnswerList = new object[endoAnswersCollection.Count - 3, 2];
-            string[] userSymptomsList = null;
+            object[,] endoAnswerList = new object[endoAnswersCollection.Count - 3, 2];        
 
             //Add all user answers coming from the screen to an array
             for (int x = 3; x < endoAnswersCollection.Count; x++)
@@ -353,36 +352,48 @@ namespace EndoRiskWeb.Controllers
                 if (endoAnswersCollection.Get(x) == "Sí")
                 {
                     endoAnswerList[x - 3, 0] = 1;
+                    endoAnswerList[x - 3, 1] = endoAnswersCollection.GetKey(x);
                 }
 
                 else if (endoAnswersCollection.Get(x) == "No" || endoAnswersCollection.Get(x) == "No Aplica" || endoAnswersCollection.Get(x) == null || endoAnswersCollection.Get(x) == "")
                 {
                     endoAnswerList[x - 3, 0] = 0;
+                    endoAnswerList[x - 3, 1] = endoAnswersCollection.GetKey(x);
                 }
 
                 else if (endoAnswersCollection.Get(x).Equals("Hermana"))
                 {
                     endoAnswerList[x - 3, 0] = 1;
+                    endoAnswerList[x - 3, 1] = endoAnswersCollection.GetKey(x);
+                }
+
+                else if (endoAnswersCollection.GetKey(x).Equals("symp") || endoAnswersCollection.GetKey(x).Equals("prexCond"))
+                {
+                   
+                }
+
+                else if (endoAnswersCollection.GetKey(x).Equals("AWSS"))
+                { 
+                    endoAnswerList[x - 4, 0] = endoAnswersCollection.Get(x);
+                    endoAnswerList[x - 4, 1] = endoAnswersCollection.GetKey(x);
                 }
 
                 else if (endoAnswersCollection.Get(x) == "Madre" || endoAnswersCollection.Get(x) == "Hija" || endoAnswersCollection.Get(x) == "Abuela" || endoAnswersCollection.Get(x) == "Tía" || endoAnswersCollection.Get(x) == "Sobrina" || endoAnswersCollection.Get(x) == "Prima")
                 {
                     endoAnswerList[x - 3, 0] = 0;
+                    endoAnswerList[x - 3, 1] = endoAnswersCollection.GetKey(x);
                 }
 
-                //else if (endoAnswersCollection.GetKey(x).Equals("symp"))
-                //{
-
-                //    endoAnswerList[x - 3, 0] = endoAnswersCollection.Get(x);
-                //}
-
                 else
+                {
                     endoAnswerList[x - 3, 0] = endoAnswersCollection.Get(x);
-                endoAnswerList[x - 3, 1] = endoAnswersCollection.GetKey(x);
+                    endoAnswerList[x - 3, 1] = endoAnswersCollection.GetKey(x);
+                }
             }
 
             // Symptoms Array
-            userSymptomsList = endoAnswersCollection.Get(endoAnswersCollection.Count - 2).Split(',');
+            //userSymptomsList = endoAnswersCollection.Get(endoAnswersCollection.Count - 2).Split(',');
+           string[] userSymptomsList = endoAnswersCollection.GetValue("symp").AttemptedValue.Split(',');
             // Pre-existing conditions Array
 
 
@@ -390,7 +401,7 @@ namespace EndoRiskWeb.Controllers
             var allSymptomsLength = db.symptoms.Count();
             var allPrexCondLength = db.preExistingConditions.Count();
 
-            object[,] allUserAnswers = new object[(endoAnswersCollection.Count + allSymptomsLength + allPrexCondLength) - 4, 2];
+            object[,] allUserAnswers = new object[(endoAnswersCollection.Count + allSymptomsLength + allPrexCondLength) - 5, 2];
 
             //Add all user answers coming from the array of answers to the big array allUserAnswers[]
             for (int y = 0; y < endoAnswerList.GetLength(0) - 1; y++)
@@ -422,7 +433,7 @@ namespace EndoRiskWeb.Controllers
                 }
             }
 
-            string[] userPrexCondList = endoAnswersCollection.Get(endoAnswersCollection.Count - 1).Split(',');
+            string[] userPrexCondList = endoAnswersCollection.GetValue("prexCond").AttemptedValue.Split(',');
             allUserAnswersCounter = 0;
             //Add all user symptoms coming from the symptoms array of to the big array allUserAnswers[]
             foreach (var prexCondItem in db.preExistingConditions.ToList())
