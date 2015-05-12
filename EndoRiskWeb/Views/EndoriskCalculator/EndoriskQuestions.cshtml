@@ -35,7 +35,7 @@
 
                 <p style="font-size:large;font-weight:bold; color:#3e5667">
                     Nota: El resultado que obtendrá mediante este examen es un diagnóstico preliminar basado en mujeres de <u>EDAD REPRODUCTIVA</u> y el cual <u>NO SUSTITUYE</u> un diagnóstico médico.
-                    Para obtener un diagnóstico mucho más detallado y confiable, por favor <u>visite a su ginecólogo.</u>
+                    Para una evaluación médica, por favor <u>visite a su ginecólogo.</u>
                     Marque la casilla de "Acepto los términos y condiciones", a continuación para asegurar que usted ha sido informado y entiende lo establecido anteriormente. 
                     De no marcar el siguiente recuadro, <u>NO PODRÁ RECIBIR LOS RESULTADOS DEL EXAMEN.</u> Gracias por su cooperación y por utilizar EndoRisk.
 
@@ -113,6 +113,7 @@
                     @{counter++;}
 </div>
                 }
+
                 <p style="font-size:large;font-weight:500">Seleccione los síntomas que padece o ha padecido:</p>
                 <div class="boxS" >
 
@@ -120,7 +121,7 @@
                         @for (int i = 0; i < (Model.FirstOrDefault().symp.Count / 2); i++)
                         {   <div>
                             <input id="symp" type="checkbox" name="symp" value="@Model.FirstOrDefault().symp.ElementAt(i).abbr" style="font-weight:500" />
-                           <span style="font-weight:500;color: #3e5667"> @Model.FirstOrDefault().symp.ElementAt(i).symptom1</span>
+                           <span style="font-weight:500;color: #3e5667;font-size:large"> @Model.FirstOrDefault().symp.ElementAt(i).symptom1</span>
                         </div>
                         }
                     </div>
@@ -129,24 +130,28 @@
                         @for (int i = (Model.FirstOrDefault().symp.Count / 2); i < Model.FirstOrDefault().symp.Count; i++)
                         {   <div>
                             <input id="symp" type="checkbox" name="symp" value="@Model.FirstOrDefault().symp.ElementAt(i).abbr" style="font-weight:500" />
-                            <span style="font-weight: 500;color: #3e5667">@Model.FirstOrDefault().symp.ElementAt(i).symptom1</span>
+                            <span style="font-weight: 500;color: #3e5667;font-size:large">@Model.FirstOrDefault().symp.ElementAt(i).symptom1</span>
                         </div>
 
                         }
                         <div>
                             <input id="symp" type="checkbox" name="symp" value="NTS"  style="font-weight:500"/>
-                            <span style="font-weight: 500;color: #3e5667">No tengo síntomas</span>
+                            <span style="font-weight: 500;color: #3e5667; font-size:large">No tengo síntomas</span>
                         </div>
                         <div>
                             <input id="symp" type="checkbox" name="symp" value=""  checked hidden />
                         </div>
                                                 
-                        <br />
                       </div>
                 </div>
 
 
-                <div class="form-group">
+                <br />
+                <br />
+                <br/>
+                <br/>
+
+                <div class="form-group"style="clear:both">
                     @foreach (var questionItem in Model.FirstOrDefault().quest)
                     {
                 <!--Displays the question -->
@@ -159,7 +164,7 @@
                             @if (questionItem.abbr.Equals("AWSS"))
                             {
 
-                                <label class="campo_requerido" style="font-size:medium">
+                                <label class="campo_requerido" style="font-size:large">
                                     <input id="@questionItem.abbr" type="text" name="@questionItem.abbr" maxlength="50" />
                                 </label>
 
@@ -178,7 +183,7 @@
                         @for (int i = 0; i < (Model.FirstOrDefault().prexCond.Count / 2); i++)
                         {   <div>
                                 <input id="prexCond" type="checkbox" name="prexCond" value="@Model.FirstOrDefault().prexCond.ElementAt(i).abbr" style="font-weight:500" />
-                            <span style="font-weight:500;color: #3e5667">@Model.FirstOrDefault().prexCond.ElementAt(i).condition</span>
+                            <span style="font-weight:500;color: #3e5667;font-size:large">@Model.FirstOrDefault().prexCond.ElementAt(i).condition</span>
                         </div>
                         }
                     </div>
@@ -186,12 +191,12 @@
                         @for (int i = (Model.FirstOrDefault().prexCond.Count / 2) + 1; i < Model.FirstOrDefault().prexCond.Count; i++)
                         {   <div>
                                 <input id="prexCond" type="checkbox" name="prexCond" value="@Model.FirstOrDefault().prexCond.ElementAt(i).abbr" style="font-weight:500" />
-                            <span style="font-weight: 500;color: #3e5667">@Model.FirstOrDefault().prexCond.ElementAt(i).condition</span>
+                            <span style="font-weight: 500;font-size:large;color: #3e5667">@Model.FirstOrDefault().prexCond.ElementAt(i).condition</span>
                         </div>
                         }
                         <div>
                             <input id="prexCond" type="checkbox" name="prexCond" value="NOOPC" style="font-weight:500" />
-                            <span style="font-weight: 500;color: #3e5667">No tengo condiciones</span>
+                            <span style="font-weight: 500;color: #3e5667;font-size:large">No tengo condiciones</span>
                         </div>
                         <div>
                             <input id="prexCond" type="checkbox" name="prexCond" value="" checked hidden />
