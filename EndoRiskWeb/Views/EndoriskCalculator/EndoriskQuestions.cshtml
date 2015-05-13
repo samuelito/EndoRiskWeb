@@ -154,7 +154,7 @@
                         @for (int i = 0; i < (Model.FirstOrDefault().symp.Count / 2); i++)
                         {   <div>
                                 <input id="symp" class="symptom" onclick="symptom(1)" type="checkbox" name="symp" value="@Model.FirstOrDefault().symp.ElementAt(i).abbr" style="font-weight:500" />
-                            <span style="font-weight:500;color: #3e5667"> @Model.FirstOrDefault().symp.ElementAt(i).symptom1</span>
+                            <span style="font-weight:500;color: #3e5667;font-size:15px"> @Model.FirstOrDefault().symp.ElementAt(i).symptom1</span>
                         </div>
                         }
                     </div>
@@ -163,13 +163,13 @@
                         @for (int i = (Model.FirstOrDefault().symp.Count / 2); i < Model.FirstOrDefault().symp.Count; i++)
                         {   <div>
                             <input id="symp" class="symptom" onclick="symptom(1)" type="checkbox" name="symp" value="@Model.FirstOrDefault().symp.ElementAt(i).abbr" style="font-weight:500" />
-                            <span style="font-weight: 500;color: #3e5667">@Model.FirstOrDefault().symp.ElementAt(i).symptom1</span>
+                            <span style="font-weight: 500;color: #3e5667;font-size:15px">@Model.FirstOrDefault().symp.ElementAt(i).symptom1</span>
                         </div>
 
                         }
                         <div>
                             <input id="NTS" class="nosymp" type="checkbox" name="symp" value="NTS" style="font-weight:500" checked />
-                            <span style="font-weight: 500;color: #3e5667">No tengo síntomas</span>
+                            <span style="font-weight: 500;color: #3e5667;font-size:15px">No tengo síntomas</span>
                         </div>
                         <div>
                             <input id="symp" type="checkbox" name="symp" value="" checked hidden />
@@ -192,7 +192,7 @@
                             @if (questionItem.abbr.Equals("AWSS"))
                             {
 
-                                <label class="campo_requerido" style="font-size:medium">
+                                <label class="campo_requerido" style="font-size:large;">
                                     <input id="@questionItem.abbr" style="display:none" type="number" name="@questionItem.abbr" min="0" max="74" required />
                                 </label>
 
@@ -211,7 +211,7 @@
                         @for (int i = 0; i < (Model.FirstOrDefault().prexCond.Count / 2); i++)
                         {   <div>
                                 <input id="prexCond" class="precon" type="checkbox" onclick="pre(1)" name="prexCond" value="@Model.FirstOrDefault().prexCond.ElementAt(i).abbr" style="font-weight:500" />
-                            <span style="font-weight:500;color: #3e5667">@Model.FirstOrDefault().prexCond.ElementAt(i).condition</span>
+                            <span style="font-weight:500;color: #3e5667;font-size:15px">@Model.FirstOrDefault().prexCond.ElementAt(i).condition</span>
                         </div>
                         }
                     </div>
@@ -219,12 +219,12 @@
                         @for (int i = (Model.FirstOrDefault().prexCond.Count / 2) + 1; i < Model.FirstOrDefault().prexCond.Count; i++)
                         {   <div>
                                 <input id="prexCond" class="precon" type="checkbox" onclick="pre(1)" name="prexCond" value="@Model.FirstOrDefault().prexCond.ElementAt(i).abbr" style="font-weight:500" />
-                            <span style="font-weight: 500;color: #3e5667">@Model.FirstOrDefault().prexCond.ElementAt(i).condition</span>
+                            <span style="font-weight: 500;color: #3e5667;font-size:15px">@Model.FirstOrDefault().prexCond.ElementAt(i).condition</span>
                         </div>
                         }
                         <div>
                             <input id="NOOPC" class="nopre" type="checkbox" name="prexCond" value="NOOPC" checked style="font-weight:500" />
-                            <span style="font-weight: 500;color: #3e5667">No tengo condiciones</span>
+                            <span style="font-weight: 500;color: #3e5667;font-size:15px">No tengo condiciones</span>
                         </div>
                         <div>
                             <input id="prexCond" type="checkbox" name="prexCond" value="" checked hidden />
@@ -369,11 +369,11 @@
         document.getElementById('EBA').onchange = function () {
             var value = this.options[this.selectedIndex].value;
 
-            if (value != "Hispano") {
-                document.getElementById('warningEBA').style.display = 'block';
+            if (value == "Hispano" || value == "") {
+                document.getElementById('warningEBA').style.display = 'none';
             }
             else {
-                document.getElementById('warningEBA').style.display = 'none';
+                document.getElementById('warningEBA').style.display = 'block';
             }
         };
 
@@ -385,17 +385,17 @@
                 document.getElementById('q-CI').style.display = 'none';
                 
                 document.getElementById('YS').setAttribute('value', 0);
-                document.getElementById('YS').style.display = 'none';
+                document.getElementById('YS').style.display = 'none'; 
                 document.getElementById('YS').removeAttribute('required');
                 document.getElementById('CI').setAttribute('value', 0);
-                document.getElementById('CI').style.display = 'none';
+                document.getElementById('CI').style.display = 'none';             
                 document.getElementById('CI').removeAttribute('required');
             }
             else {
                 document.getElementById('q-YS').style.display = 'block';
                 document.getElementById('q-CI').style.display = 'block';          
                 document.getElementById('YS').style.display = 'inline';             
-                document.getElementById('CI').style.display = 'inline';
+                document.getElementById('CI').style.display = 'inline'; 
                 document.getElementById('YS').setAttribute('required', 'true');
                 document.getElementById('CI').setAttribute('required', 'true');
              
@@ -433,7 +433,7 @@
                 document.getElementById('SA').style.display = 'none';
                 document.getElementById('q-NA').style.display = 'none';
                 document.getElementById('NA').setAttribute('value', 0);
-                document.getElementById('NA').style.display = 'none';
+                document.getElementById('NA').style.display = 'none'; 
                 document.getElementById('PA').removeAttribute('required');
                 document.getElementById('SA').removeAttribute('required');
                 document.getElementById('NA').removeAttribute('required');
@@ -463,13 +463,13 @@
 
                 document.getElementById('q-NA').style.display = 'none';
                 document.getElementById('NA').setAttribute('value', 'No');
-                document.getElementById('NA').style.display = 'none';
+                document.getElementById('NA').style.display = 'none'; 
                 document.getElementById('NA').removeAttribute('required');
 
             }
             else {
                 document.getElementById('q-NA').style.display = 'block';
-                document.getElementById('NA').style.display = 'inline';
+                document.getElementById('NA').style.display = 'inline';             
                 document.getElementById('NA').setAttribute('required', 'true');
 
             }
@@ -574,19 +574,19 @@
             display: block;
             padding-left: 15px;
             text-indent: -15px;
-            float: right;
+            float: none;
             bottom: -10px;
         }
 
         input.accept_terms {
-            width: 13px;
+            width: 15px;
             height: 20px;
             padding: 0;
             margin: 0 2px 0 0;
             vertical-align: bottom;
             top: -1px;
             *overflow: hidden;
-            text-align: right;
+            /*text-align: right;*/
             margin-right: 7px;
             float: none;
             bottom: -10px;

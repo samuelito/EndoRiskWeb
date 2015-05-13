@@ -320,6 +320,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Site.css" />
     <Content Include="Content\themes\base\accordion.css" />
     <Content Include="Content\themes\base\all.css" />
     <Content Include="Content\themes\base\autocomplete.css" />
@@ -432,7 +433,6 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="Content\Site.css" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Images\accent.png" />
     <Content Include="Images\bullet.png" />
@@ -485,7 +485,6 @@
     <Content Include="Views\Comments\ViewComments.cshtml" />
     <Content Include="Views\EndoriskCalculator\AddEndoriskQuestions.cshtml" />
     <Content Include="Views\EndoriskCalculator\EditEndoriskQuestions.cshtml" />
-    <Content Include="Views\EndoriskCalculator\EndoriskQuestions.cshtml" />
     <Content Include="Views\EndoriskCalculator\EndoriskResult.cshtml" />
     <Content Include="Views\Home\EndoInfo.cshtml" />
     <Content Include="Views\Home\Endorisk.cshtml" />
@@ -523,6 +522,7 @@
     <Content Include="Views\Notifications\PasswordChangeSuccesful.cshtml" />
     <Content Include="Views\RomeQuestionnaire\RomeDiagnosisError.cshtml" />
     <Content Include="Views\RomeQuestionnaire\RomeDiagnosisResult.cshtml" />
+    <Content Include="Views\EndoriskCalculator\EndoriskQuestions.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -576,7 +576,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>2372</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
