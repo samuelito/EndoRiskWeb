@@ -55,13 +55,12 @@
 
 
 
-
                 <p class="PID_number" style="font-size:large;font-weight:500">Si posee algún número de paciente, escríbalo en este campo. De lo contrario deje este campo vacío. </p>
 
 
                 <input type="number" id="PID" name="PID" value="" placeholder="" min="0" max="1000000" />
                 <span class="warnings" id="warning">
-                    <strong>Nota!</strong> El ID de paciente debe ser menor a 999999.
+                    <strong>Nota! El ID de paciente debe ser menor a 999999.</strong>
                 </span>
 
 
@@ -87,7 +86,7 @@
                             if (questionItem.abbr.Equals("OETR"))
                             {
                                 <label class="campo_requerido" style="font-size:medium">
-                                    <input id="@questionItem.abbr" type="text" name="@questionItem.abbr" maxlength="50" />
+                                    <input id="@questionItem.abbr" type="text" name="@questionItem.abbr" maxlength="50" required/>
                                 </label>
                             } 
                             else if (questionItem.abbr.Equals("AWSS"))
@@ -99,7 +98,7 @@
                             {
 
                                 <label class="campo_requerido" style="font-size:medium">
-                                    <input id="@questionItem.abbr" type="number" name="@questionItem.abbr" min="0" />
+                                    <input id="@questionItem.abbr" type="number" name="@questionItem.abbr" min="0" required />
                                 </label>
                             }
 
@@ -114,7 +113,7 @@
                                 
                                 <label class="campo_requerido">
                                     <select id="@questionItem.abbr" name="@questionItem.abbr"
-                                            style="display:inline;font-weight:500">
+                                            style="display:inline;font-weight:500" required>
                                         <option selected></option>
 
                                         @foreach (var choiceIndex in questionItem.choices)
@@ -132,7 +131,7 @@
                                 <!-- Value will be the selected choice = element(i)-->
                         <label class="campo_requerido">
                             <select id="@questionItem.abbr" name="@questionItem.abbr"
-                                     style="display:inline;font-weight:500">
+                                     style="display:inline;font-weight:500" required>
                                 <option selected></option>
 
                                 @foreach (var choiceIndex in questionItem.choices)
@@ -194,7 +193,7 @@
                             {
 
                                 <label class="campo_requerido" style="font-size:medium">
-                                    <input id="@questionItem.abbr" style="display:none" type="number" name="@questionItem.abbr" min="0" max="74" />
+                                    <input id="@questionItem.abbr" style="display:none" type="number" name="@questionItem.abbr" min="0" max="74" required />
                                 </label>
 
                             }
@@ -386,15 +385,19 @@
                 document.getElementById('q-CI').style.display = 'none';
                 
                 document.getElementById('YS').setAttribute('value', 0);
-                document.getElementById('YS').style.display = 'none'; 
+                document.getElementById('YS').style.display = 'none';
+                document.getElementById('YS').removeAttribute('required');
                 document.getElementById('CI').setAttribute('value', 0);
-                document.getElementById('CI').style.display = 'none';             
+                document.getElementById('CI').style.display = 'none';
+                document.getElementById('CI').removeAttribute('required');
             }
             else {
                 document.getElementById('q-YS').style.display = 'block';
                 document.getElementById('q-CI').style.display = 'block';          
                 document.getElementById('YS').style.display = 'inline';             
-                document.getElementById('CI').style.display = 'inline'; 
+                document.getElementById('CI').style.display = 'inline';
+                document.getElementById('YS').setAttribute('required', 'true');
+                document.getElementById('CI').setAttribute('required', 'true');
              
             }
         };
@@ -406,12 +409,14 @@
 
                 document.getElementById('q-IT').style.display = 'none';
                 document.getElementById('IT').setAttribute('value', 'No');
-                document.getElementById('IT').style.display = 'none'; // hide element1
+                document.getElementById('IT').style.display = 'none';
+                document.getElementById('IT').removeAttribute('required');
                           
             }
             else {
                 document.getElementById('q-IT').style.display = 'block';   
-                document.getElementById('IT').style.display = 'inline'; // hide element1            
+                document.getElementById('IT').style.display = 'inline';
+                document.getElementById('IT').setAttribute('required', 'true');
 
             }
         };
@@ -428,7 +433,10 @@
                 document.getElementById('SA').style.display = 'none';
                 document.getElementById('q-NA').style.display = 'none';
                 document.getElementById('NA').setAttribute('value', 0);
-                document.getElementById('NA').style.display = 'none'; 
+                document.getElementById('NA').style.display = 'none';
+                document.getElementById('PA').removeAttribute('required');
+                document.getElementById('SA').removeAttribute('required');
+                document.getElementById('NA').removeAttribute('required');
 
             }
             else {
@@ -441,6 +449,9 @@
                 document.getElementById('q-NA').style.display = 'block';
                 document.getElementById('NA').style.display = 'inline';
                 document.getElementById('NA').setAttribute('value', '');
+                document.getElementById('PA').setAttribute('required', 'true');
+                document.getElementById('SA').setAttribute('required', 'true');
+                document.getElementById('NA').setAttribute('required', 'true');
 
             }
         });
@@ -452,12 +463,14 @@
 
                 document.getElementById('q-NA').style.display = 'none';
                 document.getElementById('NA').setAttribute('value', 'No');
-                document.getElementById('NA').style.display = 'none'; 
+                document.getElementById('NA').style.display = 'none';
+                document.getElementById('NA').removeAttribute('required');
 
             }
             else {
                 document.getElementById('q-NA').style.display = 'block';
-                document.getElementById('NA').style.display = 'inline';             
+                document.getElementById('NA').style.display = 'inline';
+                document.getElementById('NA').setAttribute('required', 'true');
 
             }
         };
@@ -470,11 +483,13 @@
                 document.getElementById('q-SIA').style.display = 'none';
                 document.getElementById('SIA').setAttribute('value', 'No Aplica');
                 document.getElementById('SIA').style.display = 'none';
+                document.getElementById('SIA').removeAttribute('required');
 
             }
             else {
                 document.getElementById('q-SIA').style.display = 'block';
                 document.getElementById('SIA').style.display = 'inline';
+                document.getElementById('SIA').setAttribute('required', 'true');
 
             }
         };
@@ -487,36 +502,44 @@
                 document.getElementById('q-SU').style.display = 'none';
                 document.getElementById('SU').setAttribute('value', 'Leve');
                 document.getElementById('SU').style.display = 'none';
+                document.getElementById('SU').removeAttribute('required');
 
                 document.getElementById('q-SE').style.display = 'none';
                 document.getElementById('SE').setAttribute('value', 'No Aplica');
                 document.getElementById('SE').style.display = 'none';
+                document.getElementById('SE').removeAttribute('required');
 
                 document.getElementById('q-ETR').style.display = 'none';
                 document.getElementById('ETR').setAttribute('value', 'No Aplica');
                 document.getElementById('ETR').style.display = 'none';
+                document.getElementById('ETR').removeAttribute('required');
 
                 document.getElementById('q-OETR').style.display = 'none';
                 document.getElementById('OETR').setAttribute('value', 'No aplica');
                 document.getElementById('OETR').style.display = 'none';
+                document.getElementById('OETR').removeAttribute('required');
 
             }
             else {
                 document.getElementById('q-SU').style.display = 'block';
                 document.getElementById('SU').style.display = 'inline';
                 document.getElementById('SU').setAttribute('value', '');
+                document.getElementById('SU').setAttribute('required', 'true');
 
                 document.getElementById('q-SE').style.display = 'block';
                 document.getElementById('SE').style.display = 'inline';
                 document.getElementById('SE').setAttribute('value', '');
+                document.getElementById('SE').setAttribute('required', 'true');
 
                 document.getElementById('q-ETR').style.display = 'block';
                 document.getElementById('ETR').style.display = 'inline';
                 document.getElementById('ETR').setAttribute('value', '');
+                document.getElementById('ETR').setAttribute('required', 'true');
 
                 document.getElementById('q-OETR').style.display = 'block';
                 document.getElementById('OETR').style.display = 'inline';
                 document.getElementById('OETR').setAttribute('value', '');
+                document.getElementById('OETR').setAttribute('required', 'true');
 
             }
         };
@@ -528,11 +551,13 @@
                 document.getElementById('q-OETR').style.display = 'none';
                 document.getElementById('OETR').setAttribute('value', 'No Aplica');
                 document.getElementById('OETR').style.display = 'none';
+                document.getElementById('OETR').removeAttribute('required');
             }
             else {
                 document.getElementById('q-OETR').style.display = 'block';
                 document.getElementById('OETR').style.display = 'inline';
                 document.getElementById('OETR').setAttribute('value', '');
+                document.getElementById('OETR').setAttribute('required', 'true');
 
             }
         };
