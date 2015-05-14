@@ -1,72 +1,72 @@
-﻿@model IEnumerable<EndoRiskWeb.Models.questionsRome>
+﻿@model EndoRiskWeb.Models.romeDisplay
 
 @{
     ViewBag.Title = "Cuestionarios de Rome III";
 }
 
 @section featured {
-    
-        
-                <h2 class="center">@ViewBag.Title</h2>
-            
-        
+
+  <h2 class="center">@ViewBag.Title.</h2>
     
 }
-<div class="center" style="width:500px; margin:0 auto;">
-<!-- Start the form (POST) to use in the Risk Method-->
-@using (Html.BeginForm("RomeAnswers", "RomeQuestionnaire", FormMethod.Post))
-{
-    @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
-        
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+@{
+    ViewBag.Enfermedades = Model.diseasesList;
+    ViewBag.Numeros = Model.numberList;
+}
 
-        <div class="form-group">
+<div class="questionWrap">
+    <!-- Start the form (POST) to use in the Risk Method-->
+    @using (Html.BeginForm("RomeDiagnosisResult", "RomeQuestionnaire", new { quizNum = ViewBag.quiz, patientNum = ViewBag.patient }, FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
 
-            @if (Model.Count() == 0)
-            {
-                <h3>@ViewBag.Message</h3>
-            }
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-            else
-            {
-                <!--
-                    Goes through every item in the Model : questionsRome
-                    question includes: ID, Question, Choices Set Name, and the List of Choices
-                -->
-                foreach (var item in Model)
+            <div class="form-group">
+                @if (Model.questions.Count() == 0)
                 {
+                    <h3>@ViewBag.Message</h3>
+                }
+
+                else
+                {
+                    <!--
+                        Goes through every item in the Model : questionsRome
+                        question includes: ID, Question, Choices Set Name, and the List of Choices
+                    -->
+                    foreach (var item in Model.questions)
+                    {
                     <!--Displays the question -->
-                    <p>@Html.DisplayFor(model => item.questionRome)</p> <!--Displays the question -->
+                        <p>@Html.DisplayFor(model => item.questionRome)</p> <!--Displays the question -->
 
-                    <div class="col-md-10">
-                        <!--Display the choices for the question in a select-->
-                        <!-- Value will be the selected choice = element(i)-->
-                        <select name="@item.questionID">
+                        <div class="col-md-10">
+                            <!--Display the choices for the question in a select-->
+                            <!-- Value will be the selected choice = element(i)-->
+                            <select name="@item.questionID">
 
-                            <option selected>N/A</option> <!--Default empty choice: N/A-->
-                            @for (var i = 0; i < item.choices.Count; i++)
-                            {
-                                <option>@item.choices.ElementAt(i)</option>
-                            }
-                        </select>
+                                <option selected>N/A</option> <!--Default empty choice: N/A-->
+                                @for (var i = 0; i < item.choices.Count; i++)
+                                {
+                                    <option>@item.choices.ElementAt(i)</option>
+                                }
+                            </select>
+                        </div>
+                    }
+
+                <!-- Submit button for the form -> Value : Risk (calls ActionResult RomeAnswers() in Home Controller)-->
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Obtener Diagnóstico" class="btn btn-default" />
+                        </div>
                     </div>
                 }
 
-                <!-- Submit button for the form -> Value : Risk (calls ActionResult RomeAnswers() in Home Controller)-->
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Obtener Diagnóstico" class="btn btn-default" />
-                    </div>
-                </div>
-            }
-
+            </div>
         </div>
-    </div>
-}
-    </div>
-
+    }
+</div>
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }

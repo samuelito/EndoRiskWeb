@@ -301,6 +301,7 @@
     <Compile Include="Models\romechoice.cs" />
     <Compile Include="Models\romedependency.cs" />
     <Compile Include="Models\romediagnosi.cs" />
+    <Compile Include="Models\RomeDisplay.cs" />
     <Compile Include="Models\romeparameter.cs" />
     <Compile Include="Models\romequestion.cs" />
     <Compile Include="Models\romequestionnaire.cs" />
@@ -405,6 +406,8 @@
     <Content Include="Images\Logo UPR sin color.png" />
     <Content Include="Images\MujerEndo.png" />
     <Content Include="Images\ponce logo2.jpg" />
+    <Content Include="Images\toolbar_get_info_small.png" />
+    <Content Include="Images\toolbar_get_info.png" />
     <Content Include="Schema\endorisk.sql" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -493,7 +496,6 @@
     <Content Include="Views\administrators\Admin.cshtml" />
     <Content Include="Views\administrators\CreateAdmin.cshtml" />
     <Content Include="Views\RomeQuestionnaire\DisplayRomeQuestionnaire.cshtml" />
-    <Content Include="Views\RomeQuestionnaire\NoRomeSymptoms.cshtml" />
     <Content Include="Views\romequestions\Create.cshtml" />
     <Content Include="Views\romequestions\Delete.cshtml" />
     <Content Include="Views\romequestions\Details.cshtml" />
@@ -523,6 +525,8 @@
     <Content Include="Views\RomeQuestionnaire\RomeDiagnosisError.cshtml" />
     <Content Include="Views\RomeQuestionnaire\RomeDiagnosisResult.cshtml" />
     <Content Include="Views\EndoriskCalculator\EndoriskQuestions.cshtml" />
+    <Content Include="Views\Home\Terminos.cshtml" />
+    <Content Include="Views\RomeQuestionnaire\RomeDisplayError.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

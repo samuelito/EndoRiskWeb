@@ -7,7 +7,7 @@ using System.Web.Mvc;
 
 namespace EndoRiskWeb.Controllers
 {
-    /*
+    /*V
      * RomeQuestionnaireController Class - responsible of determine patient diseases,
      * questions to be displayed, create the list of criteria, store patient answers,
      * and call the method to calculate the disease in the RomeDiseaseDiagnosisControler.
@@ -17,7 +17,7 @@ namespace EndoRiskWeb.Controllers
      *      RomeAnswers(FormCollection c)
      *      NoRomeSymptoms()
      *      determineDiseases(int IDquiz)
-     *      determineOrder(String disease)
+     *      determinePreDiseaseOrder(String disease)
      *      generateNewRomeQuiz(int endoQuizID, int patientID)
      *      
      * @author Luz M. González González
@@ -28,23 +28,76 @@ namespace EndoRiskWeb.Controllers
         
         private endoriskContext db = new endoriskContext();
 
-        private static List<String> displayDiseases = new List<String>(); //Lista de las enfermedades que se supone que sean, sin repeticiones(Sin-pre)
-        private static List<String> orderDisplayDiseases = new List<String>(); //Lista de las enfermedades a desplegar en ORDEN.(Con-pre)
-        private static List<int> questionsNumbers = new List<int>(); //Contiene la lista de los números de las preguntas de la paciente.
-        private static List<disease> diseasesCriteria = new List<disease>(); //Lista de elementos tipo disease para las enfermedades que se van a calcular.
-        private static List<String> trueDiseasesResult = new List<String>(); //Lista para guardar las enfermedades ciertas que reciba del diagnóstico.
+        private List<String> displayDiseases = new List<String>(); //Lista de las enfermedades que trae cada s, sin repeticiones(Sin-pre)
+        private List<String> orderDisplayDiseases = new List<String>(); //Lista de las enfermedades a desplegar en ORDEN.(Con-pre)
+        private List<int> questionsNumbers = new List<int>(); //Contiene la lista de los números de las preguntas de la paciente.
+        private List<String> trueDiseasesResult = new List<String>(); //Lista para guardar las enfermedades ciertas que reciba del diagnóstico.
 
-        private static String errorStatus = ""; //String used to determine if there is an error when searching symptoms, searching diseases, etc.
-        private static String errorStatusDiagnosis = ""; //String used to send the error status ocurred in the diagnosis methods.
-        private static String noSymptomMessage = "";
+        private String errorStatus = ""; //String used to determine if there is an error when searching symptoms, searching diseases, etc.
+        private String errorStatusDiagnosis = ""; //String used to send the error status ocurred in the diagnosis methods.
+        private String noSymptomMessage = "";
 
-        private static int IDquiz = 0;
-        private static int IDPatient = 0;
-        private static int IDromequiz = 0;
+        private int IDquiz = 0;
+        private int IDPatient = 0;
+        private int IDromequiz = 0;
         //-----------------------------------------------------------------------//
 
 
         //-----------------------------------------Methods-----------------------------------------//
+
+        /*
+         * Method: RomeDiagnosisResult()
+         * 
+         */
+        //public ActionResult RomeDiagnosisResult()
+        //{
+        //    String trueDisease = "";
+        //    var allDiagnostics = db.romediagnosis.ToList();
+        //    List<romediagnosi> diagnosticos = new List<romediagnosi>();
+
+        //    //Call method to search the diagnostics of the true diseases.
+        //    for (int k = 0; k < trueDiseasesResult.Count; k++)
+        //    {
+        //        trueDisease = trueDiseasesResult[k];
+
+        //        if (!trueDisease.Equals(""))
+        //        {
+        //            diagnosticos.Add(allDiagnostics.Where(m => m.disease.Equals(trueDisease)).Last()); //Select the diagnosis for current [k] disease.
+        //        }
+        //    }
+
+        //    ViewBag.Message = "El resultado es el siguiente: ";
+        //    ViewBag.NoSymp = noSymptomMessage;
+        //    ViewBag.diagnosticos = diagnosticos;
+
+        //    return View(diagnosticos);
+        //}
+
+        /*
+         * Method: RomeDiagnosisError()
+         * 
+         */
+        public ActionResult RomeDiagnosisError()
+        {
+            ViewBag.Message = "Ha ocurrido un error en el diagnóstico.";
+            return View();
+        }
+
+        /*
+         * Method: RomeDisplayError()
+         * 
+         * Return: A view with an error message of the Rome Display.  
+         * 
+         * Return a view with an error message if the patient did not have any symptom
+         * that triggers a Rome disease.
+         */
+        public ActionResult RomeDisplayError()
+        {
+            ViewBag.Message = "Ha ocurrido un error en cuestionario Rome III.";
+            return View();
+        }
+
+
         /*
          * Method: DisplayRomeQuestionnaire(int quizNum, int patientNum)
          * Parameters: 
@@ -65,28 +118,42 @@ namespace EndoRiskWeb.Controllers
 
             /*
              * Logic to verify if the pair of IDQuiz and IDpatient is a real current patient in the system.
-             * If the list of patient with this IDQuiz and IDPatient is empty, send an empty view.
+             * If the list of patient with this IDQuiz and IDPatient is empty, send an empty view, with the
+             * error message.
              */
             if(!(db.patients.Where(m => m.idQuiz == IDquiz && m.idPatient == IDPatient).ToList().Count > 0))
             {
                 ViewBag.Message = "El número de quiz y de paciente que está intentanto accesar no está en el sistema.";
                 List<questionsRome> romeQuestionsListi = new List<questionsRome>(); //Empty list to send to the view.
-                return View(romeQuestionsListi);
+                return View(romeQuestionsListi); //Returns an empty view.
             }
 
-            determineDiseases(IDquiz); //Call the method to determine the diseases of this patient's quiz, according to the symptoms.
+            /*
+             * Call the method to determine the diseases of this patient's quiz, according to the symptoms.
+             */
+            displayDiseases = determineDiseases(IDquiz); 
 
             /*
              * Logic to verify if the patient did not has any true symptoms or the
              * list of patient symptoms related to Rome Questionnaire is empty,
              * (No symptoms related to Functional Gastrointestinal Disorders)
              */
-            if(errorStatus.Equals("No Rome Symptoms") || errorStatus.Equals("No True Symptoms"))
+            //if(errorStatus.Equals("No Rome Symptoms") || errorStatus.Equals("No True Symptoms"))
+            //{
+            //    ViewBag.Message = "Se determinó que usted no tiene síntomas relacionados a este cuestionario de enfermedades gastrointestinales";
+            //    List<questionsRome> romeQuestionsListi = new List<questionsRome>(); //Empty list to send to the view.
+            //    return View(romeQuestionsListi);
+            //}
+            String mensaje = "Se determinó que usted no tiene síntomas relacionados a este cuestionario de enfermedades gastrointestinales";
+            ViewBag.Message = mensaje;
+
+            if (displayDiseases.Count == 0)
             {
-                ViewBag.Message = "Se determinó que usted no tiene síntomas relacionados a este cuestionario de enfermedades gastrointestinales";
-                List<questionsRome> romeQuestionsListi = new List<questionsRome>(); //Empty list to send to the view.
+                //String mensaje = "Se determinó que usted no tiene síntomas relacionados a este cuestionario de enfermedades gastrointestinales";
+                //ViewBag.Message = mensaje;
+                //List<romeDisplay> romeQuestionsListi = new List<romeDisplay>(); //Empty list to send to the view.
+                romeDisplay romeQuestionsListi = new romeDisplay();
                 return View(romeQuestionsListi);
-                //return RedirectToAction("NoRomeSymptoms", "RomeQuestionnaire"); Eliminé este porque se puede hacer todo en el view original.
             }
 
             System.Diagnostics.Debug.Write("\nDeben estar las enfermedades de la paciente según sus síntomas.\n"); //For testing
@@ -97,7 +164,8 @@ namespace EndoRiskWeb.Controllers
 
             /* 
              * Logic to determine the order in which diseases should be calculated. (LIST OF STRINGS)
-             */
+             */        
+
             var dependencies = db.romedependencies.ToList(); //Get all the dependencies of the diseases.
             bool orderResult;
 
@@ -105,7 +173,7 @@ namespace EndoRiskWeb.Controllers
             {
                 if (dependencies.Select(m => m.disease).Contains(displayDiseases[i]))
                 {
-                    orderResult = determineOrder(displayDiseases[i]); //Call the method to store diseases in order, according to their pre-diseases dependencies.
+                    orderResult = determinePreDiseaseOrder(displayDiseases[i]); //Call the method to store diseases in order, according to their pre-diseases dependencies.
 
                     if (!orderDisplayDiseases.Contains(displayDiseases[i]))
                     {
@@ -114,7 +182,6 @@ namespace EndoRiskWeb.Controllers
                 }
                 else
                 {
-
                     if (!orderDisplayDiseases.Contains(displayDiseases[i]))
                     {
                         orderDisplayDiseases.Add(displayDiseases[i]); //Add the disease to the list in any order if it did not have any pre-disease dependency.
@@ -146,14 +213,14 @@ namespace EndoRiskWeb.Controllers
             //At this point a list of variables of type disease, which includes 'idDisease, disease, idRomeQuestion, criteria, comparedValue'
             //from all the supposed diseased and pre-diseases should be created.
 
-            diseasesCriteria = patientDiseases; //Wil. be used to send criteria to the RomeDiseaseDiagnosisController
 
             /* 
              * Logic to select the questions in order without repetitions. (LIST OF VAR TYPE ROMEQUESTIONS)
              */
             var allquestions = db.romequestions.ToList(); //Contains all the questions stored in the DB.
             int firstID = (int) allquestions[0].idRomeQuestion; //To add a first dummy element to create var questions.     
-            var questions = db.romequestions.Where(m => m.idRomeQuestion.Equals(firstID)).ToList(); //Variable questions contains all the questions to be displayed
+            var questions = db.romequestions.Where(m => m.idRomeQuestion.Equals(firstID)).ToList(); //Variable questions will contains all the questions to be displayed
+            //In this variable questions, a first "dummy" element is added for the creation, and at the end this element is removed.
 
             for(int j = 0; j < allquestions.Count; j++)
             {
@@ -209,61 +276,20 @@ namespace EndoRiskWeb.Controllers
             /* 
              * Finally return the view for this Action method.
              */
-            ViewBag.Message = "Por favor conteste las siguientes preguntas:";
-            return View(romeQuestionsList);
-        }
+            romeDisplay modelForView = new romeDisplay();
 
+            modelForView.questions = new List<questionsRome>();
+            modelForView.diseasesList = new List<String>();
+            modelForView.numberList = new List<int>();
 
-        /*
-         * Method: RomeDiagnosisResult()
-         * 
-         */
-        public ActionResult RomeDiagnosisResult()
-        {
-            String trueDisease = "";
-            var allDiagnostics = db.romediagnosis.ToList();
-            List<romediagnosi> diagnosticos = new List<romediagnosi>();
+            modelForView.questions = romeQuestionsList;
+            modelForView.diseasesList = orderDisplayDiseases;
+            modelForView.numberList = questionsNumbers;
 
-            //Call method to search the diagnostics of the true diseases.
-            for (int k = 0; k < trueDiseasesResult.Count; k++)
-            {               
-                trueDisease = trueDiseasesResult[k];
-
-                if(!trueDisease.Equals(""))
-                {
-                    diagnosticos.Add(allDiagnostics.Where(m => m.disease.Equals(trueDisease)).Last()); //Select the diagnosis for current [k] disease.
-                }              
-            }
-
-            ViewBag.Message = "El resultado es el siguiente: ";
-            ViewBag.NoSymp = noSymptomMessage;
-            ViewBag.diagnosticos = diagnosticos;
-
-            return View(diagnosticos);
-        }
-
-        /*
-         * Method: RomeDiagnosisError()
-         * 
-         */
-        public ActionResult RomeDiagnosisError()
-        {
-            ViewBag.Message = errorStatusDiagnosis;
-            return View();
-        }
-
-        /*
-         * Method: RomeDisplayError()
-         * 
-         * Return: A view with an error message of the Rome Display.  
-         * 
-         * Return a view with an error message if the patient did not have any symptom
-         * that triggers a Rome disease.
-         */
-        public ActionResult RomeDisplayError()
-        {
-            ViewBag.Message = errorStatus;
-            return View();
+            //ViewBag.Message = "Por favor conteste las siguientes preguntas:";
+            ViewBag.quiz = quizNum;
+            ViewBag.patient = patientNum;
+            return View(modelForView);
         }
 
 
@@ -275,20 +301,54 @@ namespace EndoRiskWeb.Controllers
          * And finally calls the method of the RomeDiseaseDiagnosisController
          * to determine the diseases.
          */
-        public ActionResult RomeAnswers(FormCollection c)
+        public ActionResult RomeDiagnosisResult(int quizNum, int patientNum, FormCollection c)
         {
-            IDromequiz = generateNewRomeQuiz(IDquiz, IDPatient);
+            IDromequiz = generateNewRomeQuiz(quizNum, patientNum);
+            System.Diagnostics.Debug.Write("\nRome Quiz Generado es: " + IDromequiz + "\n"); //For testing
 
-            System.Diagnostics.Debug.Write("\nRome Quiz: " + IDromequiz + "\n"); //For testing
+            displayDiseases = determineDiseases(quizNum); //Determine diseases again
+
+            /* 
+             * Logic to determine the order in which diseases should be calculated. (LIST OF STRINGS)
+             */
+
+            var dependencies = db.romedependencies.ToList(); //Get all the dependencies of the diseases.
+            bool orderResult;
+
+            for (int i = 0; i < displayDiseases.Count; i++)
+            {
+                if (dependencies.Select(m => m.disease).Contains(displayDiseases[i]))
+                {
+                    orderResult = determinePreDiseaseOrder(displayDiseases[i]); //Call the method to store diseases in order, according to their pre-diseases dependencies.
+
+                    if (!orderDisplayDiseases.Contains(displayDiseases[i]))
+                    {
+                        orderDisplayDiseases.Add(displayDiseases[i]); //Add the disease that generates the first call of the recursive method.
+                    }
+                }
+                else
+                {
+                    if (!orderDisplayDiseases.Contains(displayDiseases[i]))
+                    {
+                        orderDisplayDiseases.Add(displayDiseases[i]); //Add the disease to the list in any order if it did not have any pre-disease dependency.
+                    }
+                }
+            }
+
+            System.Diagnostics.Debug.Write("\nDeben estar ya las enfermedades de la paciente originales, más las pre-enfermedades en orden\n"); //For testing
+
 
             for (int i = 1; i < c.Count; i++) //Starts in 1, because the first element in the FormCollection is not part of the answers
             {
-                romeanswer respuesta = new romeanswer(); //Create a new instance of an romequestion response.
+                romeanswer respuesta = new romeanswer(); //Create a new instance of a romequestion response.
                 var romePreguntas = db.romequestions.ToList(); //List of all the questions in the DB.  Required to search the romeChoice field of each question.
-                int idPreg = i - 1; //ID de pregunta en la lista
+                int idPreg = Convert.ToInt32(c.GetKey(i)); //ID de pregunta en la lista
+
+
+                System.Diagnostics.Debug.Write("Numero de Pregunta: " + idPreg + "\n"); //For testing
 
                 //questionChoice contains the specific choice set of the question
-                var questionChoice = romePreguntas.Where(m => m.idRomeQuestion==questionsNumbers[idPreg]).Select(m => m.romeChoice).First();
+                var questionChoice = romePreguntas.Where(m => m.idRomeQuestion==idPreg).Select(m => m.romeChoice).First();
 
                 //RomeOpciones contains the set of values of the specific choice set (ex. A) of the current question.
                 var romeOpciones = db.romechoices.Where(m => m.romeChoice1.Equals(questionChoice)).ToList();               
@@ -302,7 +362,7 @@ namespace EndoRiskWeb.Controllers
                 }
 
                 respuesta.idRomeQuiz = IDromequiz;
-                respuesta.idRomeQuestion = questionsNumbers[idPreg];
+                respuesta.idRomeQuestion = idPreg;
                 respuesta.answer = valorEntero;
 
                 //System.Diagnostics.Debug.Write("Se guardó respuesta para quiz: " + IDromequiz + " Preg#: " + questionsNumbers[idPreg] + " Valor: " + valorEntero + "\n"); //For testing
@@ -322,9 +382,8 @@ namespace EndoRiskWeb.Controllers
                 if(trueDiseasesResult.Count == 0)
                 {
                     //Enviarle mensaje de que dado a sus síntomas y contestaciones no tiene RomeIII diseases.
-                    noSymptomMessage = "*No presenta ninguna enfermedad gastrointestinal de acuerdo al criterio 'Rome'";
-                    //diagnosticos.Add("Se determinó que de acuerdo a sus síntomas y contestaciones usted no presenta ninguna enfermedad gastrointestinal de acuerdo al criterio 'Rome'");
-                    return RedirectToAction("RomeDiagnosisResult", "RomeQuestionnaire");
+                    ViewBag.NoSymp = "*No presenta ninguna enfermedad gastrointestinal de acuerdo al criterio 'Rome'";
+                    return View();
                 }
 
                 else
@@ -332,17 +391,34 @@ namespace EndoRiskWeb.Controllers
                     if(trueDiseasesResult.Contains("ERROR"))
                     {
                         errorStatusDiagnosis = trueDiseasesResult.Last();
+                        //String generalError = "No se ha podido determinar sus enfermedades para este cuestionario.";
                         return RedirectToAction("RomeDiagnosisError", "RomeQuestionnaire");
                     }
 
                     else
-                    {
-                        return RedirectToAction("RomeDiagnosisResult", "RomeQuestionnaire");
+                    {                       
+                        String trueDisease = "";
+                        var allDiagnostics = db.romediagnosis.ToList();
+                        List<romediagnosi> diagnosticos = new List<romediagnosi>();
+
+                        //Call method to search the diagnostics of the true diseases.
+                        for (int k = 0; k < trueDiseasesResult.Count; k++)
+                        {
+                            trueDisease = trueDiseasesResult[k];
+
+                            if (!trueDisease.Equals(""))
+                            {
+                                diagnosticos.Add(allDiagnostics.Where(m => m.disease.Equals(trueDisease)).Last()); //Select the diagnosis for current [k] disease.
+                            }
+                        }
+
+                        ViewBag.Message = "El resultado es el siguiente: ";
+
+                        return View(diagnosticos);
                     }
                 }
             }
 
-            errorStatus = "Error: Storing Answers";
             return RedirectToAction("RomeDisplayError", "RomeQuestionnaire");
         }
 
@@ -355,8 +431,9 @@ namespace EndoRiskWeb.Controllers
          * this method will generate a string list containing all the names of the diseases without 
          * repetitions that will be asked to the patient.
          */
-        public void determineDiseases(int IDquiz)
+        public List<String> determineDiseases(int IDquiz)
         {
+            List<String> selectionOfDiseases = new List<String>(); //List that will contain the first diseases of the patient
             var patientS = db.patientsymptoms.Where(m => m.idQuiz == IDquiz && m.hasSymptom == 1).Select(m => m.symptom).ToList(); //Get only true symptoms of the desired quiz.
 
             if (patientS.Count > 0) //Verify if the patient has true symptoms
@@ -369,31 +446,35 @@ namespace EndoRiskWeb.Controllers
                     {
                         for (int i = 0; i < symptomsToDisease.Count(); i++)
                         {
-                            System.Diagnostics.Debug.Write("Enfermedad que trae: " + item.ToString() + " es: " + symptomsToDisease[i].disease2.ToString()); //For testing
+                            System.Diagnostics.Debug.Write("Enfermedad que trae: " + item.ToString() + " es: " + symptomsToDisease[i].disease2.ToString() + "\n"); //For testing
 
-                            if (!displayDiseases.Contains(symptomsToDisease[i].disease2.ToString()))
+                            if (!selectionOfDiseases.Contains(symptomsToDisease[i].disease2.ToString()))
                             {
-                                displayDiseases.Add(symptomsToDisease[i].disease2.ToString());
+                                selectionOfDiseases.Add(symptomsToDisease[i].disease2.ToString());
                             }
                         }
                     }
                 }
 
-                if(!(displayDiseases.Count > 0))
+                if(!(selectionOfDiseases.Count > 0))
                 {
                     errorStatus = "No Rome Symptoms"; //From the true symptoms of the patient, none of the symptoms are related to Rome Questionnaire
+                    selectionOfDiseases.Add(errorStatus); //Añade a la lista el error
                 }
             }
 
             else
             {
-                errorStatus = "No True Symptoms"; //No true symptoms to compare   
+                errorStatus = "No True Symptoms"; //No true symptoms to compare  
+                selectionOfDiseases.Add(errorStatus); //Añade a la lista el error
             }
+
+            //Ahora devuelvo la lista de strings con las enfermedades
+            return selectionOfDiseases;
         }
-
-
+ 
         /*
-         * Method: determineOrder(String disease)
+         * Method: determinePreDiseaseOrder(String disease)
          * Parameter: String of the disease to determine their previous diseases.
          * 
          * A disease name (string) is received as a parameter and this method will check in the
@@ -403,7 +484,7 @@ namespace EndoRiskWeb.Controllers
          * will be in order.
          */
 
-        public bool determineOrder(String disease)
+        public bool determinePreDiseaseOrder(String disease)
         {
             var diseaseDependencies = db.romedependencies.Where(m => m.disease.Equals(disease)).ToList();
 
@@ -411,7 +492,7 @@ namespace EndoRiskWeb.Controllers
             {
                 if(db.romedependencies.Select(m => m.disease).Contains(item.preDisease))
                 {
-                    determineOrder(item.preDisease); //**Recursion here
+                    determinePreDiseaseOrder(item.preDisease); //**Recursion here
                  
                     if (!(orderDisplayDiseases.Contains(item.disease)))
                     {

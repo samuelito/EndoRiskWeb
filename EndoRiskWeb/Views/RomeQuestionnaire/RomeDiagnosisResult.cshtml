@@ -1,17 +1,21 @@
 ﻿@model IEnumerable<EndoRiskWeb.Models.romediagnosi>
 @{
-    ViewBag.Title = "Resultados de Cuestionarios ROME";
-    int counter = 1;
+    ViewBag.Title = "Resultados de los Cuestionarios Rome III";
 }
-<h2>De acuerdo a sus síntomas, contestaciones y al criterio 'Rome' para enfermedades gastrointestinales,</h2>
+<h2 class="center">@ViewBag.Title</h2>
+<br />
+<div class="questionWrap">
 
-<h3>@ViewBag.Message</h3>
+    <h2>De acuerdo a sus síntomas, contestaciones y al criterio 'Rome' para enfermedades gastrointestinales:</h2>
 
-@foreach (var item in Model)
-{
-    <p>Diagnostico: @item.diagnosis</p>
-}
-<p>@ViewBag.NoSymp</p>
+    <h3>@ViewBag.Message</h3>
 
-<h3>*Recuerde que esto es solamente una guía, y no pretende sustituir el diagnóstico de un médico*</h3>
-<h3>Le recomendamos visitar a un gastroenterólogo para un diagnóstico certero.</h3>
+    @foreach (var item in Model)
+    {
+        <p>Diagnostico: @item.diagnosis</p>
+    }
+    <p>@ViewBag.NoSymp</p>
+
+    <h3>*Recuerde que esto es solamente una guía, y no pretende sustituir el diagnóstico de un médico*</h3>
+    <h3>Le recomendamos visitar a un gastroenterólogo para un diagnóstico certero.</h3>
+</div>

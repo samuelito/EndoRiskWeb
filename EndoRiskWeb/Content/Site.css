@@ -772,7 +772,7 @@ table {
 	}
 	
 	.tableP tr:nth-child(even){
-		background: #c7d1d6;
+		background: #fff;
 	}
 
 .tableC {
