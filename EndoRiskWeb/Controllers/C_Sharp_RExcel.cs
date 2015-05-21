@@ -42,6 +42,7 @@ namespace EndoRiskWeb.Controllers
             //Open Prediction Excel Workbook
             excelWorkbook = (Excel._Workbook)excelApp.Workbooks.Open("C:\\Users\\eddie.perez\\Desktop\\Prediction.xlsm", Missing.Value, ReadOnly: false);
 
+            
 
             //Enable RExcel Add-In
             Excel.AddIn ad = (Excel.AddIn)excelApp.AddIns.get_Item(1);
@@ -123,13 +124,15 @@ namespace EndoRiskWeb.Controllers
             object[] test_results = new object[2];
             test_results[0] = (double)lifetime_risk_value;
             test_results[1] = (string)severity;
-
+           
             excelApp.Run("CloseExcel");
+
+            //KillProcess();
 
             //Quit the Excel Application and releaese all Excel application objects used in the program from memory
             if (excelApp != null)
             {
-                EndProcess();
+                //EndProcess();
                 releaseObject(excelWorksheet);
                 releaseObject(excelWorkbook);
                 releaseObject(excelApp);
@@ -160,15 +163,30 @@ namespace EndoRiskWeb.Controllers
 
             foreach (var process in excel_process)
             {
-                process.CloseMainWindow();
+                process.Kill();
             }
             var R_process = from proc in System.Diagnostics.Process.GetProcessesByName("Rgui") select proc;
 
             foreach (var process in R_process)
             {
                 if (process.MainWindowTitle == "R Console (32-bit)")
-                    process.CloseMainWindow();
+                {
+                    process.Kill();
+                }
             }
         }
+        
+
+            public void KillProcess()
+            {
+                System.Diagnostics.Process proc = new System.Diagnostics.Process();
+                proc.EnableRaisingEvents = false;
+                proc.StartInfo.FileName = "C:\\Users\\eddie.perez\\Desktop\\KillProcess.bat";
+                proc.StartInfo.WorkingDirectory = "C:\\Users\\eddie.perez\\Desktop";
+                proc.Start();
+                proc.WaitForExit();
+                proc.Close();
+
+            }
     }
 }
