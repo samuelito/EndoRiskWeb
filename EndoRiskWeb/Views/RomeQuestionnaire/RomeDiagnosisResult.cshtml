@@ -14,6 +14,8 @@
     {
         <p>Diagnostico: @item.diagnosis</p>
     }
+
+    @if (Model.Count().Equals(0))
     <p>@ViewBag.NoSymp</p>
 
     <h3>*Recuerde que esto es solamente una guía, y no pretende sustituir el diagnóstico de un médico*</h3>

@@ -146,9 +146,9 @@
                             <select id="HBP" name="HBP"
                                     style="display:inline;font-weight:500" required>
                                 <option selected></option>
-                                <option value="SI">Sí</option>
-                                <option value="NO">No</option>
-                                <option value="NOSE">No se</option>
+                                <option value="Sí">Sí</option>
+                                <option value="No">No</option>
+                                <option value="No sé">No sé</option>
                             </select>
                         </label>
                         <p style="font-size:large;font-weight:500;display:block" id="q-@questionItem.abbr"> @questionItem.question</p>
@@ -467,8 +467,8 @@
                                     <span style="font-weight: 500;color: #3e5667;font-size:15px">@Model.FirstOrDefault().prexCond.ElementAt(i).condition</span>
                                     <span title="PAP (Prueba de Papanicolaou) - Para detectar anomalías en el cuello del útero."><img src="~/Images/toolbar_get_info_small.png" align="top" /></span>
                                 </div>
-                            }
-                            else*/
+                            }*/
+                            else
                             {
                                 <div>
                                     <input id="prexCond" class="precon" type="checkbox" onclick="pre(1)" name="prexCond" value="@Model.FirstOrDefault().prexCond.ElementAt(i).abbr" style="font-weight:500" />
@@ -797,7 +797,7 @@
         document.getElementById('HBP').onchange = function () {
             var value = this.options[this.selectedIndex].value;
 
-            if (value == "NO" || value == "NOSE") {
+            if (value == "No" || value == "No sé") {
                 document.getElementById('q-TP').style.display = 'none';
                 document.getElementById('TP').value = 0;
                 document.getElementById('TP').style.display = 'none';
@@ -879,13 +879,13 @@
                 document.getElementById('q-NA').style.display = 'block';
                 document.getElementById('NA').style.display = 'inline';
                 document.getElementById('NA').setAttribute('required', 'true');
-                document.getElementById('NA').value = '';
+                document.getElementById('NA').value = 0;
 
 
             }
             else {
                 document.getElementById('q-NA').style.display = 'none';
-                document.getElementById('NA').value = 'No';
+                document.getElementById('NA').value = 0;
                 document.getElementById('NA').style.display = 'none';
                 document.getElementById('NA').removeAttribute('required');
 
@@ -917,22 +917,22 @@
             if (value == "No" || value == "No Aplica") {
 
                 document.getElementById('q-SU').style.display = 'none';
-                document.getElementById('SU').value = 'Leve';
+                document.getElementById('SU').value = 'No';
                 document.getElementById('SU').style.display = 'none';
                 document.getElementById('SU').removeAttribute('required');
 
                 document.getElementById('q-SE').style.display = 'none';
-                document.getElementById('SE').value = 'No Aplica';
+                document.getElementById('SE').value = 'Leve';
                 document.getElementById('SE').style.display = 'none';
                 document.getElementById('SE').removeAttribute('required');
 
                 document.getElementById('q-ETR').style.display = 'none';
-                document.getElementById('ETR').value = 'No Aplica';
+                document.getElementById('ETR').value = 'Otro';
                 document.getElementById('ETR').style.display = 'none';
                 document.getElementById('ETR').removeAttribute('required');
 
                 document.getElementById('q-OETR').style.display = 'none';
-                document.getElementById('OETR').value = 'No aplica';
+                document.getElementById('OETR').value = 'No Aplica';
                 document.getElementById('OETR').style.display = 'none';
                 document.getElementById('OETR').removeAttribute('required');
 
