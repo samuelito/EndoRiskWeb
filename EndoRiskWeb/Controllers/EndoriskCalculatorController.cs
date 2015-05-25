@@ -357,7 +357,7 @@ namespace EndoRiskWeb.Controllers
                     endoAnswerList[x - 3, 1] = endoAnswersCollection.GetKey(x);
                 }
 
-                else if (endoAnswersCollection.Get(x) == "No" || endoAnswersCollection.Get(x) == "No Aplica" || endoAnswersCollection.Get(x) == null || endoAnswersCollection.Get(x) == "")
+                else if (endoAnswersCollection.Get(x) == "No" || endoAnswersCollection.Get(x) == "No Aplica" || endoAnswersCollection.Get(x) == "No sé" || endoAnswersCollection.Get(x) == null || endoAnswersCollection.Get(x) == "")
                 {
                     endoAnswerList[x - 3, 0] = 0;
                     endoAnswerList[x - 3, 1] = endoAnswersCollection.GetKey(x);
