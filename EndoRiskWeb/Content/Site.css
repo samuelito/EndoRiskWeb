@@ -1,4 +1,4 @@
-﻿/*Modified by: Luz M. González
+﻿/*Modified by: Luz M. González & Samuel Feliciano
     This file contains all the css code used to
     give the formatting and appearance of the 
     Web page.
@@ -24,7 +24,7 @@ header {
 }
 
 a {
-    color: #3e5667;
+    color: #8a3961;
     outline: none;
     padding-left: 3px;
     padding-right: 3px;
@@ -32,12 +32,13 @@ a {
 }
 
     a:link, a:visited,
-    a:active, a:hover {
-        color: #a91a93;
+    a:active {
+        color: #8a3961;
     }
 
+
     a:hover {
-        background-color: #c7d1d6;
+        color: #9acd31;
     }
 
 header, footer, hgroup,
@@ -79,7 +80,7 @@ h4, h5, h6 {
 }
 
 p {
-    color: #3e5667;
+    color: #2e4f4f;
 }
 
 h1 {
@@ -88,18 +89,18 @@ h1 {
 
 h2 {
     font-size: 1.75em;
-    color: #3e5667;
+    color: #8a3961;
    
 }
 
 h3 {
     font-size: 1.2em;
-    color: #3e5667;
+    color: #2e4f4f;
 }
 
 h4 {
     font-size: 1.1em;
-    color: #e80c4d;
+    color: #8a3961;
     margin-bottom: 0;
     padding-bottom: 0;
 }
@@ -164,16 +165,20 @@ footer {
 ----------------------------------------------------------*/
 .site-title {
     color: #fff;
-    font-family: Rockwell, 'AR CENA', "Courier New", Courier, monospace;
+    font-family: 'Monotype Corsiva', Rockwell, 'AR CENA', "Courier New", Courier, monospace;
     font-size: 3.5em;
     margin: 0;
 }
 
+
+    
     .site-title a, .site-title a:hover, .site-title a:active {
         background: none;
-        color: #a91a93;
+        color: #a7148f;
         outline: none;
         text-decoration: none;
+        float:right;
+        margin-top: 45px;
     }
 
 
@@ -211,8 +216,16 @@ footer {
     }
 
 .loginpartial a {
-        color:  #3e5667;
+        color:  #2e4f4f;
     }
+
+.loginpartial a:hover {
+    color: #9acd31;
+}
+
+.loginpartial p{
+       color: #2e4f4f;
+}
 
 /* menu
 ----------------------------------------------------------*/
@@ -233,12 +246,12 @@ ul#menu {
 
         ul#menu li a {
             background: none;
-            color: #a91a93;
+            color: #8a3961;
             text-decoration: none;
         }
 
             ul#menu li a:hover {
-                color: #333;
+                color: #9acd31;
                 text-decoration: underline;
             }
 
@@ -257,7 +270,7 @@ ul#menu {
         background-image: -webkit-gradient(linear, left top, right top, color-stop(0, #7ac0da), color-stop(1, #a4d4e6));
         background-image: -webkit-linear-gradient(left, #7ac0da 0%, #a4d4e6 100%);
         background-image: linear-gradient(left, #7ac0da 0%, #a4d4e6 100%);
-        color: #3e5667;
+        color: #2e4f4f;
         padding: 20px 40px 30px 40px;
     }
 
@@ -368,7 +381,7 @@ aside {
 
 /* login page */
 #loginForm {
-    border-right: solid 2px #e80c4d;
+    border-right: solid 2px #8a3961;
     float: left;
     width: 55%;
 }
@@ -508,8 +521,8 @@ input[type="checkbox"] {
 input[type="submit"],
 input[type="button"],
 button {
-    color: #e2e2e2;
-    background-color: #3e5667;;
+    color: #ede4de;
+    background-color: #8a3961;
     border: 1px solid #333;
     cursor: pointer;
     font-size: 1.2em;
@@ -550,12 +563,12 @@ td button {
 }
 
 .error {
-    color: #e80c4d;
+    color: #8a3961;
 }
 
 /* styles for validation helpers */
 .field-validation-error {
-    color: #e80c4d;
+    color: #8a3961;
     font-weight: bold;
 }
 
@@ -564,7 +577,7 @@ td button {
 }
 
 input.input-validation-error {
-    border: 1px solid #e80c4d;
+    border: 1px solid #8a3961;
 }
 
 input[type="checkbox"].input-validation-error {
@@ -572,7 +585,7 @@ input[type="checkbox"].input-validation-error {
 }
 
 .validation-summary-errors {
-    color: #e80c4d;
+    color: #8a3961;
     font-weight: bold;
     font-size: 1.1em;
 }
@@ -615,7 +628,7 @@ table {
 }
 
 .searchWrap {
-    background-color: #e2e2e2;
+    background-color: #ede4de;
     border: solid thin #c7d1d6;
     border-radius: 50px 50px 50px 50px;
 }
@@ -625,7 +638,7 @@ table {
     width: 700px;
     margin: 0 auto;
     padding: 20px;
-        background-color: #e2e2e2;
+    background-color: #ede4de;
     border: solid thin #c7d1d6;
     border-radius: 50px 50px 50px 50px;
 }
@@ -635,7 +648,7 @@ table {
     width: auto;
     margin: 0 auto;
     padding: 20px;
-    background-color: #e2e2e2;
+    background-color: #ede4de;
     border: solid thin #c7d1d6;
     border-radius: 50px 50px 50px 50px;
 }
@@ -645,7 +658,7 @@ table {
     width: auto;
     margin: 0 auto;
     padding: 20px;
-        background-color: #e2e2e2;
+        background-color: #ede4de;
     border: solid thin #c7d1d6;
     border-radius: 50px 50px 50px 50px;
 }
@@ -655,17 +668,18 @@ table {
     width: 320px;
     margin: 0 auto;
     padding: 20px;
-    background-color: #e2e2e2;
+    background-color: #ede4de;
     border: solid thin #c7d1d6;
     border-radius: 50px 50px 50px 50px;
 }
 
 .detailWrap {
     height: auto;
+    
     width: 320px;
     margin: 0 auto;
     padding: 20px;
-        background-color: #e2e2e2;
+    background-color: #ede4de;
     border: solid thin #c7d1d6;
     border-radius: 50px 50px 50px 50px;
 }
@@ -673,8 +687,8 @@ table {
 .detailWrap dt {
     font-size:medium;
     font-weight:bold;
-         background-color: #e2e2e2;
-    border: solid thin #c7d1d6;
+    background-color: #ede4de;
+    border: solid thin #ede4de;
 }
 
 .detailWrap dd {
@@ -686,7 +700,7 @@ table {
     width: auto;
     margin: 0 auto;
     padding: 20px;
-    background-color: #e2e2e2;
+    background-color: #ede4de;
     border: solid thin #c7d1d6;
     border-radius: 50px 50px 50px 50px;
 }
@@ -696,7 +710,7 @@ table {
     width: 600px;
     margin: 0 auto;
     padding: 20px;
-    background-color: #e2e2e2;
+    background-color: #ede4de;
     border: solid thin #c7d1d6;
     border-radius: 50px 50px 50px 50px;
 }
@@ -706,10 +720,10 @@ table {
     
     margin:10px;
     font-size:,medium;
-    color:#3e5667;
+    color:#2e4f4f;
     width: auto;
-    background-color: #d0a7ca;
-    border: solid thin #a91a93;
+    background-color: #ede4de;
+    border: solid thin #8a3961;
     border-radius: 3px 3px 3px 3px;
     padding: 10px;
 }
@@ -760,19 +774,23 @@ table {
  .tableP th {
      text-align:center;
      padding:10px;
+     border-bottom: thin solid #8a3961;
+     
  }
  .tableP td {
      text-align: center;
      max-width: 400px;
      padding-bottom: 10px;
+     border-bottom: thin solid #8a3961;
+     
  }
     .tableP tr:nth-child(odd){ 
 		
-        background: #e2e2e2;
+        background: #ede4de;
 	}
 	
 	.tableP tr:nth-child(even){
-		background: #fff;
+		background: #e6d0d0;
 	}
 
 .tableC {
@@ -807,7 +825,7 @@ table {
     .tableS td {
         text-align: center;
         padding: 0.2em 0.5em 0.2em 0.5em;
-        border: thin solid #e2e2e2;
+        border: thin solid #ede4de;
         border-top: none;
         border-bottom: none;
         /*border-left: thin solid black;
@@ -815,27 +833,27 @@ table {
     }
 
 .dataHS {
-    background-color: #e2e2e2;
+    background-color: #ede4de;
 }
 
 .answerHS {
-    background-color: #e2e2e2;
+    background-color: #ede4de;
 }
 
 .symptomHS {
-    background-color: #e2e2e2;
+    background-color: #ede4de;
 }
 
 .dataS {
-    background-color: #e2e2e2;
+    background-color: #ede4de;
 }
 
 .answerS {
-    background-color: #e2e2e2;
+    background-color: #ede4de;
 }
 
 .symptomS {
-    background-color: #e2e2e2;
+    background-color: #ede4de;
 }
 
 th {
@@ -931,14 +949,14 @@ tr.pager td {
 
         #login a {
             background: none;
-            color: #999;
+            color: #2e4f4f;
             font-weight: 600;
             margin: 2px;
             padding: 0;
         }
 
             #login a:hover {
-                color: #333;
+                color: #9acd31;
             }
 
     /* menu */
