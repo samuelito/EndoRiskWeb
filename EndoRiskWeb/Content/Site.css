@@ -5,22 +5,24 @@
 */
 
 html {
-    background-color: #fff;
+    background-color: #ede4de;
     margin: 0;
     padding: 0;
 }
 
 body {
-    background-color: #ffffff;
+    background-color: #ede4de;
     color: #333;
     font-size: .85em;
     font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
     margin: 0;
     padding: 0;
+    
 }
 
 header {
     padding-bottom: 50px;
+
 }
 
 a {
@@ -135,7 +137,7 @@ h5, h6 {
 }
 
 #body {
-    background-color: #fff;
+    background-color: #ede4de;
     clear: both;
     padding-bottom: 100px;
 }
@@ -154,7 +156,7 @@ header .content-wrapper {
 
 footer {
     clear: both;
-    background-color: #fff;
+    background-color: #ede4de;
     font-size: .8em;
     height: 50px;
     margin-bottom: 0;
@@ -164,7 +166,7 @@ footer {
 /* site title
 ----------------------------------------------------------*/
 .site-title {
-    color: #fff;
+    color: #ede4de;
     font-family: 'Monotype Corsiva', Rockwell, 'AR CENA', "Courier New", Courier, monospace;
     font-size: 3.5em;
     margin: 0;
@@ -192,7 +194,7 @@ footer {
 }
 
     #login a {
-        background-color: #fff;
+        background-color: #ede4de;
         margin-left: 10px;
         margin-right: 3px;
         padding: 5px 3px;
@@ -260,7 +262,7 @@ ul#menu {
 ----------------------------------------------------------*/
 /* featured */
 .featured {
-    background-color: #fff;
+    background-color: #ede4de;
 }
 
     .featured .content-wrapper {
@@ -618,7 +620,7 @@ table {
 #header-fixed {
     position: fixed;
     top: 0; display:none;
-    background-color:white;
+    background-color:#ede4de;
 }
 
 .boxS {
@@ -629,7 +631,7 @@ table {
 
 .searchWrap {
     background-color: #ede4de;
-    border: solid thin #c7d1d6;
+    border: solid thin #8a3961;
     border-radius: 50px 50px 50px 50px;
 }
 
@@ -639,7 +641,7 @@ table {
     margin: 0 auto;
     padding: 20px;
     background-color: #ede4de;
-    border: solid thin #c7d1d6;
+    border: solid thin #8a3961;
     border-radius: 50px 50px 50px 50px;
 }
 
@@ -649,7 +651,7 @@ table {
     margin: 0 auto;
     padding: 20px;
     background-color: #ede4de;
-    border: solid thin #c7d1d6;
+    border: solid thin #8a3961;
     border-radius: 50px 50px 50px 50px;
 }
 
@@ -659,7 +661,7 @@ table {
     margin: 0 auto;
     padding: 20px;
         background-color: #ede4de;
-    border: solid thin #c7d1d6;
+    border: solid thin #8a3961;
     border-radius: 50px 50px 50px 50px;
 }
 
@@ -669,7 +671,7 @@ table {
     margin: 0 auto;
     padding: 20px;
     background-color: #ede4de;
-    border: solid thin #c7d1d6;
+    border: solid thin #8a3961;
     border-radius: 50px 50px 50px 50px;
 }
 
@@ -680,7 +682,7 @@ table {
     margin: 0 auto;
     padding: 20px;
     background-color: #ede4de;
-    border: solid thin #c7d1d6;
+    border: solid thin #8a3961;
     border-radius: 50px 50px 50px 50px;
 }
 
@@ -688,7 +690,7 @@ table {
     font-size:medium;
     font-weight:bold;
     background-color: #ede4de;
-    border: solid thin #ede4de;
+    border: solid thin #8a3961;
 }
 
 .detailWrap dd {
@@ -701,7 +703,7 @@ table {
     margin: 0 auto;
     padding: 20px;
     background-color: #ede4de;
-    border: solid thin #c7d1d6;
+    border: solid thin #8a3961;
     border-radius: 50px 50px 50px 50px;
 }
 
@@ -711,7 +713,7 @@ table {
     margin: 0 auto;
     padding: 20px;
     background-color: #ede4de;
-    border: solid thin #c7d1d6;
+    border: solid thin #8a3961;
     border-radius: 50px 50px 50px 50px;
 }
 
