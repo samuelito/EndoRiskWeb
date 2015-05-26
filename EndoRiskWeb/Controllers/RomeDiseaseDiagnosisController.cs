@@ -8,13 +8,22 @@ using System.Web.Mvc;
 namespace EndoRiskWeb.Controllers
 {
     /*
-     * RomeDiseaseDiagnosisController Class - responsible of calculate question
-     * criteria, and determine true or false diseases.
+     * RomeDiseaseDiagnosisController Class - responsible of determine the
+     * diagnosis for each disease received.
      * 
      * Methods:
+     *      Diagnostic(int IDRomeQuiz, List<String> enfermedades)
+     *      questionsCriteria(int romequizID, String enfermedad, List<disease> criterios)
+     *      calculateDisease(String disease, List<bool> questionsResults)   
+     *      AndCriteria(List<bool> param)
+     *      OrCriteria(List<bool> param)
+     *      nOrMoreCriteria(int n, List<bool> param)
+     *      comparison(int answer, int value, String comparisonSymbol)
+     *      greaterThan(int answer, int value)
+     *      smallerThan(int answer, int value)
+     *      equalTo(int answer, int value) 
      *      
-     *      
-     * @author Luz M. González González
+     * @author LMGG
      */
     public class RomeDiseaseDiagnosisController : Controller
     {
@@ -22,16 +31,8 @@ namespace EndoRiskWeb.Controllers
 
         private endoriskContext db = new endoriskContext(); //Instance variable of the database, to perform the search of data.
 
-        //private int romequizID = 0; //ID del quiz de Rome 
-        //private List<String> listOfDiseases = new List<String>(); //Lista de todas las enfermedades que recibe que se deben calcular
-        //private static List<disease> listOfCriteria = new List<disease>();  //Lista de todos los criterios para calcular estas enfermedades. (esto lo podía buscar aquí también, pero verifico luego qué me conviene más)
-
-        //private List<bool> questionsResults = new List<bool>(); //Lista de los resultados de cada comparacion de las preguntas para cada enfermedad en orden.
-
-        private List<String> truePreDiseases = new List<String>(); //Lista de las enfermedades que me van dando ciertas
-        private List<String> falsePreDiseases = new List<String>(); //Lista de las enfermedades que me van dando falsas
-
-        private String errorStatus = "";
+        private List<String> trueDiseases = new List<String>(); //Lista de las enfermedades que me van dando ciertas
+        private List<String> falseDiseases = new List<String>(); //Lista de las enfermedades que me van dando falsas
 
         //-----------------------------------------------------------------------//
 
@@ -41,27 +42,21 @@ namespace EndoRiskWeb.Controllers
         /* 
          * Method to make the complete diagnosis of all possible diseases of the current patient.
          * Parameters:
+         *      int IDRomeQuiz - number of the current Rome Questionnaire Quiz.
+         *      List<String> - list of the diseases to be determined.
          *      
+         * Return: The list of true diseases, or the error.    
          */
         public List<String> Diagnostic(int IDRomeQuiz, List<String> enfermedades)
         {
-            //romequizID = IDRomeQuiz;
-            //listOfDiseases = enfermedades;
-
-            truePreDiseases.Clear();
-            falsePreDiseases.Clear();
-
-            truePreDiseases.Add("");
-            falsePreDiseases.Add("");
-           
-            System.Diagnostics.Debug.Write("Quiz de Rome es: " + IDRomeQuiz + "\n"); //For Testing
+            trueDiseases.Clear();
+            falseDiseases.Clear();
 
             if (enfermedades.Count.Equals(0))
             {
-                errorStatus = "Error: Diagnostic did not receive diseases in the list.";
-                truePreDiseases.Add("ERROR");
-                truePreDiseases.Add(errorStatus);
-                return truePreDiseases;
+                trueDiseases.Add("ERROR");
+                trueDiseases.Add("Error: Diagnostic method did not receive diseases in the list.");
+                return trueDiseases;
             }
 
             else
@@ -75,46 +70,42 @@ namespace EndoRiskWeb.Controllers
                     {
                         //Call questionsCriteria method:
                         List<bool> criterio = questionsCriteria(IDRomeQuiz, eachDisease, eachDiseaseCriteria); //Envia la enfermedad que esté en la lista en el indice i, y sus criterios.
-                        System.Diagnostics.Debug.Write("\n Terminé questionCriteria de: " + eachDisease + "\n");
 
-                        if (!errorStatus.Equals("")) //To verify there is no errors in the questionsCriteria method (no puedo darle redirect allá, porque ese método no es ActionResult.
+                        if (criterio.Equals(null)) //To verify there is no errors in the questionsCriteria method.
                         {
-                            truePreDiseases.Add("ERROR");
-                            truePreDiseases.Add(errorStatus);
-                            return truePreDiseases;
+                            trueDiseases.Add("ERROR");
+                            trueDiseases.Add("Error: Questions criteria cannot be completed.");
+                            return trueDiseases;
                         }
 
                         //Call calculateDisease method:
-                        bool resultado = calculateDisease(eachDisease, criterio);                       
+                        String resultado = calculateDisease(eachDisease, criterio);                       
 
-                        if (!errorStatus.Equals("")) //To verify there is no errors in the calculateDisease method.
+                        if(resultado.Equals("True")) // La enfermedad resultó cierta.
                         {
-                            truePreDiseases.Add("ERROR");
-                            truePreDiseases.Add(errorStatus);
-                            return truePreDiseases;
-                        }
-
-                        else if(resultado)
-                        {
-                            truePreDiseases.Add(eachDisease);
+                            trueDiseases.Add(eachDisease);
                             System.Diagnostics.Debug.Write(eachDisease + " se añadió a trueDiseases \n");
                         }
 
-                        else
+                        else if(resultado.Equals("False")) // La enfermedad resultó falsa.
                         {
-                            falsePreDiseases.Add(eachDisease);
+                            falseDiseases.Add(eachDisease);
                             System.Diagnostics.Debug.Write(eachDisease + " se añadió a falseDiseases \n");
                         }
 
-                        System.Diagnostics.Debug.Write("Terminé calculateDisease de: " + eachDisease + " y resultó ser: " + resultado.ToString() + "\n");
+                        else // Hubo un error al calcular la enfermedad.
+                        {
+                            trueDiseases.Add("ERROR");
+                            trueDiseases.Add(resultado);
+                            return trueDiseases;
+                        }
                     }
 
                     else
                     {
-                        errorStatus = "Error: No criteria for this disease in the DB.";
-                        truePreDiseases.Add("ERROR");
-                        truePreDiseases.Add(errorStatus);
-                        return truePreDiseases;
+                        trueDiseases.Add("ERROR");
+                        trueDiseases.Add("Error: No criteria for this disease in the DB.");
+                        return trueDiseases;
                     }
                 }
             }
@@ -123,37 +114,42 @@ namespace EndoRiskWeb.Controllers
             System.Diagnostics.Debug.Write("Terminé todas: \n");
 
             System.Diagnostics.Debug.Write("      Ciertas son: \n");
-            for (int i = 0; i < truePreDiseases.Count; i++)
+            for (int i = 0; i < trueDiseases.Count; i++)
             {
-                System.Diagnostics.Debug.Write(truePreDiseases[i] + "\n");
+                System.Diagnostics.Debug.Write(trueDiseases[i] + "\n");
             }
 
             System.Diagnostics.Debug.Write("      Falsas son: \n");
-            for (int i = 0; i < falsePreDiseases.Count; i++)
+            for (int i = 0; i < falseDiseases.Count; i++)
             {
-                System.Diagnostics.Debug.Write(falsePreDiseases[i] + "\n");
+                System.Diagnostics.Debug.Write(falseDiseases[i] + "\n");
             }
 
             System.Diagnostics.Debug.Write("Yayyy!! :D \n");
 
             //Ahora aquí con las true diseases, envio los diagnósticos.****
 
-            return truePreDiseases;
+            return trueDiseases;
         }
 
         /* 
          * Method to calculate each question criteria for the disease received.
          * Parameters:
+         *      romequizID = integer of the rome quiz number.
+         *      enfermedad = string with the name of the disease.
+         *      criterios = questions criteria to evaluate the disease.
+         *      
+         * Return: The list of boolean results of each question criteria comparison.
          */
          public List<bool> questionsCriteria(int romequizID, String enfermedad, List<disease> criterios)
          {
              List<bool> questionsResults = new List<bool>();
 
              //Set default values:
-             int idquestion = 0; //Id de la pregunta que voy a buscar
-             String comparisonSymbol = ""; //Symbolo de comparacion
-             int testValue = -1;  //Valor con el que voy a comparar
-             int patientAnswer = -1;  //Valor que contestó la paciente
+             int idquestion = 0; //Id de la pregunta que voy a buscar.
+             String comparisonSymbol = ""; //Symbolo de comparación.
+             int testValue = -1;  //Valor con el que voy a comparar.
+             int patientAnswer = -1;  //Valor que contestó el usuario.
 
              var patientRomeAnswers = db.romeanswers.Where(m => m.idRomeQuiz == romequizID).ToList();
 
@@ -169,23 +165,19 @@ namespace EndoRiskWeb.Controllers
                      {
                          patientAnswer = (int) patientRomeAnswers.Where(m => m.idRomeQuestion == idquestion).Select(n => n.answer).Last();
                          questionsResults.Add(comparison(patientAnswer, testValue, comparisonSymbol)); //Añade resultado i
-                         //System.Diagnostics.Debug.Write("Resultado pregunta: " + i + " añadido para " + enfermedad + " es: " + questionsResults[i] + "\n");
                      }    
                     
                      else
                      {
-                         errorStatus = "Error: No patient answer for a question.";
+                         questionsResults.Clear(); //"Error: No patient answer for a question.";
                          i = criterios.Count + 1; //To "break" the for.                       
                      }
-
-                     //System.Diagnostics.Debug.Write("\n");
-                     //System.Diagnostics.Debug.Write("Resultado num: " + i + " añadido para " + enfermedad + " es: " + questionsResults[i] + "\n");
                  }
              }
 
              else
              {
-                 errorStatus = "Error: No Rome answers for this patient.";
+                 questionsResults.Clear(); //"Error: No Rome answers for this patient.";
              }
 
              return questionsResults;
@@ -196,10 +188,13 @@ namespace EndoRiskWeb.Controllers
           * Parameters:
           *      disease = is the text of the disease that should be calculated. (Text string must be equal to the one in the database)
           *      questionsResult = is the list of the results (true or false) of the comparison for each question in order, for the desired disease.
-          *      truePreDiseases = string list that contains the name of the prediseases that have been calculated before, an its result was true. (Empty if no pre-diseases are fulfilled)
-          *      truePreDiseases = string list that contains the name of the prediseases that have been calculated before, an its result was false. (Empty if no pre-diseases are not fulfilled)
+          *      
+          * This method determine if the disease received as parameter is true or false, according to its questionsResults
+          * and associated steps and parameters of this disease.
+          * 
+          * Return: Result of the disease or the error message.
           */
-         public bool calculateDisease(String disease, List<bool> questionsResults)   //, List<bool> questionsResult, List<String> truePreDiseases, List<String> falsePreDiseases)
+         public String calculateDisease(String disease, List<bool> questionsResults)
         {
             bool step = false; //Hold the result of each "step" of the calculation.
             List<bool> stepList = new List<bool>();  //This list will contains the result of each step in the disease diagnosis.
@@ -211,10 +206,9 @@ namespace EndoRiskWeb.Controllers
             int questionNumber = 0; //Number of the question in the disease to be evaluated (Default = 0)
             bool comparedValue = false; //Value to compare the result of the question (Default = false)
             
-            if(!db.romesteps.Select(m => m.disease3).Contains(disease)) //Si los steps contienen esa enfermedad
+            if(!db.romesteps.Select(m => m.disease3).Contains(disease)) //Si los steps no contienen esa enfermedad
             {
-                errorStatus = "Error: Disease is not fount in steps list.";
-                return false;   
+                return "Error: Disease is not found in steps list."; 
             }
 
             var diseaseSteps = db.romesteps.Where(m => m.disease3.Equals(disease)).ToList(); //Get the steps of the 'disease' and pass them to a list          
@@ -229,20 +223,14 @@ namespace EndoRiskWeb.Controllers
                 {
                     int currentRealStep = i + 1;
 
-                    //var stepParameters = db.romeparameters.Where(m => m.step.Equals(currentRealStep) && m.disease4.Equals(disease)).ToList(); //Get the 'parameters' of the step 'i'
                     var parametrosTotalesDisease = db.romeparameters.Where(m => m.disease4.ToString().Equals(disease)).ToList();
                     var stepParameters = parametrosTotalesDisease.Where(m => (int)m.step == currentRealStep).ToList();
 
                     int sizeOfParams = stepParameters.Count;
 
-                    System.Diagnostics.Debug.Write("\nPara enfermedad " + disease + ", step " + currentRealStep + " hay " + sizeOfParams + " parámetros. \n"); //For testing
-
                     if(sizeOfParams == 0) //To ensure not to start the comparison of parameter if the list is empty.
                     {
-                        //Enviar texto de que no hay parámetros para ese paso.
-                        errorStatus = "Error: There is no parameters for this step.";
-                        System.Diagnostics.Debug.Write("Hubo error en: " + errorStatus + "\n"); //For testing
-                        return false;
+                        return "Error: There is no parameters for this step.";
                     }
                     
                     else //Else continue normally
@@ -268,8 +256,6 @@ namespace EndoRiskWeb.Controllers
                             String QUE = item.que.ToString();
                             String CUAL = item.cual.ToString();
 
-                            System.Diagnostics.Debug.Write("Value to compare for parameter: " + comparedValue + "\n"); //For testing
-
                             /*
                              * Start the comparison to determine if the parameter is a question, a disease, another step, or if there is an undefined parameter(error message)
                              */
@@ -279,72 +265,60 @@ namespace EndoRiskWeb.Controllers
 
                                 questionNumber = Convert.ToInt32(CUAL); //Number of the question in the disease to be evaluated (foreach de item comienza desde 0)
                                 
-                                int realIndex = questionNumber - 1;
+                                int realIndex = questionNumber - 1;                             
 
-                                System.Diagnostics.Debug.Write("Accessing index in questionsResult[" + realIndex + "], Cual = : " + questionNumber + "\n"); //For testing                              
-
-                                bool valorComparacionPregunta = questionsResults[realIndex].ToString().Equals(comparedValue.ToString()); //Compara con el valor que se supone que sea.&&&&&&&&&&&&&&&&&&&&&&&&&Verificar si dejo comparación con Equals
-
-                                System.Diagnostics.Debug.Write("Comparing value: " + comparedValue.ToString() + " con valor en resultado de pregs: " + valorComparacionPregunta.ToString() + "\n"); //For testing 
+                                bool valorComparacionPregunta = questionsResults[realIndex].ToString().Equals(comparedValue.ToString()); 
     
                                 parameterList.Add(valorComparacionPregunta); //Add the result of the parameter comparison to the method list.
-
-                                System.Diagnostics.Debug.Write("Parámetro Q número: " + item.idOrder.ToString() + " de " + item.disease4.ToString() + " step " + item.step.ToString()  + ", resultado es: " + parameterList.Last().ToString() + "\n"); //For testing
                             }
 
                             else if(QUE.Equals("D")) //Verify if the parameter of the step is a disease
                             {
                                 if(comparedValue) //If disease has to be true
                                 {
-                                    for (int m = 0; m < truePreDiseases.Count; m++)
+                                    for (int m = 0; m < trueDiseases.Count; m++)
                                     {
-                                        if(truePreDiseases[m].Equals(CUAL))
+                                        if(trueDiseases[m].Equals(CUAL))
                                         {
                                             parameterList.Add(true);
-                                            m = truePreDiseases.Count + 1;
-                                            System.Diagnostics.Debug.Write("Parámetro D (true) número: " + item.idOrder.ToString() + " de " + item.disease4.ToString() + " step " + item.step.ToString() + ", resultado es: " + parameterList.Last().ToString() + "\n"); //For testing
+                                            m = trueDiseases.Count + 1;
                                         }
                                     }
 
-                                    for (int m = 0; m < falsePreDiseases.Count; m++)
+                                    for (int m = 0; m < falseDiseases.Count; m++)
                                     {
-                                        if (falsePreDiseases[m].Equals(CUAL))
+                                        if (falseDiseases[m].Equals(CUAL))
                                         {
                                             parameterList.Add(false);
-                                            m = falsePreDiseases.Count + 1;
-                                            System.Diagnostics.Debug.Write("Parámetro D (false) número: " + item.idOrder.ToString() + " de " + item.disease4.ToString() + " step " + item.step.ToString() + ", resultado es: " + parameterList.Last().ToString() + "\n"); //For testing
+                                            m = falseDiseases.Count + 1;
                                         }
                                     }
                                 }
 
                                 else if(!comparedValue) //If disease has to be false
                                 {
-                                    for (int n = 0; n < falsePreDiseases.Count; n++)
+                                    for (int n = 0; n < falseDiseases.Count; n++)
                                     {
-                                        if (falsePreDiseases[n].Equals(CUAL))
+                                        if (falseDiseases[n].Equals(CUAL))
                                         {
                                             parameterList.Add(true);
-                                            n = falsePreDiseases.Count + 1;
-                                            System.Diagnostics.Debug.Write("Parámetro D (true) número: " + item.idOrder.ToString() + " de " + item.disease4.ToString() + " step " + item.step.ToString() + ", resultado es: " + parameterList.Last().ToString() + "\n"); //For testing
+                                            n = falseDiseases.Count + 1;
                                         }
                                     }
 
-                                    for (int n = 0; n < truePreDiseases.Count; n++)
+                                    for (int n = 0; n < trueDiseases.Count; n++)
                                     {
-                                        if (truePreDiseases[n].Equals(CUAL))
+                                        if (trueDiseases[n].Equals(CUAL))
                                         {
                                             parameterList.Add(false);
-                                            n = truePreDiseases.Count + 1;
-                                            System.Diagnostics.Debug.Write("Parámetro D (false) número: " + item.idOrder.ToString() + " de " + item.disease4.ToString() + " step " + item.step.ToString() + ", resultado es: " + parameterList.Last().ToString() + "\n"); //For testing
+                                            n = trueDiseases.Count + 1;
                                         }
                                     }
                                 }
 
                                 else //Did not fulfill the comparison criteria.
                                 {
-                                    errorStatus = "Error: Some required disease have been not calculated before. \n";
-                                    System.Diagnostics.Debug.Write("Hubo error en: " + errorStatus + "\n"); //For testing
-                                    return false;
+                                    return "Error: Some required disease have been not calculated before.";
                                 }
                             }
 
@@ -359,31 +333,26 @@ namespace EndoRiskWeb.Controllers
                                     if(stepList[realStep].ToString().Equals(comparedValue.ToString()))
                                     {
                                         parameterList.Add(true);
-                                        System.Diagnostics.Debug.Write("Parámetro S número: " + item.idOrder.ToString() + " de " + item.disease4.ToString() + " step " + item.step.ToString() + ", resultado es: " + parameterList.Last().ToString() + "\n"); //For testing
                                     }
                                 
                                     else
                                     {
                                         parameterList.Add(false);
-                                        System.Diagnostics.Debug.Write("Parámetro S número: " + item.idOrder.ToString() + " de " + item.disease4.ToString() + " step " + item.step.ToString() + ", resultado es: " + parameterList.Last().ToString() + "\n"); //For testing
                                     } 
                                 }
 
                                 else
                                 {
                                     //Se está intentando accesar un 'step' invalido.
-                                    errorStatus = "Error: Trying to access an invalid step.";
-                                    System.Diagnostics.Debug.Write("Hubo error en: " + errorStatus + "\n"); //For testing
-                                    return false;
+                                    return "Error: Trying to access an invalid step.";
                                 }
                             }
 
                             else
                             {
                                 // Parámetro no está definido. 
-                                errorStatus = "Error: Parameter is not defined (Q, S, or D).";
-                                System.Diagnostics.Debug.Write("Hubo error en: " + errorStatus + "\n"); //For testing
-                                return false;
+                                //errorStatus = "Error: Parameter is not defined (Q, S, or D).";
+                                return "Error: Parameter is not defined (Q, S, or D).";
                             }
                         }                         
                         //Aquí terminé con los parámetros
@@ -398,14 +367,12 @@ namespace EndoRiskWeb.Controllers
                         {
                             step = OrCriteria(parameterList);
                             stepList.Add(step);
-                            System.Diagnostics.Debug.Write("Step " + currentRealStep + " comparison OR result is: " + step.ToString() + "\n");
                         }
 
                         else if(methodToCompare.Equals("AND")) 
                         {
                             step = AndCriteria(parameterList);
                             stepList.Add(step);
-                            System.Diagnostics.Debug.Write("Step " + currentRealStep + " comparison AND result is: " + step.ToString() + "\n");
                         }
 
                         else if(methodToCompare.Equals("NMORE")) 
@@ -413,15 +380,12 @@ namespace EndoRiskWeb.Controllers
                             int quantityN = (int) diseaseSteps[i].quantityN;
                             step = nOrMoreCriteria(quantityN, parameterList);
                             stepList.Add(step);
-                            System.Diagnostics.Debug.Write("Step " + currentRealStep + " comparison NMORE result is: " + step.ToString() + "\n");
                         }
 
                         else
                         {
                             //Invalid comparison method
-                            errorStatus = "Error: Invalid method (OR, AND, NMORE).";
-                            System.Diagnostics.Debug.Write("Hubo error en: " + errorStatus + "\n"); //For testing
-                            return false;
+                            return "Error: Invalid method (OR, AND, NMORE).";
                         }
 
                         parameterList.Clear();
@@ -433,24 +397,22 @@ namespace EndoRiskWeb.Controllers
             else
             {
                 //Enviar texto de que no hay pasos en la base de datos para esa enfermedad.
-                errorStatus = "Error: There is no steps for this disease.";
-                System.Diagnostics.Debug.Write("Hubo error en: " + errorStatus + "\n"); //For testing
-                return false;
+                return "Error: There is no steps for this disease.";
             }
 
             if(stepList.Count == 0) //Asegurarme de enviar un valor siempre.
             {
-                return false;
+                return "Nothing";
             }
 
-            return stepList.Last(); //Envío el final de la lista siempre, y en donde la reciba, si es null busco la lista de errores que debí haber guardado aquí o algo asi.
+            return stepList.Last().ToString(); //Envío el final de la lista siempre porque es el que contiene el resultado de la enfermedad.
         }
 
         /* 
          * Method: AndCriteria(List<bool> param)
          * 
          * Parameter: 
-         * param - is a list of bool items, to which the operation is going to be applied.  
+         *      param - is a list of bool items, to which the operation is going to be applied.  
          * 
          * This method makes an "AND" of all the elements in the received list,
          * returns true if the "AND" is fulfilled (all items in param are true) and
@@ -469,7 +431,7 @@ namespace EndoRiskWeb.Controllers
          * Method: OrCriteria(List<bool> param)
          * 
          * Parameter: 
-         * param - is a list of bool items, to which the operation is going to be applied.  
+         *      param - is a list of bool items, to which the operation is going to be applied.  
          * 
          * This method makes an "OR" of all the elements in the received list,
          * returns true if the "OR" is fulfilled (at least one element is true) and
@@ -488,8 +450,8 @@ namespace EndoRiskWeb.Controllers
          * Method: nOrMoreCriteria(int n, List<bool> param)
          * 
          * Parameters: 
-         * n - integer to specify the number of conditions the list of parameters must fulfill.
-         * param - is a list of bool items, to which the operation is going to be applied.  
+         *      n - integer to specify the number of conditions the list of parameters must fulfill.
+         *      param - is a list of bool items, to which the operation is going to be applied.  
          * 
          * This method makes an "N or more Criteria" of all the elements in the received list,
          * returns true if at least N elements (or more) are true in the list.
@@ -513,7 +475,6 @@ namespace EndoRiskWeb.Controllers
                 result = true;
             }
 
-            System.Diagnostics.Debug.Write("Counter de NMore:" + counter); //For testing
             return result;
         }
 
@@ -538,12 +499,6 @@ namespace EndoRiskWeb.Controllers
             else if (comparisonSymbol.Equals("="))
             {
                 result = equalTo(answer, value);
-            }
-
-            else
-            {
-                errorStatus = "Error: Comparison Symbol";
-                RedirectToAction("RomeDiagnosisError"); 
             }
 
             return result;

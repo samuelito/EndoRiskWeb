@@ -124,6 +124,10 @@
                     if (questionItem.abbr.Equals("AWSS"))
                     {
                     }
+                    else if (questionItem.abbr.Equals("IRP"))
+                    {
+
+                    }
                     //Displays the question
 
                     else if (questionItem.abbr.Equals("DBP"))
@@ -197,7 +201,10 @@
                             {
 
                             }
+                            else if (questionItem.abbr.Equals("IRP"))
+                            {
 
+                            }
 
                             else
                             {
@@ -213,7 +220,11 @@
 
                         else
                         {
-                            if (questionItem.abbr.Equals("EBA"))
+                            if (questionItem.abbr.Equals("IRP"))
+                            {
+
+                            }
+                            else if (questionItem.abbr.Equals("EBA"))
                             {
 
                                 <label class="campo_requerido">
@@ -346,7 +357,7 @@
                     <strong>PAP (Prueba de Papanicolaou) - Para detectar anomalías en el cuello del útero.</strong>
                 </span>
 
-                
+
                 <div class="boxP">
                     <div class="leftPP">
                         @for (int i = 0; i <= (Model.FirstOrDefault().prexCond.Count / 2); i++)
@@ -433,7 +444,7 @@
                                 <div>
                                     <input id="prexCond" class="precon" type="checkbox" onclick="pre(1)" name="prexCond" value="@Model.FirstOrDefault().prexCond.ElementAt(i).abbr" style="font-weight:500" />
                                     <span style="font-weight: 500;color: #3e5667;font-size:15px">@Model.FirstOrDefault().prexCond.ElementAt(i).condition</span>
-                                    <span title="PAP (Prueba de Papanicolaou) - Para detectar anomalías en el cuello del útero."><img id="im-PAP"src="~/Images/toolbar_get_info_small.png" align="top" /></span>
+                                    <span title="PAP (Prueba de Papanicolaou) - Para detectar anomalías en el cuello del útero."><img id="im-PAP" src="~/Images/toolbar_get_info_small.png" align="top" /></span>
                                 </div>
                             }/*
                             else if (Model.FirstOrDefault().prexCond.ElementAt(i).abbr.Equals("PAP_I"))
@@ -568,6 +579,11 @@
                 document.getElementById('waitImage').style.display = 'none';
             }
             else {
+                var period = $('#IRP').val();;
+                if (period === 'SI') {
+                    document.getElementById("DBP").value = 37.5;
+                }
+
                 document.getElementById('waitText').style.display = 'block';
                 document.getElementById('waitImage').style.display = 'block';
             }
@@ -575,33 +591,6 @@
             return isFormValid;
         });
 
-        /*function waiting() {
-
-                var elements = document.getElementsByTagName("input");
-                var complete = 1;
-                for (var i = 0; i < elements.length; i++) {
-                    elements[i].oninvalid = function (e) {
-                        //e.target.setCustomValidity("");
-                        if (!e.target.validity.valid) {
-                            complete = 0;
-                           // e.target.setCustomValidity("This field cannot be left blank");
-                        }
-                    };
-                    //elements[i].oninput = function (e) {
-                       // e.target.setCustomValidity("");
-                    //};
-                }
-
-                if(complete != 0){
-                    document.getElementById('waitText').style.display = 'block';
-                    document.getElementById('waitImage').style.display = 'block';
-                }
-                else {
-                    document.getElementById('waitText').style.display = 'none';
-                    document.getElementById('waitImage').style.display = 'none';
-                }
-
-        }*/
 
         $(document).ready(function () {
             document.getElementById('waitText').style.display = 'none';
@@ -733,9 +722,9 @@
             var value = this.options[this.selectedIndex].value;
 
             if (value == "SI") {
-                document.getElementById('q-DBP').style.display = 'none';
+                /*document.getElementById('q-DBP').style.display = 'none';
                 document.getElementById("DBP").value = 0;
-                document.getElementById('DBP').style.display = 'none';
+                document.getElementById('DBP').style.display = 'none';*/
                 document.getElementById('DBP').removeAttribute('required');
             }
             else {
@@ -743,7 +732,7 @@
                 document.getElementById('q-DBP').style.display = 'block';
                 document.getElementById('DBP').style.display = 'inline';
                 document.getElementById('DBP').setAttribute('required', 'true');
-                document.getElementById("DBP").value = 0;
+                //document.getElementById("DBP").value = 0;
             }
         };
 

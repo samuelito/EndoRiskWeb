@@ -1,21 +1,21 @@
-﻿@model IEnumerable<EndoRiskWeb.Models.romediagnosi>
-@{
-    ViewBag.Title = "Resultados de los Cuestionarios Rome III";
-}
-<h2 class="center">@ViewBag.Title</h2>
-<br />
-<div class="questionWrap">
+﻿<!--View for the Diagnosis
+    Author: LMGG-->
 
-    <h2>De acuerdo a sus síntomas, contestaciones y al criterio 'Rome' para enfermedades gastrointestinales:</h2>
+@model IEnumerable<EndoRiskWeb.Models.romediagnosi>
+@{
+    ViewBag.Title = "Resultados Cuestionarios ROME";
+}
+
+<div class="questionWrap">
+    <h2>De acuerdo a sus síntomas, contestaciones y al criterio 'Rome' para enfermedades gastrointestinales,</h2>
 
     <h3>@ViewBag.Message</h3>
 
     @foreach (var item in Model)
     {
-        <p>Diagnostico: @item.diagnosis</p>
+        <p>@item.diagnosis</p>
     }
 
-    @if (Model.Count().Equals(0))
     <p>@ViewBag.NoSymp</p>
 
     <h3>*Recuerde que esto es solamente una guía, y no pretende sustituir el diagnóstico de un médico*</h3>

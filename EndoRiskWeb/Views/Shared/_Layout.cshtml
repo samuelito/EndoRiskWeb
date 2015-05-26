@@ -14,7 +14,10 @@
         <div class="content-wrapper">
 
             <div class="float-left">
-                <p class="site-title"> <img src="~/Images/MujerEndo.png" width="85" height="140" />@Html.ActionLink("Endorisk", "EndoriskQuestions", "EndoriskCalculator")</p>
+                <p class="site-title">
+                    <img src="~/Images/MujerEndo.png" width="85" height="140"/>
+                    <span style="margin-left:-25px;">@Html.ActionLink("Endorisk", "EndoriskQuestions", "EndoriskCalculator")</span>
+                </p>
             </div>
 
             <div class="float-right">
@@ -24,7 +27,7 @@
 
                 <nav>
                     <ul id="menu">
-                        
+
                         <li>@Html.ActionLink("Endorisk", "EndoriskQuestions", "EndoriskCalculator")</li>
                         <li>@Html.ActionLink("Acerca de Endorisk", "About", "Home")</li>
                         <li>@Html.ActionLink("Endometriosis", "EndoInfo", "Home")</li>

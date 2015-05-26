@@ -527,6 +527,7 @@
     <Content Include="Views\EndoriskCalculator\EndoriskQuestions.cshtml" />
     <Content Include="Views\Home\Terminos.cshtml" />
     <Content Include="Views\RomeQuestionnaire\RomeDisplayError.cshtml" />
+    <Content Include="Views\RomeQuestionnaire\RomePassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

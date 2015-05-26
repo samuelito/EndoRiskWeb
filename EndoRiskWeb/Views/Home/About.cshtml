@@ -9,18 +9,70 @@
 </section>
 
 <article class="endoWrap">
-    <p>
-        Endorisk surge a base de un estudio llevado a cabo por:
-        la Escuela de Medicina en Ponce y la Universidad de Puerto Rico Recinto de Mayaguez.
+    <p style="text-indent: 4em;">
+        El diagnóstico de endometriosis, una enfermedad ginecológica de alto impacto al sistema reproductivo femenino, se logra únicamente a través de cirugía invasiva.  Esta cirugía puede ser una laparoscopía, que consiste en una pequeña incisión en la pared abdominal que permite la entrada de un laparoscopio al abdomen o pelvis, o una laparotomía, que consiste en una incisión más grande que permite la entrada de la mano del cirujano al abdomen o pelvis.  Desafortunadamente no todas las mujeres tienen un seguro médico o la solvencia financiera para cubrir los costos asociados a estos procedimientos quirúrgicos.  Por lo tanto, hay una necesidad de una alternativa que no sea costosa, que esté disponible a todas las mujeres, y que pueda proporcionar más información acerca de si una cirugía invasiva es necesaria o no.  A pesar de que pueden existir herramientas con este propósito, la mayoría de las mujeres quizás no sepan cómo acceder a ellas o cómo utilizarlas.  Es por esto que se hace necesario el desarrollo de una herramienta simple, fácil de utilizar, y que potencialmente pueda ser utilizada por cualquier mujer.  De aquí surge “EndoRisk” que funciona como una calculadora de riesgo de endometriosis.
+    </p>
 
+    <p style="text-indent: 4em;">
+        Endorisk provee un cuestionario principal con preguntas acerca de síntomas, problemas de embarazo, problemas de infertilidad, datos como su edad, origen étnico, tiempo entre periodos, entre otros.  Con estos datos que provee la persona, el sistema calcula el riesgo que tiene la mujer de sufrir endometriosis a lo largo de su vida.  Este riesgo se calcula a través de modelos de predicción que fueron desarrollados en el Departamento de Ingeniería Industrial de la Universidad de Puerto Rico Recinto de Mayaguez, con datos de estudios llevados a cabo por el Programa de Investigación de Endometriosis de la Escuela de Medicina en Ponce.  El modelo de predicción utilizado en este momento para determinar el riesgo, es un modelo de regresión lineal que utiliza once predictores.  El resultado de este modelo se pasa luego a otra ecuación que es la que provee el riesgo.  El resultado de esta segunda ecuación representa el estimado del riesgo de endometriosis a lo largo de la vida de la paciente bajo consideración.    Este resultado es un número entre cero y uno, donde cero representa que es extremadamente poco probable que la paciente bajo consideración sea diagnosticada con endometriosis, y uno representa que hay un alto riesgo que la persona bajo consideración padezca endometriosis.
+    </p>
+
+    <p style="text-indent: 4em;">
+        El modelo es certero con un 72.28% de sensibilidad y un 85.14% de especificidad, esto quiere decir que el modelo podrá identificar correctamente pacientes con endometriosis como pacientes un 72.28% de las veces, mientras que también podrá identificar mujeres sin diagnóstico de endometriosis como no pacientes 84.14% del tiempo.  A continuación se presentan las fórmulas que se utilizaron para obtener estos valores:
+    </p>
+
+    <table>
+        <tr>
+            <td></td>
+            <td>Predicted (Ŷ)</td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>Actual (Y)</td>
+            <td>0</td>
+            <td>1</td>
+        </tr>
+
+        <tr>
+            <td>1</td>
+            <td>TN</td>
+            <td>FP</td>
+        </tr>
+
+        <tr>
+            <td>0</td>
+            <td>FN</td>
+            <td>TP</td>
+        </tr>
+    </table>
+
+    <p>
+        TN – “True Negative” – Cierto Negativo <br>
+        FN – “False Negative” – Falso Negativo <br>
+        FP – “False Positive” – Falso Positivo <br>
+        TP – “True Positive” – Cierto Positivo <br>
     </p>
 
     <p>
-        Endorisk se basa en...
+        Error rate = (FN + FP)/(TN+TP+FN+FP) <br>
+        Sensibilidad = TP/(FN+TP) <br>
+        Especificidad = 1 – [FP/(TN+FP)] <br>
+        PPV = TP/(FP+TP) <br>
+        NPV = TN/(TN+FN) <br>
+    </p>
+
+    <p style="text-indent: 4em;">
+        Además del cuestionario de endometriosis, esta página Web EndoRisk provee un cuestionario de enfermedades gastrointestinales.  Este cuestionario se incluye ya que hay algunos síntomas de Endometriosis que pueden confundirse con los síntomas de algunas enfermedades gastrointestinales.  Este cuestionario se demuestra solamente al culminar el primer cuestionario, el de endometriosis, y las preguntas están basadas en los síntomas que marque la persona.  Para este cuestionario se utiliza el criterio de Rome III.
     </p>
 
     <p>
-        Los modelos...
+    </p>
+    <br />
+    <p class="center">
+        <img src="~/Images/Logo UPR sin color.png" width="140" height="140" />
+        <img src="~/Images/Logo ININ.jpg" width="140" height="140" />
+        <img src="~/Images/ponce logo2.jpg" width="140" height="140" />
     </p>
 </article>
 

@@ -25,7 +25,7 @@
                 <h3> Número de Examen: </h3> <p>@Model.idQuiz</p>
                 <h3> ID de paciente:</h3> <p>@Model.idPatient</p>
                 <h3> Riesgo: </h3><p> @ViewBag.RiskPercent%</p>
-                <h3> Nivel de Severidad:</h3> <p> @ViewBag.SeverityPercent</p>
+                @*<h3> Nivel de Severidad:</h3> <p> @ViewBag.SeverityPercent</p>*@
                 <h3> Fecha y hora al tomar el examen: </h3> <p> @Model.time</p>
                 <h3> Examen validado por: </h3>
                
@@ -58,10 +58,17 @@
     A continuación le proveemos la opción de llenar el cuestionario de "Rome III", para saber si este puede ser su caso:</strong>
 </p>
 
-<section class="center"><strong>
+@*<section class="center"><strong>
     <!--Este nuevo link que añadí, es para ir a Rome III enviandole como parámetro el ID del quiz y de la paciente-->
     @Html.ActionLink("Cuestionario Enfermedades Gastrointestinales", "DisplayRomeQuestionnaire", "RomeQuestionnaire", new { quizNum = Model.idQuiz, patientNum = Model.idPatient }, null)</strong>
-</section>
+</section>*@
+
+<section class="center">
+    <strong>
+                <!--Este nuevo link que añadí, es para ir a Rome III enviandole como parámetro el ID del quiz y de la paciente-->
+     @Html.ActionLink("Cuestionario Enfermedades Gastrointestinales", "RomePassword", "RomeQuestionnaire", new { quizNum = Model.idQuiz, patientNum = Model.idPatient }, null)
+     </strong>
+     </section>
 
 <p><strong>
     ¡Gracias por utilizar Endorisk!</strong>
